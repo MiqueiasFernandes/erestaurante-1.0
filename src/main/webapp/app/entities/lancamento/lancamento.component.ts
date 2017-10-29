@@ -25,6 +25,21 @@ export class LancamentoComponent implements OnInit, OnDestroy {
     reverse: any;
     totalItems: number;
 
+
+    modoTabela = false;
+    total = 0;
+    hoje = new Date();
+    date1 = new Date(this.hoje.toISOString().replace(/\d+T.*/, '')  + '1');
+    date2 = new Date(this.hoje.toISOString().replace(/\d+T.*/, ''));
+    opt = {
+        minYear: 2017,
+        maxYear: 2030,
+        displayFormat: 'D [de] MMM [de] YYYY',
+        barTitleFormat: 'MMMM YYYY',
+        firstCalendarDay: 0
+    };
+
+
     constructor(
         private lancamentoService: LancamentoService,
         private jhiAlertService: JhiAlertService,
@@ -101,4 +116,65 @@ export class LancamentoComponent implements OnInit, OnDestroy {
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    public lineChartData:Array<any> = [];
+
+    public lineChartOptions:any = {
+        responsive: true,
+        maintainAspectRatio: false
+    };
+
+    public lineChartColors:Array<any> = [
+        { // green
+            backgroundColor: 'rgba(148,159,177,0.2)',
+            borderColor: 'rgba(148,159,177,1)',
+            pointBackgroundColor: 'rgba(148,159,177,1)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+        },
+        { // red
+            backgroundColor: 'rgba(77,83,96,0.2)',
+            borderColor: 'rgba(77,83,96,1)',
+            pointBackgroundColor: 'rgba(77,83,96,1)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(77,83,96,1)'
+        },
+        { // blue
+            backgroundColor: 'rgba(148,159,177,0.2)',
+            borderColor: 'rgba(148,159,177,1)',
+            pointBackgroundColor: 'rgba(148,159,177,1)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+        }
+    ];
+    public lineChartLegend:boolean = true;
+    public lineChartType:string = 'line';
+
+// events
+    public chartClicked(e:any):void {
+        console.log(e);
+    }
+
+    public chartHovered(e:any):void {
+        console.log(e);
+    }
+
+
+
+
+
 }

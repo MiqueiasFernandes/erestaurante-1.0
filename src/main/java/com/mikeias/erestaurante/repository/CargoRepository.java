@@ -19,4 +19,8 @@ public interface CargoRepository extends JpaRepository<Cargo, Long> {
     @Query("select colaborador.cargos from Colaborador colaborador where colaborador.usuario.login = ?#{principal.username}")
     List<Cargo> getCargosOfCurrentUser();
 
+    ///o sitema deve ter mais de 2 cargos cadastrados para bloquear
+    @Query("select count (cargo) from Cargo cargo")
+    Long countCargos();
+
 }

@@ -1,6 +1,15 @@
 <div>
     <h2>
         <span jhiTranslate="eRestauranteApp.lancamento.home.title">Lancamentos</span>
+
+        <button class="btn btn-secondary float-right" style="margin-left: 15px;">
+            <span [ngClass]="{
+                    'fa': true,
+                    'fa-th-list': !modoTabela,
+                    'fa-line-chart': modoTabela}" ></span>
+            {{modoTabela ? 'Modo Gráfico' : 'Modo Tabela'}}
+        </button>
+
         <button class="btn btn-primary float-right jh-create-entity create-lancamento" [routerLink]="['/', { outlets: { popup: ['lancamento-new'] } }]">
             <span class="fa fa-plus"></span>
             <span  jhiTranslate="eRestauranteApp.lancamento.home.createLabel">
@@ -9,10 +18,63 @@
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
+
     <br/>
- <div #tableH>
+
+    <!--<div class="row" *ngIf="lancamentos && !modoTabela">-->
+        <!--<div class="col-12" *ngIf="anual">-->
+            <!--<div class="graph">-->
+                <!--<canvas baseChart-->
+                        <!--[datasets]="lineChartData"-->
+                        <!--[labels]="chartAnual"-->
+                        <!--[options]="lineChartOptions"-->
+                        <!--[legend]="lineChartLegend"-->
+                        <!--[chartType]="lineChartType"></canvas>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-12" *ngIf="!anual">-->
+            <!--<div class="graph">-->
+                <!--<canvas baseChart-->
+                        <!--[datasets]="lineChartData"-->
+                        <!--[labels]="chartMensal"-->
+                        <!--[options]="lineChartOptions"-->
+                        <!--[legend]="lineChartLegend"-->
+                        <!--[chartType]="lineChartType"></canvas>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <br>
+
+    <div class="row" *ngIf="lancamentos && !modoTabela">
+
+        <div class="col-12">
+            <button class="btn btn-success" (click)="setAnual()">{{anual ?  'Modo Mensal':'Modo Anual'}}</button>
+
+            <div *ngIf="!anual" class="float-right">
+                <button *ngFor="let botao of chartAnual" (click)="setMes(botao)" style="margin-left: 10px"
+                        [ngClass]="{
+                    'btn': true,
+                    'btn-secondary': chartAnual[mes] === botao,
+                    'btn-primary': chartAnual[mes] !== botao}"
+                >{{botao}}</button>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row calend spac" *ngIf="lancamentos && modoTabela">
+        <b>Filtrar lançamentos:</b>
+        <ng-datepicker [(ngModel)]="date1" [options]="opt" class="spac"></ng-datepicker>
+        <b>  ate:</b>
+        <ng-datepicker [(ngModel)]="date2" [options]="opt" class="spac"></ng-datepicker>
+        <button class="btn btn-success spac" (click)="loadAll(true)"><span class="fa fa-search"></span>Processar</button>
+    </div>
+
+
+    <div #tableH>
     </div>
 
 

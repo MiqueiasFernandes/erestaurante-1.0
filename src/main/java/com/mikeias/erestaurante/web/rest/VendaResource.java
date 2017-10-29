@@ -6,7 +6,7 @@ import com.mikeias.erestaurante.repository.CargoRepository;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mikeias.erestaurante.domain.Venda;
-
+import com.mikeias.erestaurante.web.rest.util.DoubleUtil;
 import com.mikeias.erestaurante.repository.VendaRepository;
 import com.mikeias.erestaurante.web.rest.errors.BadRequestAlertException;
 import com.mikeias.erestaurante.web.rest.util.HeaderUtil;
@@ -28,6 +28,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.ZonedDateTime;
 
 /**
  * REST controller for managing Venda.
@@ -63,6 +64,9 @@ public class VendaResource {
     @Timed
     public ResponseEntity<Venda> createVenda(@Valid @RequestBody Venda venda) throws URISyntaxException {
         log.debug("REST request to save Venda : {}", venda);
+
+        venda = DoubleUtil.handleVenda(venda);
+        venda.setData(ZonedDateTime.now());
 
 //////////////////////////////////REQUER PRIVILEGIOS
                                   if (!PrivilegioService.podeCriar(cargoRepository, ENTITY_NAME)) {
@@ -102,7 +106,7 @@ public class VendaResource {
         if (venda.getId() == null) {
             return createVenda(venda);
         }
-        Venda result = vendaRepository.save(venda);
+        Venda result = vendaRepository.save(DoubleUtil.handleVenda(venda));
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, venda.getId().toString()))
             .body(result);
@@ -130,6 +134,35 @@ public class VendaResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vendas");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+
+    /**
+     * GET  /vendas/comanda/:id/:modo : get all the vendas of comanda id with modo.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of vendas in body
+     */
+    @GetMapping("/vendas/comanda/{id}/{modo}")
+    @Timed
+    public List<Venda> getAllVendasByComanda(@PathVariable Long id, @PathVariable String modo) {
+        log.debug("REST request to get all Vendas For Comanda {} modo {}", id, modo);
+
+        //////////////////////////////////REQUER PRIVILEGIOS
+        if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {
+            log.error("TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME);
+            return  null;
+        }
+
+//////////////////////////////////REQUER PRIVILEGIOS
+
+//        List<Venda> vendas = vendaRepository.findAll();
+//        vendas.removeIf(venda -> ((venda.getComanda() == null) || (!venda.getComanda().getId().equals(id))));
+        List<Venda> vendas = vendaRepository.findAllByComandaId(id);///vendas;
+
+        vendas.removeIf(v -> ((modo != null) && (!modo.isEmpty()) && (!modo.contains(v.getStatus().toString().toUpperCase()))));
+
+        return vendas;
+    }
+
 
     /**
      * GET  /vendas/:id : get the "id" venda.

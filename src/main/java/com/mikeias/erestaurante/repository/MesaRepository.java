@@ -13,4 +13,5 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface MesaRepository extends JpaRepository<Mesa, Long> {
 
+    Mesa findOneByCodigo(String codigo);
 }

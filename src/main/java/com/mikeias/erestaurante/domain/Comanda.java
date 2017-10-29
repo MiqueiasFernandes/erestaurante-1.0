@@ -1,6 +1,9 @@
 package com.mikeias.erestaurante.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mikeias.erestaurante.domain.enumeration.VendaStatus;
+import com.mikeias.erestaurante.repository.VendaRepository;
+import com.mikeias.erestaurante.web.rest.util.DoubleUtil;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -260,4 +263,22 @@ public class Comanda implements Serializable {
             ", gorjeta='" + getGorjeta() + "'" +
             "}";
     }
+
+    public Comanda getComandaCalculada(VendaRepository vendaRepository) {
+        Comanda comanda = DoubleUtil.handleComanda(this);
+        comanda.setTotal(0.0);
+        for (Venda venda : vendaRepository.findAllByComandaId(comanda.getId())){
+            if ((venda.getStatus() == VendaStatus.AUTORIZADO) || (venda.getStatus() == VendaStatus.PRODUZINDO) || (venda.getStatus() == VendaStatus.ENTREGUE)) {
+                comanda.setTotal(
+                    comanda.getTotal() +
+                        (venda.getProduto().getPreco() * venda.getQuantidade())
+                        + venda.getValorizacao()
+                        - venda.getDesconto()
+                );
+            }
+        }
+        return comanda;
+    }
+
+
 }

@@ -6,6 +6,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.mikeias.erestaurante.domain.Cargo;
 
 import com.mikeias.erestaurante.repository.CargoRepository;
+import com.mikeias.erestaurante.web.rest.util.DoubleUtil;
 import com.mikeias.erestaurante.web.rest.errors.BadRequestAlertException;
 import com.mikeias.erestaurante.web.rest.util.HeaderUtil;
 import com.mikeias.erestaurante.web.rest.util.PaginationUtil;
@@ -54,7 +55,7 @@ public class CargoResource {
     @Timed
     public ResponseEntity<Cargo> createCargo(@RequestBody Cargo cargo) throws URISyntaxException {
         log.debug("REST request to save Cargo : {}", cargo);
-
+        cargo = DoubleUtil.handleCargo(cargo);
 //////////////////////////////////REQUER PRIVILEGIOS
                                   if (!PrivilegioService.podeCriar(cargoRepository, ENTITY_NAME)) {
                                   log.error("TENTATIVA DE CRIAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME  + " : {}", cargo);
@@ -83,7 +84,7 @@ public class CargoResource {
     @Timed
     public ResponseEntity<Cargo> updateCargo(@RequestBody Cargo cargo) throws URISyntaxException {
         log.debug("REST request to update Cargo : {}", cargo);
-
+        cargo = DoubleUtil.handleCargo(cargo);
 //////////////////////////////////REQUER PRIVILEGIOS
                                   if (!PrivilegioService.podeEditar(cargoRepository, ENTITY_NAME)) {
                                   log.error("TENTATIVA DE EDITAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME  + " : {}", cargo);

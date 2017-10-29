@@ -19,4 +19,8 @@ public interface ColaboradorRepository extends JpaRepository<Colaborador, Long> 
     @Query("select colaborador from Colaborador colaborador left join fetch colaborador.cargos where colaborador.id =:id")
     Colaborador findOneWithEagerRelationships(@Param("id") Long id);
 
+    @Query("select colaborador from Colaborador colaborador left join fetch colaborador.cargos where colaborador.usuario.login = ?#{principal.username}")
+    Colaborador findByUsuarioIsCurrentUser();
+
+
 }

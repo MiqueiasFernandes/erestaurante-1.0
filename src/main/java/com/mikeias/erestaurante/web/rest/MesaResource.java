@@ -152,6 +152,20 @@ public class MesaResource {
     }
 
     /**
+     * GET  /mesas/codigo/:codigo : get the codigo "id" mesa.
+     *
+     * @param codigo the codigo of the mesa to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the mesa, or with status 404 (Not Found)
+     */
+    @GetMapping("/mesas/codigo/{codigo}")
+    @Timed
+    public ResponseEntity<Mesa> getMesaBycodigo(@PathVariable String codigo) {
+        log.debug("REST request to get Mesa by codigo: {}", codigo);
+        Mesa mesa = mesaRepository.findOneByCodigo(codigo);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(mesa));
+    }
+
+    /**
      * DELETE  /mesas/:id : delete the "id" mesa.
      *
      * @param id the id of the mesa to delete

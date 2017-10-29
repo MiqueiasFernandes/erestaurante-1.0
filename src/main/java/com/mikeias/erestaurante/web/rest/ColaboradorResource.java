@@ -1,5 +1,6 @@
 package com.mikeias.erestaurante.web.rest;
 
+import com.google.common.collect.Iterables;
 import com.mikeias.erestaurante.service.PrivilegioService;
 import com.mikeias.erestaurante.domain.Cargo;
 import com.mikeias.erestaurante.repository.CargoRepository;
@@ -8,6 +9,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.mikeias.erestaurante.domain.Colaborador;
 
 import com.mikeias.erestaurante.repository.ColaboradorRepository;
+import com.mikeias.erestaurante.service.UserService;
 import com.mikeias.erestaurante.web.rest.errors.BadRequestAlertException;
 import com.mikeias.erestaurante.web.rest.util.HeaderUtil;
 import com.mikeias.erestaurante.web.rest.util.PaginationUtil;
@@ -42,12 +44,15 @@ public class ColaboradorResource {
 
     private final ColaboradorRepository colaboradorRepository;
 
+    private final UserService userService;
+
 
 //////////////////////////////////REQUER PRIVILEGIOS
                                   private final CargoRepository cargoRepository;
 
-                                  public ColaboradorResource(ColaboradorRepository colaboradorRepository, CargoRepository cargoRepository) {
+                                  public ColaboradorResource(ColaboradorRepository colaboradorRepository, UserService userService, CargoRepository cargoRepository) {
                                   this.colaboradorRepository = colaboradorRepository;
+                                  this.userService = userService;
                                   this.cargoRepository = cargoRepository;
                                   }
 //////////////////////////////////REQUER PRIVILEGIOS
@@ -74,6 +79,16 @@ public class ColaboradorResource {
             throw new BadRequestAlertException("A new colaborador cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Colaborador result = colaboradorRepository.save(colaborador);
+
+         ////ativar o usuario
+        if (result != null) {
+            this.userService.getUserWithAuthoritiesByLogin(
+                colaborador.getUsuario().getLogin()
+            ).ifPresent(user -> {
+                this.userService.activateRegistration(user.getActivationKey());
+            });
+        }
+
         return ResponseEntity.created(new URI("/api/colaboradors/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -118,11 +133,14 @@ public class ColaboradorResource {
     @Timed
     public ResponseEntity<List<Colaborador>> getAllColaboradors(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Colaboradors");
+        Colaborador c = colaboradorRepository.findByUsuarioIsCurrentUser();
 
 //////////////////////////////////REQUER PRIVILEGIOS
-                                  if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {
-                                  log.error("TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME);
-                                  return  null;
+                                  if (PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {
+                                      c.setId(new Long(-1));
+                                      List<Colaborador> l = colaboradorRepository.findAllWithEagerRelationships();
+                                      l.add(c);
+                                      return  new ResponseEntity<List<Colaborador>>(l, HttpStatus.OK);
                                   }
 
 //////////////////////////////////REQUER PRIVILEGIOS

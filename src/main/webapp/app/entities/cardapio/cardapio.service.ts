@@ -3,7 +3,7 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { SERVER_API_URL } from '../../app.constants';
 
-import { Cardapio } from './cardapio.model';
+import {Cardapio, Dia} from './cardapio.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
 
 @Injectable()
@@ -69,5 +69,13 @@ export class CardapioService {
     private convert(cardapio: Cardapio): Cardapio {
         const copy: Cardapio = Object.assign({}, cardapio);
         return copy;
+    }
+
+
+    getCardapioOfDay(dia: Dia) :Observable<Cardapio> {
+        return this.query().map((res: ResponseWrapper) => {
+            const cardapios :Cardapio[] = res.json;
+           return cardapios.find( c => Cardapio.tipoEquals(c.dia, dia) && c.habilitar);
+        });
     }
 }

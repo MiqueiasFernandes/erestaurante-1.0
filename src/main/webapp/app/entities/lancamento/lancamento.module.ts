@@ -15,6 +15,11 @@ import {
     lancamentoPopupRoute,
 } from './';
 
+
+// import { ChartsModule } from 'ng2-charts';
+// import { NgDatepickerModule } from 'ng2-datepicker';
+
+
 const ENTITY_STATES = [
     ...lancamentoRoute,
     ...lancamentoPopupRoute,
@@ -22,7 +27,10 @@ const ENTITY_STATES = [
 
 @NgModule({
     imports: [
+
+        // NgDatepickerModule,
         ERestauranteSharedModule,
+        // ChartsModule,
         RouterModule.forRoot(ENTITY_STATES, { useHash: true })
     ],
     declarations: [

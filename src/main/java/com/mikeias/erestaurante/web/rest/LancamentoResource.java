@@ -1,5 +1,13 @@
 package com.mikeias.erestaurante.web.rest;
 
+import com.mikeias.erestaurante.domain.Comanda;
+import com.mikeias.erestaurante.domain.Venda;
+import com.mikeias.erestaurante.domain.enumeration.Status;
+import com.mikeias.erestaurante.domain.enumeration.VendaStatus;
+import com.mikeias.erestaurante.repository.ComandaRepository;
+import com.mikeias.erestaurante.repository.VendaRepository;
+import com.mikeias.erestaurante.web.rest.util.DoubleUtil;
+
 import com.mikeias.erestaurante.service.PrivilegioService;
 import com.mikeias.erestaurante.domain.Cargo;
 import com.mikeias.erestaurante.repository.CargoRepository;
@@ -41,15 +49,23 @@ public class LancamentoResource {
     private static final String ENTITY_NAME = "lancamento";
 
     private final LancamentoRepository lancamentoRepository;
+    private final VendaRepository vendaRepository;
+    private final ComandaRepository comandaRepository;
 
 
 //////////////////////////////////REQUER PRIVILEGIOS
                                   private final CargoRepository cargoRepository;
 
-                                  public LancamentoResource(LancamentoRepository lancamentoRepository, CargoRepository cargoRepository) {
-                                  this.lancamentoRepository = lancamentoRepository;
-                                  this.cargoRepository = cargoRepository;
-                                  }
+    public LancamentoResource(
+        LancamentoRepository lancamentoRepository,
+        CargoRepository cargoRepository,
+        VendaRepository vendaRepository,
+        ComandaRepository comandaRepository) {
+        this.lancamentoRepository = lancamentoRepository;
+        this.cargoRepository = cargoRepository;
+        this.vendaRepository = vendaRepository;
+        this.comandaRepository = comandaRepository;
+    }
 //////////////////////////////////REQUER PRIVILEGIOS
 
     /**
@@ -63,7 +79,7 @@ public class LancamentoResource {
     @Timed
     public ResponseEntity<Lancamento> createLancamento(@Valid @RequestBody Lancamento lancamento) throws URISyntaxException {
         log.debug("REST request to save Lancamento : {}", lancamento);
-
+        lancamento = DoubleUtil.handleLancamento(lancamento);
 //////////////////////////////////REQUER PRIVILEGIOS
                                   if (!PrivilegioService.podeCriar(cargoRepository, ENTITY_NAME)) {
                                   log.error("TENTATIVA DE CRIAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME  + " : {}", lancamento);
@@ -74,6 +90,7 @@ public class LancamentoResource {
             throw new BadRequestAlertException("A new lancamento cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Lancamento result = lancamentoRepository.save(lancamento);
+        verificarComanda(result);
         return ResponseEntity.created(new URI("/api/lancamentos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -103,10 +120,40 @@ public class LancamentoResource {
             return createLancamento(lancamento);
         }
         Lancamento result = lancamentoRepository.save(lancamento);
+        verificarComanda(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, lancamento.getId().toString()))
             .body(result);
     }
+
+
+    void verificarComanda(Lancamento lancamento) {
+        Comanda comanda = lancamento.getComanda();
+        if (lancamento.isIsentrada()) {
+            Double total =
+                comanda.getComandaCalculada(vendaRepository).getTotal() +
+                    comanda.getGorjeta();
+
+            for (Lancamento lancamento1 : getAllLancamentosByComanda(comanda.getId())) {
+                if (lancamento1.isIsentrada()) {
+                    total -= (lancamento1.getParcelas() * lancamento1.getValor());
+                }
+            }
+            if (total <= 0) {
+                List<Venda>  vs = vendaRepository.findAllByComandaId(comanda.getId());
+                vs.removeIf(v -> (
+                    (v.getStatus() == VendaStatus.ENTREGUE) || (v.getStatus() == VendaStatus.CANCELADO))
+                );
+                if (vs.size() < 1) {
+                    comanda.setStatus(Status.PAGA);
+                    this.comandaRepository.save(comanda);
+                } else {
+                    log.warn("Comanda não pode ser fechada por possir vendas em aberto {}", comanda);
+                }
+            }
+        }
+    }
+
 
     /**
      * GET  /lancamentos : get all the lancamentos.
@@ -130,6 +177,28 @@ public class LancamentoResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/lancamentos");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+    /**
+     * GET  /lancamentos/comanda/:id : get all the lancamentos by comanda id.
+     *
+     * @param id the id of the comanda to retrieve lancamentos
+     * @return the ResponseEntity with status 200 (OK) and the list of lancamentos in body
+     */
+    @GetMapping("/lancamentos/comanda/{id}")
+    @Timed
+    public List<Lancamento> getAllLancamentosByComanda(@PathVariable Long id) {
+        log.debug("REST request to get all Lancamentos by comanda {} ", id);
+
+//////////////////////////////////REQUER PRIVILEGIOS
+        if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {
+            log.error("TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME);
+            return  null;
+        }
+
+//////////////////////////////////REQUER PRIVILEGIOS
+        return lancamentoRepository.findAllByComandaId(id);
+    }
+
 
     /**
      * GET  /lancamentos/:id : get the "id" lancamento.

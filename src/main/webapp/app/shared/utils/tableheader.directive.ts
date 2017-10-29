@@ -31,7 +31,7 @@ export class TableheaderDirective implements AfterViewInit{
             return;
         opt.view.clear();
         const ref = opt.view.createComponent(this.factory);
-        this.tableHeaderInstance = ref.instance;
+        this.tableHeaderInstance = ref.instance as TableheaderComponent;
         ref.changeDetectorRef.detectChanges();
         this.entidade = opt.entidade;
     }

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { Cardapio } from './cardapio.model';
@@ -14,7 +14,8 @@ import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-cardapio-dialog',
-    templateUrl: './cardapio-dialog.component.html'
+    templateUrl: './cardapio-dialog.component.html',
+    styleUrls: ['../../layouts/tableheader/tableheader.component.scss']
 })
 export class CardapioDialogComponent implements OnInit {
 
