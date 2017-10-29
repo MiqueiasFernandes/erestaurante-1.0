@@ -1,0 +1,49 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.mikeias.erestaurante",
+      "nativeLanguage": "pt-br"
+    },
+    "jhipsterVersion": "4.10.2",
+    "baseName": "ERestaurante",
+    "packageName": "com.mikeias.erestaurante",
+    "packageFolder": "com/mikeias/erestaurante",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "jwtSecretKey": "4bd8r7qud6698g8lj17c8e2uqoqukr2gqahpk4ov",
+    "hibernateCache": "ehcache",
+    "clusteredHttpSession": false,
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSocialSignIn": false,
+    "enableSwaggerCodegen": false,
+    "clientFramework": "angularX",
+    "useSass": true,
+    "clientPackageManager": "yarn",
+    "applicationType": "monolith",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "otherModules": [
+      {
+        "name": "generator-jhipster-pace",
+        "version": "0.1.3"
+      },
+      {
+        "name": "generator-jhipster-banner",
+        "version": "0.1.0"
+      }
+    ],
+    "enableTranslation": true,
+    "nativeLanguage": "pt-br",
+    "languages": [
+      "pt-br",
+      "en"
+    ]
+  }
+}
