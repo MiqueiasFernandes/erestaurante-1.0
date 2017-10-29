@@ -1,0 +1,61 @@
+
+<div *ngIf="lancamento">
+    <h2><span jhiTranslate="eRestauranteApp.lancamento.detail.title">Lancamento</span> {{lancamento.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="eRestauranteApp.lancamento.isentrada">Isentrada</span></dt>
+        <dd>
+            <span>{{lancamento.isentrada}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.lancamento.data">Data</span></dt>
+        <dd>
+            <span>{{lancamento.data | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.lancamento.vencimento">Vencimento</span></dt>
+        <dd>
+            <span>{{lancamento.vencimento | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.lancamento.natureza">Natureza</span></dt>
+        <dd>
+            <span jhiTranslate="{{'eRestauranteApp.Natureza.' + lancamento.natureza}}">{{lancamento.natureza}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.lancamento.valor">Valor</span></dt>
+        <dd>
+            <span>{{lancamento.valor}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.lancamento.parcelas">Parcelas</span></dt>
+        <dd>
+            <span>{{lancamento.parcelas}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.lancamento.observacao">Observacao</span></dt>
+        <dd>
+            <span>{{lancamento.observacao}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.lancamento.comanda">Comanda</span></dt>
+        <dd>
+            <div *ngIf="lancamento.comanda">
+                <a [routerLink]="['/comanda', lancamento.comanda?.id]">{{lancamento.comanda?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.lancamento.colaborador">Colaborador</span></dt>
+        <dd>
+            <div *ngIf="lancamento.colaborador">
+                <a [routerLink]="['/colaborador', lancamento.colaborador?.id]">{{lancamento.colaborador?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'lancamento/'+ lancamento.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

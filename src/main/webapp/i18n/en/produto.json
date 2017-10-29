@@ -1,0 +1,34 @@
+{
+    "eRestauranteApp": {
+        "produto" : {
+            "home": {
+                "title": "Produtos",
+                "createLabel": "Create a new Produto",
+                "createOrEditLabel": "Create or edit a Produto"
+            },
+            "created": "A new Produto is created with identifier {{ param }}",
+            "updated": "A Produto is updated with identifier {{ param }}",
+            "deleted": "A Produto is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Produto {{ id }}?"
+            },
+            "detail": {
+                "title": "Produto"
+            },
+            "codigo": "Codigo",
+            "nome": "Nome",
+            "fornecedor": "Fornecedor",
+            "estoque": "Estoque",
+            "valor": "Valor",
+            "preco": "Preco",
+            "foto": "Foto",
+            "descricao": "Descricao",
+            "html": "Html",
+            "observacao": "Observacao",
+            "opcional": "Opcional",
+            "adicional": "Adicional",
+            "unidade": "Unidade",
+            "imposto": "Imposto"
+        }
+    }
+}

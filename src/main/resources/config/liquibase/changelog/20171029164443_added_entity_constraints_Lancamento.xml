@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Lancamento.
+    -->
+    <changeSet id="20171029164443-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="comanda_id"
+                                 baseTableName="lancamento"
+                                 constraintName="fk_lancamento_comanda_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="comanda"/>
+
+        <addForeignKeyConstraint baseColumnNames="colaborador_id"
+                                 baseTableName="lancamento"
+                                 constraintName="fk_lancamento_colaborador_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="colaborador"/>
+
+    </changeSet>
+</databaseChangeLog>

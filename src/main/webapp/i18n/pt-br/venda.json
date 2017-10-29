@@ -1,0 +1,27 @@
+{
+    "eRestauranteApp": {
+        "venda" : {
+            "home": {
+                "title": "Vendas",
+                "createLabel": "Criar novo Venda",
+                "createOrEditLabel": "Criar ou editar Venda"
+            },
+            "created": "Um novo Venda foi criado com o identificador {{ param }}",
+            "updated": "Um Venda foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Venda foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Venda {{ id }}?"
+            },
+            "detail": {
+                "title": "Venda"
+            },
+            "data": "Data",
+            "quantidade": "Quantidade",
+            "desconto": "Desconto",
+            "valorizacao": "Valorizacao",
+            "status": "Status",
+            "produto": "Produto",
+            "comanda": "Comanda"
+        }
+    }
+}

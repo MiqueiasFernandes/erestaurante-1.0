@@ -1,0 +1,94 @@
+
+<div *ngIf="restaurante">
+    <h2><span jhiTranslate="eRestauranteApp.restaurante.detail.title">Restaurante</span> {{restaurante.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.razaoSocial">Razao Social</span></dt>
+        <dd>
+            <span>{{restaurante.razaoSocial}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.nomeFantasia">Nome Fantasia</span></dt>
+        <dd>
+            <span>{{restaurante.nomeFantasia}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.telefone">Telefone</span></dt>
+        <dd>
+            <span>{{restaurante.telefone}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.celular">Celular</span></dt>
+        <dd>
+            <span>{{restaurante.celular}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.email">Email</span></dt>
+        <dd>
+            <span>{{restaurante.email}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.site">Site</span></dt>
+        <dd>
+            <span>{{restaurante.site}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.cnpj">Cnpj</span></dt>
+        <dd>
+            <span>{{restaurante.cnpj}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.codigo">Codigo</span></dt>
+        <dd>
+            <span>{{restaurante.codigo}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.codigoSegContribuinte">Codigo Seg Contribuinte</span></dt>
+        <dd>
+            <span>{{restaurante.codigoSegContribuinte}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.licenca">Licenca</span></dt>
+        <dd>
+            <span>{{restaurante.licenca}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.funcadao">Funcadao</span></dt>
+        <dd>
+            <span>{{restaurante.funcadao | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.logo">Logo</span></dt>
+        <dd>
+            <div *ngIf="restaurante.logo">
+                <a (click)="openFile(restaurante.logoContentType, restaurante.logo)">
+                    <img [src]="'data:' + restaurante.logoContentType + ';base64,' + restaurante.logo" style="max-width: 100%;" alt="restaurante image"/>
+                </a>
+                {{restaurante.logoContentType}}, {{byteSize(restaurante.logo)}}
+            </div>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.pagina">Pagina</span></dt>
+        <dd>
+            <span>{{restaurante.pagina}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.localhost">Localhost</span></dt>
+        <dd>
+            <span>{{restaurante.localhost}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.endereco">Endereco</span></dt>
+        <dd>
+            <div *ngIf="restaurante.endereco">
+                <a [routerLink]="['/endereco', restaurante.endereco?.id]">{{restaurante.endereco?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.restaurante.proprietario">Proprietario</span></dt>
+        <dd>
+            <span *ngFor="let proprietario of restaurante.proprietarios; let last = last">
+                <a [routerLink]="['/colaborador', proprietario?.id ]">{{proprietario.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'restaurante/'+ restaurante.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

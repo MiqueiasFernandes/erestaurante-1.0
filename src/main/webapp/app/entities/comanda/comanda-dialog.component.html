@@ -1,0 +1,99 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myComandaLabel" jhiTranslate="eRestauranteApp.comanda.home.createOrEditLabel">Create or edit a Comanda</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!comanda.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="comanda.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.comanda.codigo" for="field_codigo">Codigo</label>
+            <input type="text" class="form-control" name="codigo" id="field_codigo"
+                [(ngModel)]="comanda.codigo"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.comanda.total" for="field_total">Total</label>
+            <input type="number" class="form-control" name="total" id="field_total"
+                [(ngModel)]="comanda.total"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.comanda.status" for="field_status">Status</label>
+            <select class="form-control" name="status" [(ngModel)]="comanda.status" id="field_status"  required>
+                <option value="VAZIA">{{'eRestauranteApp.Status.VAZIA' | translate}}</option>
+                <option value="ABERTA">{{'eRestauranteApp.Status.ABERTA' | translate}}</option>
+                <option value="FECHADA">{{'eRestauranteApp.Status.FECHADA' | translate}}</option>
+                <option value="PAGA">{{'eRestauranteApp.Status.PAGA' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.status?.dirty && editForm.controls.status?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.status?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.comanda.gorjeta" for="field_gorjeta">Gorjeta</label>
+            <input type="number" class="form-control" name="gorjeta" id="field_gorjeta"
+                [(ngModel)]="comanda.gorjeta"  />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.comanda.nota" for="field_nota">Nota</label>
+            <select class="form-control" id="field_nota" name="nota" [(ngModel)]="comanda.nota">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="notaOption.id === comanda.nota?.id ? comanda.nota : notaOption" *ngFor="let notaOption of notas; trackBy: trackNotaById">{{notaOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.comanda.pagador" for="field_pagador">Pagador</label>
+            <select class="form-control" id="field_pagador" name="pagador" [(ngModel)]="comanda.pagador"  required>
+                <option *ngIf="!editForm.value.pagador" [ngValue]="null" selected></option>
+                <option [ngValue]="clienteOption.id === comanda.pagador?.id ? comanda.pagador : clienteOption" *ngFor="let clienteOption of clientes; trackBy: trackClienteById">{{clienteOption.id}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.pagador?.dirty && editForm.controls.pagador?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.pagador?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="eRestauranteApp.comanda.mesas" for="field_mesas">Mesas</label>
+            <select class="form-control" id="field_mesas" multiple name="mesas" [(ngModel)]="comanda.mesas" required>
+                <option [ngValue]="getSelected(comanda.mesas, mesaOption)" *ngFor="let mesaOption of mesas; trackBy: trackMesaById">{{mesaOption.id}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.mesas?.dirty && editForm.controls.mesas?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.mesas?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="eRestauranteApp.comanda.colaboradores" for="field_colaboradores">Colaboradores</label>
+            <select class="form-control" id="field_colaboradores" multiple name="colaboradores" [(ngModel)]="comanda.colaboradores" required>
+                <option [ngValue]="getSelected(comanda.colaboradores, colaboradorOption)" *ngFor="let colaboradorOption of colaboradors; trackBy: trackColaboradorById">{{colaboradorOption.id}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.colaboradores?.dirty && editForm.controls.colaboradores?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.colaboradores?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

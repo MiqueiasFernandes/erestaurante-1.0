@@ -1,0 +1,32 @@
+{
+    "eRestauranteApp": {
+        "colaborador" : {
+            "home": {
+                "title": "Colaboradors",
+                "createLabel": "Create a new Colaborador",
+                "createOrEditLabel": "Create or edit a Colaborador"
+            },
+            "created": "A new Colaborador is created with identifier {{ param }}",
+            "updated": "A Colaborador is updated with identifier {{ param }}",
+            "deleted": "A Colaborador is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Colaborador {{ id }}?"
+            },
+            "detail": {
+                "title": "Colaborador"
+            },
+            "nome": "Nome",
+            "nascimento": "Nascimento",
+            "sexomasculino": "Sexomasculino",
+            "documento": "Documento",
+            "telefone": "Telefone",
+            "email": "Email",
+            "horario": "Horario",
+            "preferencia": "Preferencia",
+            "usuario": "Usuario",
+            "endereco": "Endereco",
+            "lancamento": "Lancamento",
+            "cargos": "Cargos"
+        }
+    }
+}

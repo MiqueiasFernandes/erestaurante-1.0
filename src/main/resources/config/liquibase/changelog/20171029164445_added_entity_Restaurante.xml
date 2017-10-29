@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity Restaurante.
+    -->
+    <changeSet id="20171029164445-1" author="jhipster">
+        <createTable tableName="restaurante">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="razao_social" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nome_fantasia" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="telefone" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="celular" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="email" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="site" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="cnpj" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="codigo" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="codigo_seg_contribuinte" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="licenca" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="funcadao" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="logo" type="longblob">
+                <constraints nullable="true" />
+            </column>
+            <column name="logo_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="pagina" type="clob">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="localhost" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="endereco_id" type="bigint">
+                <constraints unique="true" nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        <dropDefaultValue tableName="restaurante" columnName="funcadao" columnDataType="datetime"/>
+        
+        <createTable tableName="restaurante_proprietario">
+            <column name="proprietarios_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="restaurantes_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="restaurantes_id, proprietarios_id" tableName="restaurante_proprietario"/>
+        
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+</databaseChangeLog>

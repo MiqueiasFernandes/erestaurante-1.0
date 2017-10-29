@@ -5,6 +5,28 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164433_added_entity_Produto.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164434_added_entity_Endereco.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164435_added_entity_Cliente.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164436_added_entity_Mesa.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164437_added_entity_Venda.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164438_added_entity_Comanda.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164439_added_entity_Colaborador.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164440_added_entity_Cargo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164441_added_entity_Cardapio.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164442_added_entity_Imposto.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164443_added_entity_Lancamento.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164444_added_entity_Nota.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164445_added_entity_Restaurante.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20171029164433_added_entity_constraints_Produto.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164435_added_entity_constraints_Cliente.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164437_added_entity_constraints_Venda.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164438_added_entity_constraints_Comanda.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164439_added_entity_constraints_Colaborador.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164441_added_entity_constraints_Cardapio.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164443_added_entity_constraints_Lancamento.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164444_added_entity_constraints_Nota.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171029164445_added_entity_constraints_Restaurante.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

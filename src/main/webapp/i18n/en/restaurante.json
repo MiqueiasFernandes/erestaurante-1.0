@@ -1,0 +1,36 @@
+{
+    "eRestauranteApp": {
+        "restaurante" : {
+            "home": {
+                "title": "Restaurantes",
+                "createLabel": "Create a new Restaurante",
+                "createOrEditLabel": "Create or edit a Restaurante"
+            },
+            "created": "A new Restaurante is created with identifier {{ param }}",
+            "updated": "A Restaurante is updated with identifier {{ param }}",
+            "deleted": "A Restaurante is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Restaurante {{ id }}?"
+            },
+            "detail": {
+                "title": "Restaurante"
+            },
+            "razaoSocial": "Razao Social",
+            "nomeFantasia": "Nome Fantasia",
+            "telefone": "Telefone",
+            "celular": "Celular",
+            "email": "Email",
+            "site": "Site",
+            "cnpj": "Cnpj",
+            "codigo": "Codigo",
+            "codigoSegContribuinte": "Codigo Seg Contribuinte",
+            "licenca": "Licenca",
+            "funcadao": "Funcadao",
+            "logo": "Logo",
+            "pagina": "Pagina",
+            "localhost": "Localhost",
+            "endereco": "Endereco",
+            "proprietario": "Proprietario"
+        }
+    }
+}

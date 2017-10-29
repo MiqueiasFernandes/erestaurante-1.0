@@ -1,0 +1,123 @@
+<div>
+    <h2>
+        <span jhiTranslate="eRestauranteApp.nota.home.title">Notas</span>
+        <button class="btn btn-primary float-right jh-create-entity create-nota" [routerLink]="['/', { outlets: { popup: ['nota-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="eRestauranteApp.nota.home.createLabel">
+            Create new Nota
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+ <div #tableH>
+    </div>
+
+
+        <div class="table-responsive" *ngIf="notas">
+            <table class="table table-striped" [jhiTableheader]="{'view': tableHeader, 'entidade': 'nota'}">
+                <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
+            <th jhiSortBy="nfIDENT"><span jhiTranslate="eRestauranteApp.nota.nfIDENT">Nf IDENT</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="qrcode"><span jhiTranslate="eRestauranteApp.nota.qrcode">Qrcode</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="codigo"><span jhiTranslate="eRestauranteApp.nota.codigo">Codigo</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="identificador"><span jhiTranslate="eRestauranteApp.nota.identificador">Identificador</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="versao"><span jhiTranslate="eRestauranteApp.nota.versao">Versao</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nfNotaInfoIdentificacao"><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoIdentificacao">Nf Nota Info Identificacao</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nfNotaInfoEmitente"><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoEmitente">Nf Nota Info Emitente</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nfNotaInfoAvulsa"><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoAvulsa">Nf Nota Info Avulsa</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nfNotaInfoDestinatario"><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoDestinatario">Nf Nota Info Destinatario</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nfNotaInfoLocal"><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoLocal">Nf Nota Info Local</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nfPessoaAutorizadaDownloadNFe"><span jhiTranslate="eRestauranteApp.nota.nfPessoaAutorizadaDownloadNFe">Nf Pessoa Autorizada Download N Fe</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="itens"><span jhiTranslate="eRestauranteApp.nota.itens">Itens</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nfNotaInfoTotal"><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoTotal">Nf Nota Info Total</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nfNotaInfoTransporte"><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoTransporte">Nf Nota Info Transporte</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nfNotaInfoCobranca"><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoCobranca">Nf Nota Info Cobranca</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nfNotaInfoPagamento"><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoPagamento">Nf Nota Info Pagamento</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nfNotaInfoInformacoesAdicionais"><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoInformacoesAdicionais">Nf Nota Info Informacoes Adicionais</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nfNotaInfoExportacao"><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoExportacao">Nf Nota Info Exportacao</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nfNotaInfoCompra"><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoCompra">Nf Nota Info Compra</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nfNotaInfoCana"><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoCana">Nf Nota Info Cana</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="xml"><span jhiTranslate="eRestauranteApp.nota.xml">Xml</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="danfe"><span jhiTranslate="eRestauranteApp.nota.danfe">Danfe</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="qrcodeImage"><span jhiTranslate="eRestauranteApp.nota.qrcodeImage">Qrcode Image</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="imposto.id"><span jhiTranslate="eRestauranteApp.nota.imposto">Imposto</span> <span class="fa fa-sort"></span></th>
+                    <th style="text-align: center;"><span><span>Ações</span></span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let nota of notas ;trackBy: trackId">
+                    <!--<td><a [routerLink]="['../nota', nota.id ]">{{nota.id}}</a></td>-->
+                <td>{{nota.nfIDENT}}</td>
+                <td>{{nota.qrcode}}</td>
+                <td>{{nota.codigo}}</td>
+                <td>{{nota.identificador}}</td>
+                <td>{{nota.versao}}</td>
+                <td>{{nota.nfNotaInfoIdentificacao}}</td>
+                <td>{{nota.nfNotaInfoEmitente}}</td>
+                <td>{{nota.nfNotaInfoAvulsa}}</td>
+                <td>{{nota.nfNotaInfoDestinatario}}</td>
+                <td>{{nota.nfNotaInfoLocal}}</td>
+                <td>{{nota.nfPessoaAutorizadaDownloadNFe}}</td>
+                <td>{{nota.itens}}</td>
+                <td>{{nota.nfNotaInfoTotal}}</td>
+                <td>{{nota.nfNotaInfoTransporte}}</td>
+                <td>{{nota.nfNotaInfoCobranca}}</td>
+                <td>{{nota.nfNotaInfoPagamento}}</td>
+                <td>{{nota.nfNotaInfoInformacoesAdicionais}}</td>
+                <td>{{nota.nfNotaInfoExportacao}}</td>
+                <td>{{nota.nfNotaInfoCompra}}</td>
+                <td>{{nota.nfNotaInfoCana}}</td>
+                <td>{{nota.xml}}</td>
+                <td>{{nota.danfe}}</td>
+                <td>
+                    <a *ngIf="nota.qrcodeImage" (click)="openFile(nota.qrcodeImageContentType, nota.qrcodeImage)">
+                        <img [src]="'data:' + nota.qrcodeImageContentType + ';base64,' + nota.qrcodeImage" style="max-height: 30px;" alt="nota image"/>
+                    </a>
+                    <span *ngIf="nota.qrcodeImage">{{nota.qrcodeImageContentType}}, {{byteSize(nota.qrcodeImage)}}</span>
+                </td>
+                <td>
+                    <div *ngIf="nota.imposto">
+                        <a [routerLink]="['../imposto', nota.imposto?.id ]" >{{nota.imposto?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../nota', nota.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'nota/'+ nota.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'nota/'+ nota.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+        <div *ngIf="notas && notas.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [maxSize]="5" [pageSize]="itemsPerPage" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
+</div>

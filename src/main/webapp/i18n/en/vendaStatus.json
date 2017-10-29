@@ -1,0 +1,12 @@
+{
+    "eRestauranteApp": {
+        "VendaStatus" : {
+            "null": "",
+            "PEDIDO": "PEDIDO",
+            "AUTORIZADO": "AUTORIZADO",
+            "PRODUZINDO": "PRODUZINDO",
+            "ENTREGUE": "ENTREGUE",
+            "CANCELADO": "CANCELADO"
+        }
+    }
+}

@@ -1,0 +1,92 @@
+<div>
+    <h2>
+        <span jhiTranslate="eRestauranteApp.imposto.home.title">Impostos</span>
+        <button class="btn btn-primary float-right jh-create-entity create-imposto" [routerLink]="['/', { outlets: { popup: ['imposto-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="eRestauranteApp.imposto.home.createLabel">
+            Create new Imposto
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+ <div #tableH>
+    </div>
+
+
+        <div class="table-responsive" *ngIf="impostos">
+            <table class="table table-striped" [jhiTableheader]="{'view': tableHeader, 'entidade': 'imposto'}">
+                <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
+            <th jhiSortBy="descricao"><span jhiTranslate="eRestauranteApp.imposto.descricao">Descricao</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="ivTotTrib"><span jhiTranslate="eRestauranteApp.imposto.ivTotTrib">Iv Tot Trib</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="iICMS"><span jhiTranslate="eRestauranteApp.imposto.iICMS">I ICMS</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="iIPI"><span jhiTranslate="eRestauranteApp.imposto.iIPI">I IPI</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="iII"><span jhiTranslate="eRestauranteApp.imposto.iII">I II</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="iISSQN"><span jhiTranslate="eRestauranteApp.imposto.iISSQN">I ISSQN</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="iPIS"><span jhiTranslate="eRestauranteApp.imposto.iPIS">I PIS</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="iPISST"><span jhiTranslate="eRestauranteApp.imposto.iPISST">I PISST</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="iCOFINS"><span jhiTranslate="eRestauranteApp.imposto.iCOFINS">I COFINS</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="iCOFINSST"><span jhiTranslate="eRestauranteApp.imposto.iCOFINSST">I COFINSST</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="iICMSUFDest"><span jhiTranslate="eRestauranteApp.imposto.iICMSUFDest">I ICMSUF Dest</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="ioutros"><span jhiTranslate="eRestauranteApp.imposto.ioutros">Ioutros</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="configurar"><span jhiTranslate="eRestauranteApp.imposto.configurar">Configurar</span> <span class="fa fa-sort"></span></th>
+                    <th style="text-align: center;"><span><span>Ações</span></span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let imposto of impostos ;trackBy: trackId">
+                    <!--<td><a [routerLink]="['../imposto', imposto.id ]">{{imposto.id}}</a></td>-->
+                <td>{{imposto.descricao}}</td>
+                <td>{{imposto.ivTotTrib}}</td>
+                <td>{{imposto.iICMS}}</td>
+                <td>{{imposto.iIPI}}</td>
+                <td>{{imposto.iII}}</td>
+                <td>{{imposto.iISSQN}}</td>
+                <td>{{imposto.iPIS}}</td>
+                <td>{{imposto.iPISST}}</td>
+                <td>{{imposto.iCOFINS}}</td>
+                <td>{{imposto.iCOFINSST}}</td>
+                <td>{{imposto.iICMSUFDest}}</td>
+                <td>{{imposto.ioutros}}</td>
+                <td>{{imposto.configurar}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../imposto', imposto.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'imposto/'+ imposto.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'imposto/'+ imposto.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+        <div *ngIf="impostos && impostos.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [maxSize]="5" [pageSize]="itemsPerPage" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
+</div>

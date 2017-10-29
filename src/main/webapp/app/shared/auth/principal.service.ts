@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { AccountService } from './account.service';
-import { JhiTrackerService } from '../tracker/tracker.service'; // Barrel doesn't work here. No idea why!
+import { JhiTrackerService } from '../tracker/tracker.service';
+import {isNullOrUndefined} from "util"; // Barrel doesn't work here. No idea why!
 
 @Injectable()
 export class Principal {
     private userIdentity: any;
     private authenticated = false;
     private authenticationState = new Subject<any>();
+    private isautologin :boolean = undefined;
 
     constructor(
         private account: AccountService,
@@ -52,6 +54,7 @@ export class Principal {
     }
 
     identity(force?: boolean): Promise<any> {
+
         if (force === true) {
             this.userIdentity = undefined;
         }
@@ -59,6 +62,7 @@ export class Principal {
         // check and see if we have retrieved the userIdentity data from the server.
         // if we have, reuse it by immediately resolving
         if (this.userIdentity) {
+            this.isautologin = (this.userIdentity.login.length === 4) && this.userIdentity.login.startsWith('user');
             return Promise.resolve(this.userIdentity);
         }
 
@@ -66,15 +70,18 @@ export class Principal {
         return this.account.get().toPromise().then((account) => {
             if (account) {
                 this.userIdentity = account;
+                this.isautologin = (account.login.length === 4) && account.login.startsWith('user');
                 this.authenticated = true;
                 this.trackerService.connect();
             } else {
+                this.isautologin = false;
                 this.userIdentity = null;
                 this.authenticated = false;
             }
             this.authenticationState.next(this.userIdentity);
             return this.userIdentity;
         }).catch((err) => {
+            this.isautologin = false;
             if (this.trackerService.stompClient && this.trackerService.stompClient.connected) {
                 this.trackerService.disconnect();
             }
@@ -100,4 +107,9 @@ export class Principal {
     getImageUrl(): String {
         return this.isIdentityResolved() ? this.userIdentity.imageUrl : null;
     }
+
+    isAutoLogin() :boolean{
+        return this.isautologin;
+    }
+
 }

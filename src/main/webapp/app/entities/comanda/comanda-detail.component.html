@@ -1,0 +1,61 @@
+
+<div *ngIf="comanda">
+    <h2><span jhiTranslate="eRestauranteApp.comanda.detail.title">Comanda</span> {{comanda.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="eRestauranteApp.comanda.codigo">Codigo</span></dt>
+        <dd>
+            <span>{{comanda.codigo}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.comanda.total">Total</span></dt>
+        <dd>
+            <span>{{comanda.total}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.comanda.status">Status</span></dt>
+        <dd>
+            <span jhiTranslate="{{'eRestauranteApp.Status.' + comanda.status}}">{{comanda.status}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.comanda.gorjeta">Gorjeta</span></dt>
+        <dd>
+            <span>{{comanda.gorjeta}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.comanda.nota">Nota</span></dt>
+        <dd>
+            <div *ngIf="comanda.nota">
+                <a [routerLink]="['/nota', comanda.nota?.id]">{{comanda.nota?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.comanda.pagador">Pagador</span></dt>
+        <dd>
+            <div *ngIf="comanda.pagador">
+                <a [routerLink]="['/cliente', comanda.pagador?.id]">{{comanda.pagador?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.comanda.mesas">Mesas</span></dt>
+        <dd>
+            <span *ngFor="let mesas of comanda.mesas; let last = last">
+                <a [routerLink]="['/mesa', mesas?.id ]">{{mesas.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.comanda.colaboradores">Colaboradores</span></dt>
+        <dd>
+            <span *ngFor="let colaboradores of comanda.colaboradores; let last = last">
+                <a [routerLink]="['/colaborador', colaboradores?.id ]">{{colaboradores.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'comanda/'+ comanda.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

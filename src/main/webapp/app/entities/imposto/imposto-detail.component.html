@@ -1,0 +1,73 @@
+
+<div *ngIf="imposto">
+    <h2><span jhiTranslate="eRestauranteApp.imposto.detail.title">Imposto</span> {{imposto.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="eRestauranteApp.imposto.descricao">Descricao</span></dt>
+        <dd>
+            <span>{{imposto.descricao}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.imposto.ivTotTrib">Iv Tot Trib</span></dt>
+        <dd>
+            <span>{{imposto.ivTotTrib}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.imposto.iICMS">I ICMS</span></dt>
+        <dd>
+            <span>{{imposto.iICMS}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.imposto.iIPI">I IPI</span></dt>
+        <dd>
+            <span>{{imposto.iIPI}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.imposto.iII">I II</span></dt>
+        <dd>
+            <span>{{imposto.iII}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.imposto.iISSQN">I ISSQN</span></dt>
+        <dd>
+            <span>{{imposto.iISSQN}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.imposto.iPIS">I PIS</span></dt>
+        <dd>
+            <span>{{imposto.iPIS}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.imposto.iPISST">I PISST</span></dt>
+        <dd>
+            <span>{{imposto.iPISST}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.imposto.iCOFINS">I COFINS</span></dt>
+        <dd>
+            <span>{{imposto.iCOFINS}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.imposto.iCOFINSST">I COFINSST</span></dt>
+        <dd>
+            <span>{{imposto.iCOFINSST}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.imposto.iICMSUFDest">I ICMSUF Dest</span></dt>
+        <dd>
+            <span>{{imposto.iICMSUFDest}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.imposto.ioutros">Ioutros</span></dt>
+        <dd>
+            <span>{{imposto.ioutros}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.imposto.configurar">Configurar</span></dt>
+        <dd>
+            <span>{{imposto.configurar}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'imposto/'+ imposto.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

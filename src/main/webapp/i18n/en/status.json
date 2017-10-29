@@ -1,0 +1,11 @@
+{
+    "eRestauranteApp": {
+        "Status" : {
+            "null": "",
+            "VAZIA": "VAZIA",
+            "ABERTA": "ABERTA",
+            "FECHADA": "FECHADA",
+            "PAGA": "PAGA"
+        }
+    }
+}

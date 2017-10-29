@@ -1,0 +1,24 @@
+{
+    "eRestauranteApp": {
+        "mesa" : {
+            "home": {
+                "title": "Mesas",
+                "createLabel": "Criar novo Mesa",
+                "createOrEditLabel": "Criar ou editar Mesa"
+            },
+            "created": "Um novo Mesa foi criado com o identificador {{ param }}",
+            "updated": "Um Mesa foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Mesa foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Mesa {{ id }}?"
+            },
+            "detail": {
+                "title": "Mesa"
+            },
+            "codigo": "Codigo",
+            "local": "Local",
+            "descricao": "Descricao",
+            "qrcode": "Qrcode"
+        }
+    }
+}

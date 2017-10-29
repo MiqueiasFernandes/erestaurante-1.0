@@ -1,0 +1,105 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myColaboradorLabel" jhiTranslate="eRestauranteApp.colaborador.home.createOrEditLabel">Create or edit a Colaborador</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!colaborador.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="colaborador.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.nome" for="field_nome">Nome</label>
+            <input type="text" class="form-control" name="nome" id="field_nome"
+                [(ngModel)]="colaborador.nome" required />
+            <div [hidden]="!(editForm.controls.nome?.dirty && editForm.controls.nome?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.nome?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.nascimento" for="field_nascimento">Nascimento</label>
+            <div class="d-flex">
+                <input id="field_nascimento" type="datetime-local" class="form-control" name="nascimento" [(ngModel)]="colaborador.nascimento"
+                  />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.sexomasculino" for="field_sexomasculino">Sexomasculino</label>
+            <input type="checkbox" class="form-control" name="sexomasculino" id="field_sexomasculino"
+                [(ngModel)]="colaborador.sexomasculino"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.documento" for="field_documento">Documento</label>
+            <input type="text" class="form-control" name="documento" id="field_documento"
+                [(ngModel)]="colaborador.documento"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.telefone" for="field_telefone">Telefone</label>
+            <input type="text" class="form-control" name="telefone" id="field_telefone"
+                [(ngModel)]="colaborador.telefone"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.email" for="field_email">Email</label>
+            <input type="text" class="form-control" name="email" id="field_email"
+                [(ngModel)]="colaborador.email"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.horario" for="field_horario">Horario</label>
+            <input type="text" class="form-control" name="horario" id="field_horario"
+                [(ngModel)]="colaborador.horario"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.preferencia" for="field_preferencia">Preferencia</label>
+            <textarea class="form-control" name="preferencia" id="field_preferencia"
+                [(ngModel)]="colaborador.preferencia"  ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.usuario" for="field_usuario">Usuario</label>
+            <select class="form-control" id="field_usuario" name="usuario" [(ngModel)]="colaborador.usuario"  required>
+                <option *ngIf="!editForm.value.usuario" [ngValue]="null" selected></option>
+                <option [ngValue]="userOption.id === colaborador.usuario?.id ? colaborador.usuario : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.usuario?.dirty && editForm.controls.usuario?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.usuario?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.endereco" for="field_endereco">Endereco</label>
+            <select class="form-control" id="field_endereco" name="endereco" [(ngModel)]="colaborador.endereco">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="enderecoOption.id === colaborador.endereco?.id ? colaborador.endereco : enderecoOption" *ngFor="let enderecoOption of enderecos; trackBy: trackEnderecoById">{{enderecoOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="eRestauranteApp.colaborador.cargos" for="field_cargos">Cargos</label>
+            <select class="form-control" id="field_cargos" multiple name="cargos" [(ngModel)]="colaborador.cargos" required>
+                <option [ngValue]="getSelected(colaborador.cargos, cargoOption)" *ngFor="let cargoOption of cargos; trackBy: trackCargoById">{{cargoOption.id}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.cargos?.dirty && editForm.controls.cargos?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.cargos?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

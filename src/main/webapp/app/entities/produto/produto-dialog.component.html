@@ -1,0 +1,121 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myProdutoLabel" jhiTranslate="eRestauranteApp.produto.home.createOrEditLabel">Create or edit a Produto</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!produto.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="produto.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.codigo" for="field_codigo">Codigo</label>
+            <input type="text" class="form-control" name="codigo" id="field_codigo"
+                [(ngModel)]="produto.codigo"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.nome" for="field_nome">Nome</label>
+            <input type="text" class="form-control" name="nome" id="field_nome"
+                [(ngModel)]="produto.nome"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.fornecedor" for="field_fornecedor">Fornecedor</label>
+            <input type="text" class="form-control" name="fornecedor" id="field_fornecedor"
+                [(ngModel)]="produto.fornecedor"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.estoque" for="field_estoque">Estoque</label>
+            <input type="number" class="form-control" name="estoque" id="field_estoque"
+                [(ngModel)]="produto.estoque"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.valor" for="field_valor">Valor</label>
+            <input type="number" class="form-control" name="valor" id="field_valor"
+                [(ngModel)]="produto.valor"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.preco" for="field_preco">Preco</label>
+            <input type="number" class="form-control" name="preco" id="field_preco"
+                [(ngModel)]="produto.preco"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.foto" for="field_foto">Foto</label>
+            <div>
+                <img [src]="'data:' + produto.fotoContentType + ';base64,' + produto.foto" style="max-height: 100px;" *ngIf="produto.foto" alt="produto image"/>
+                <div *ngIf="produto.foto" class="form-text text-danger clearfix">
+                    <span class="pull-left">{{produto.fotoContentType}}, {{byteSize(produto.foto)}}</span>
+                    <button type="button" (click)="clearInputImage('foto', 'fotoContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" id="file_foto" (change)="setFileData($event, produto, 'foto', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+            </div>
+            <input type="hidden" class="form-control" name="foto" id="field_foto"
+                [(ngModel)]="produto.foto"  />
+            <input type="hidden" class="form-control" name="fotoContentType" id="field_fotoContentType"
+                [(ngModel)]="produto.fotoContentType" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.descricao" for="field_descricao">Descricao</label>
+            <input type="text" class="form-control" name="descricao" id="field_descricao"
+                [(ngModel)]="produto.descricao"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.html" for="field_html">Html</label>
+            <input type="text" class="form-control" name="html" id="field_html"
+                [(ngModel)]="produto.html"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.observacao" for="field_observacao">Observacao</label>
+            <input type="text" class="form-control" name="observacao" id="field_observacao"
+                [(ngModel)]="produto.observacao"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.opcional" for="field_opcional">Opcional</label>
+            <input type="text" class="form-control" name="opcional" id="field_opcional"
+                [(ngModel)]="produto.opcional"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.adicional" for="field_adicional">Adicional</label>
+            <input type="text" class="form-control" name="adicional" id="field_adicional"
+                [(ngModel)]="produto.adicional"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.unidade" for="field_unidade">Unidade</label>
+            <select class="form-control" name="unidade" [(ngModel)]="produto.unidade" id="field_unidade" >
+                <option value="METRO">{{'eRestauranteApp.Unidade.METRO' | translate}}</option>
+                <option value="METRO_QUADRADO">{{'eRestauranteApp.Unidade.METRO_QUADRADO' | translate}}</option>
+                <option value="METRO_CUBICO">{{'eRestauranteApp.Unidade.METRO_CUBICO' | translate}}</option>
+                <option value="KILOGRAMA">{{'eRestauranteApp.Unidade.KILOGRAMA' | translate}}</option>
+                <option value="TONELADA">{{'eRestauranteApp.Unidade.TONELADA' | translate}}</option>
+                <option value="LITRO">{{'eRestauranteApp.Unidade.LITRO' | translate}}</option>
+                <option value="UNIDADE">{{'eRestauranteApp.Unidade.UNIDADE' | translate}}</option>
+                <option value="DEZENA">{{'eRestauranteApp.Unidade.DEZENA' | translate}}</option>
+                <option value="DUZIA">{{'eRestauranteApp.Unidade.DUZIA' | translate}}</option>
+                <option value="CENTENA">{{'eRestauranteApp.Unidade.CENTENA' | translate}}</option>
+                <option value="MILHAR">{{'eRestauranteApp.Unidade.MILHAR' | translate}}</option>
+                <option value="SACA">{{'eRestauranteApp.Unidade.SACA' | translate}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.imposto" for="field_imposto">Imposto</label>
+            <select class="form-control" id="field_imposto" name="imposto" [(ngModel)]="produto.imposto" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="impostoOption.id === produto.imposto?.id ? produto.imposto : impostoOption" *ngFor="let impostoOption of impostos; trackBy: trackImpostoById">{{impostoOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

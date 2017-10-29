@@ -1,0 +1,124 @@
+
+<div *ngIf="nota">
+    <h2><span jhiTranslate="eRestauranteApp.nota.detail.title">Nota</span> {{nota.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="eRestauranteApp.nota.nfIDENT">Nf IDENT</span></dt>
+        <dd>
+            <span>{{nota.nfIDENT}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.qrcode">Qrcode</span></dt>
+        <dd>
+            <span>{{nota.qrcode}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.codigo">Codigo</span></dt>
+        <dd>
+            <span>{{nota.codigo}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.identificador">Identificador</span></dt>
+        <dd>
+            <span>{{nota.identificador}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.versao">Versao</span></dt>
+        <dd>
+            <span>{{nota.versao}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoIdentificacao">Nf Nota Info Identificacao</span></dt>
+        <dd>
+            <span>{{nota.nfNotaInfoIdentificacao}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoEmitente">Nf Nota Info Emitente</span></dt>
+        <dd>
+            <span>{{nota.nfNotaInfoEmitente}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoAvulsa">Nf Nota Info Avulsa</span></dt>
+        <dd>
+            <span>{{nota.nfNotaInfoAvulsa}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoDestinatario">Nf Nota Info Destinatario</span></dt>
+        <dd>
+            <span>{{nota.nfNotaInfoDestinatario}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoLocal">Nf Nota Info Local</span></dt>
+        <dd>
+            <span>{{nota.nfNotaInfoLocal}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.nfPessoaAutorizadaDownloadNFe">Nf Pessoa Autorizada Download N Fe</span></dt>
+        <dd>
+            <span>{{nota.nfPessoaAutorizadaDownloadNFe}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.itens">Itens</span></dt>
+        <dd>
+            <span>{{nota.itens}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoTotal">Nf Nota Info Total</span></dt>
+        <dd>
+            <span>{{nota.nfNotaInfoTotal}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoTransporte">Nf Nota Info Transporte</span></dt>
+        <dd>
+            <span>{{nota.nfNotaInfoTransporte}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoCobranca">Nf Nota Info Cobranca</span></dt>
+        <dd>
+            <span>{{nota.nfNotaInfoCobranca}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoPagamento">Nf Nota Info Pagamento</span></dt>
+        <dd>
+            <span>{{nota.nfNotaInfoPagamento}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoInformacoesAdicionais">Nf Nota Info Informacoes Adicionais</span></dt>
+        <dd>
+            <span>{{nota.nfNotaInfoInformacoesAdicionais}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoExportacao">Nf Nota Info Exportacao</span></dt>
+        <dd>
+            <span>{{nota.nfNotaInfoExportacao}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoCompra">Nf Nota Info Compra</span></dt>
+        <dd>
+            <span>{{nota.nfNotaInfoCompra}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.nfNotaInfoCana">Nf Nota Info Cana</span></dt>
+        <dd>
+            <span>{{nota.nfNotaInfoCana}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.xml">Xml</span></dt>
+        <dd>
+            <span>{{nota.xml}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.danfe">Danfe</span></dt>
+        <dd>
+            <span>{{nota.danfe}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.qrcodeImage">Qrcode Image</span></dt>
+        <dd>
+            <div *ngIf="nota.qrcodeImage">
+                <a (click)="openFile(nota.qrcodeImageContentType, nota.qrcodeImage)">
+                    <img [src]="'data:' + nota.qrcodeImageContentType + ';base64,' + nota.qrcodeImage" style="max-width: 100%;" alt="nota image"/>
+                </a>
+                {{nota.qrcodeImageContentType}}, {{byteSize(nota.qrcodeImage)}}
+            </div>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.nota.imposto">Imposto</span></dt>
+        <dd>
+            <div *ngIf="nota.imposto">
+                <a [routerLink]="['/imposto', nota.imposto?.id]">{{nota.imposto?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'nota/'+ nota.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,84 @@
+<div>
+    <h2>
+        <span jhiTranslate="eRestauranteApp.lancamento.home.title">Lancamentos</span>
+        <button class="btn btn-primary float-right jh-create-entity create-lancamento" [routerLink]="['/', { outlets: { popup: ['lancamento-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="eRestauranteApp.lancamento.home.createLabel">
+            Create new Lancamento
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+ <div #tableH>
+    </div>
+
+
+        <div class="table-responsive" *ngIf="lancamentos">
+            <table class="table table-striped" [jhiTableheader]="{'view': tableHeader, 'entidade': 'lancamento'}">
+                <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
+            <th jhiSortBy="isentrada"><span jhiTranslate="eRestauranteApp.lancamento.isentrada">Isentrada</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="data"><span jhiTranslate="eRestauranteApp.lancamento.data">Data</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="vencimento"><span jhiTranslate="eRestauranteApp.lancamento.vencimento">Vencimento</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="natureza"><span jhiTranslate="eRestauranteApp.lancamento.natureza">Natureza</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="valor"><span jhiTranslate="eRestauranteApp.lancamento.valor">Valor</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="parcelas"><span jhiTranslate="eRestauranteApp.lancamento.parcelas">Parcelas</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="observacao"><span jhiTranslate="eRestauranteApp.lancamento.observacao">Observacao</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="comanda.id"><span jhiTranslate="eRestauranteApp.lancamento.comanda">Comanda</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="colaborador.id"><span jhiTranslate="eRestauranteApp.lancamento.colaborador">Colaborador</span> <span class="fa fa-sort"></span></th>
+                    <th style="text-align: center;"><span><span>Ações</span></span></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let lancamento of lancamentos ;trackBy: trackId">
+                    <!--<td><a [routerLink]="['../lancamento', lancamento.id ]">{{lancamento.id}}</a></td>-->
+                <td>{{lancamento.isentrada}}</td>
+                <td>{{lancamento.data | date:'medium'}}</td>
+                <td>{{lancamento.vencimento | date:'medium'}}</td>
+                <td jhiTranslate="{{'eRestauranteApp.Natureza.' + lancamento.natureza}}">{{lancamento.natureza}}</td>
+                <td>{{lancamento.valor}}</td>
+                <td>{{lancamento.parcelas}}</td>
+                <td>{{lancamento.observacao}}</td>
+                <td>
+                    <div *ngIf="lancamento.comanda">
+                        <a [routerLink]="['../comanda', lancamento.comanda?.id ]" >{{lancamento.comanda?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="lancamento.colaborador">
+                        <a [routerLink]="['../colaborador', lancamento.colaborador?.id ]" >{{lancamento.colaborador?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../lancamento', lancamento.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'lancamento/'+ lancamento.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'lancamento/'+ lancamento.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

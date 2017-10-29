@@ -1,0 +1,128 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myRestauranteLabel" jhiTranslate="eRestauranteApp.restaurante.home.createOrEditLabel">Create or edit a Restaurante</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!restaurante.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="restaurante.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.restaurante.razaoSocial" for="field_razaoSocial">Razao Social</label>
+            <input type="text" class="form-control" name="razaoSocial" id="field_razaoSocial"
+                [(ngModel)]="restaurante.razaoSocial"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.restaurante.nomeFantasia" for="field_nomeFantasia">Nome Fantasia</label>
+            <input type="text" class="form-control" name="nomeFantasia" id="field_nomeFantasia"
+                [(ngModel)]="restaurante.nomeFantasia"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.restaurante.telefone" for="field_telefone">Telefone</label>
+            <input type="text" class="form-control" name="telefone" id="field_telefone"
+                [(ngModel)]="restaurante.telefone"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.restaurante.celular" for="field_celular">Celular</label>
+            <input type="text" class="form-control" name="celular" id="field_celular"
+                [(ngModel)]="restaurante.celular"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.restaurante.email" for="field_email">Email</label>
+            <input type="text" class="form-control" name="email" id="field_email"
+                [(ngModel)]="restaurante.email"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.restaurante.site" for="field_site">Site</label>
+            <input type="text" class="form-control" name="site" id="field_site"
+                [(ngModel)]="restaurante.site"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.restaurante.cnpj" for="field_cnpj">Cnpj</label>
+            <input type="text" class="form-control" name="cnpj" id="field_cnpj"
+                [(ngModel)]="restaurante.cnpj"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.restaurante.codigo" for="field_codigo">Codigo</label>
+            <input type="text" class="form-control" name="codigo" id="field_codigo"
+                [(ngModel)]="restaurante.codigo"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.restaurante.codigoSegContribuinte" for="field_codigoSegContribuinte">Codigo Seg Contribuinte</label>
+            <input type="text" class="form-control" name="codigoSegContribuinte" id="field_codigoSegContribuinte"
+                [(ngModel)]="restaurante.codigoSegContribuinte"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.restaurante.licenca" for="field_licenca">Licenca</label>
+            <input type="text" class="form-control" name="licenca" id="field_licenca"
+                [(ngModel)]="restaurante.licenca"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.restaurante.funcadao" for="field_funcadao">Funcadao</label>
+            <div class="d-flex">
+                <input id="field_funcadao" type="datetime-local" class="form-control" name="funcadao" [(ngModel)]="restaurante.funcadao"
+                  />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.restaurante.logo" for="field_logo">Logo</label>
+            <div>
+                <img [src]="'data:' + restaurante.logoContentType + ';base64,' + restaurante.logo" style="max-height: 100px;" *ngIf="restaurante.logo" alt="restaurante image"/>
+                <div *ngIf="restaurante.logo" class="form-text text-danger clearfix">
+                    <span class="pull-left">{{restaurante.logoContentType}}, {{byteSize(restaurante.logo)}}</span>
+                    <button type="button" (click)="clearInputImage('logo', 'logoContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" id="file_logo" (change)="setFileData($event, restaurante, 'logo', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+            </div>
+            <input type="hidden" class="form-control" name="logo" id="field_logo"
+                [(ngModel)]="restaurante.logo"  />
+            <input type="hidden" class="form-control" name="logoContentType" id="field_logoContentType"
+                [(ngModel)]="restaurante.logoContentType" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.restaurante.pagina" for="field_pagina">Pagina</label>
+            <textarea class="form-control" name="pagina" id="field_pagina"
+                [(ngModel)]="restaurante.pagina"  ></textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.restaurante.localhost" for="field_localhost">Localhost</label>
+            <input type="text" class="form-control" name="localhost" id="field_localhost"
+                [(ngModel)]="restaurante.localhost"  />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.restaurante.endereco" for="field_endereco">Endereco</label>
+            <select class="form-control" id="field_endereco" name="endereco" [(ngModel)]="restaurante.endereco">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="enderecoOption.id === restaurante.endereco?.id ? restaurante.endereco : enderecoOption" *ngFor="let enderecoOption of enderecos; trackBy: trackEnderecoById">{{enderecoOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="eRestauranteApp.restaurante.proprietario" for="field_proprietario">Proprietario</label>
+            <select class="form-control" id="field_proprietario" multiple name="proprietario" [(ngModel)]="restaurante.proprietarios" required>
+                <option [ngValue]="getSelected(restaurante.proprietarios, colaboradorOption)" *ngFor="let colaboradorOption of colaboradors; trackBy: trackColaboradorById">{{colaboradorOption.id}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.proprietario?.dirty && editForm.controls.proprietario?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.proprietario?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

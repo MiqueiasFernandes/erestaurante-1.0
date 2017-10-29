@@ -1,0 +1,95 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myCargoLabel" jhiTranslate="eRestauranteApp.cargo.home.createOrEditLabel">Create or edit a Cargo</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!cargo.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="cargo.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.cargo.nome" for="field_nome">Nome</label>
+            <input type="text" class="form-control" name="nome" id="field_nome"
+                [(ngModel)]="cargo.nome"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.cargo.salario" for="field_salario">Salario</label>
+            <input type="number" class="form-control" name="salario" id="field_salario"
+                [(ngModel)]="cargo.salario"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.cargo.comissao" for="field_comissao">Comissao</label>
+            <input type="number" class="form-control" name="comissao" id="field_comissao"
+                [(ngModel)]="cargo.comissao"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.cargo.tipo" for="field_tipo">Tipo</label>
+            <select class="form-control" name="tipo" [(ngModel)]="cargo.tipo" id="field_tipo" >
+                <option value="GERENCIA">{{'eRestauranteApp.CargoTipo.GERENCIA' | translate}}</option>
+                <option value="PRODUCAO">{{'eRestauranteApp.CargoTipo.PRODUCAO' | translate}}</option>
+                <option value="CAIXA">{{'eRestauranteApp.CargoTipo.CAIXA' | translate}}</option>
+                <option value="ATENDIMENTO">{{'eRestauranteApp.CargoTipo.ATENDIMENTO' | translate}}</option>
+                <option value="ENTREGA">{{'eRestauranteApp.CargoTipo.ENTREGA' | translate}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Permissões</label>
+            <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <th>
+                    Entidade
+                </th>
+                <th>
+                    visualizar
+                </th>
+                <th>
+                    Adicionar
+                </th>
+                <th>
+                    Editar
+                </th>
+                <th>
+                    Deletar
+                </th>
+                </thead>
+                <tbody>
+                <tr *ngFor="let entidade of entidades">
+                    <td>{{entidade}}</td>
+                    <td>
+                        <input #vari1 type="checkbox" class="form-control"
+                               (change)="setCheck(vari1.checked, entidade, 'visualizar')" [checked]="checks[entidade]['visualizar']" />
+                    </td>
+                    <td>
+                        <input #vari2 type="checkbox" class="form-control"
+                               (change)="setCheck(vari2.checked, entidade, 'adicionar')" [checked]="checks[entidade]['adicionar']" />
+                    </td>
+                    <td>
+                        <input #vari3 type="checkbox" class="form-control"
+                               (change)="setCheck(vari3.checked, entidade, 'editar')" [checked]="checks[entidade]['editar']" />
+                    </td>
+                    <td>
+                        <input #vari4 type="checkbox" class="form-control"
+                               (change)="setCheck(vari4.checked, entidade, 'deletar')" [checked]="checks[entidade]['deletar']" />
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

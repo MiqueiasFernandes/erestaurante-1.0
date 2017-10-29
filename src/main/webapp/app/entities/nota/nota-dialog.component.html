@@ -1,0 +1,159 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myNotaLabel" jhiTranslate="eRestauranteApp.nota.home.createOrEditLabel">Create or edit a Nota</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!nota.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="nota.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.nfIDENT" for="field_nfIDENT">Nf IDENT</label>
+            <input type="text" class="form-control" name="nfIDENT" id="field_nfIDENT"
+                [(ngModel)]="nota.nfIDENT"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.qrcode" for="field_qrcode">Qrcode</label>
+            <input type="text" class="form-control" name="qrcode" id="field_qrcode"
+                [(ngModel)]="nota.qrcode"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.codigo" for="field_codigo">Codigo</label>
+            <input type="text" class="form-control" name="codigo" id="field_codigo"
+                [(ngModel)]="nota.codigo"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.identificador" for="field_identificador">Identificador</label>
+            <input type="text" class="form-control" name="identificador" id="field_identificador"
+                [(ngModel)]="nota.identificador"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.versao" for="field_versao">Versao</label>
+            <input type="text" class="form-control" name="versao" id="field_versao"
+                [(ngModel)]="nota.versao"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.nfNotaInfoIdentificacao" for="field_nfNotaInfoIdentificacao">Nf Nota Info Identificacao</label>
+            <input type="text" class="form-control" name="nfNotaInfoIdentificacao" id="field_nfNotaInfoIdentificacao"
+                [(ngModel)]="nota.nfNotaInfoIdentificacao"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.nfNotaInfoEmitente" for="field_nfNotaInfoEmitente">Nf Nota Info Emitente</label>
+            <input type="text" class="form-control" name="nfNotaInfoEmitente" id="field_nfNotaInfoEmitente"
+                [(ngModel)]="nota.nfNotaInfoEmitente"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.nfNotaInfoAvulsa" for="field_nfNotaInfoAvulsa">Nf Nota Info Avulsa</label>
+            <input type="text" class="form-control" name="nfNotaInfoAvulsa" id="field_nfNotaInfoAvulsa"
+                [(ngModel)]="nota.nfNotaInfoAvulsa"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.nfNotaInfoDestinatario" for="field_nfNotaInfoDestinatario">Nf Nota Info Destinatario</label>
+            <input type="text" class="form-control" name="nfNotaInfoDestinatario" id="field_nfNotaInfoDestinatario"
+                [(ngModel)]="nota.nfNotaInfoDestinatario"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.nfNotaInfoLocal" for="field_nfNotaInfoLocal">Nf Nota Info Local</label>
+            <input type="text" class="form-control" name="nfNotaInfoLocal" id="field_nfNotaInfoLocal"
+                [(ngModel)]="nota.nfNotaInfoLocal"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.nfPessoaAutorizadaDownloadNFe" for="field_nfPessoaAutorizadaDownloadNFe">Nf Pessoa Autorizada Download N Fe</label>
+            <input type="text" class="form-control" name="nfPessoaAutorizadaDownloadNFe" id="field_nfPessoaAutorizadaDownloadNFe"
+                [(ngModel)]="nota.nfPessoaAutorizadaDownloadNFe"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.itens" for="field_itens">Itens</label>
+            <input type="text" class="form-control" name="itens" id="field_itens"
+                [(ngModel)]="nota.itens"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.nfNotaInfoTotal" for="field_nfNotaInfoTotal">Nf Nota Info Total</label>
+            <input type="text" class="form-control" name="nfNotaInfoTotal" id="field_nfNotaInfoTotal"
+                [(ngModel)]="nota.nfNotaInfoTotal"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.nfNotaInfoTransporte" for="field_nfNotaInfoTransporte">Nf Nota Info Transporte</label>
+            <input type="text" class="form-control" name="nfNotaInfoTransporte" id="field_nfNotaInfoTransporte"
+                [(ngModel)]="nota.nfNotaInfoTransporte"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.nfNotaInfoCobranca" for="field_nfNotaInfoCobranca">Nf Nota Info Cobranca</label>
+            <input type="text" class="form-control" name="nfNotaInfoCobranca" id="field_nfNotaInfoCobranca"
+                [(ngModel)]="nota.nfNotaInfoCobranca"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.nfNotaInfoPagamento" for="field_nfNotaInfoPagamento">Nf Nota Info Pagamento</label>
+            <input type="text" class="form-control" name="nfNotaInfoPagamento" id="field_nfNotaInfoPagamento"
+                [(ngModel)]="nota.nfNotaInfoPagamento"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.nfNotaInfoInformacoesAdicionais" for="field_nfNotaInfoInformacoesAdicionais">Nf Nota Info Informacoes Adicionais</label>
+            <input type="text" class="form-control" name="nfNotaInfoInformacoesAdicionais" id="field_nfNotaInfoInformacoesAdicionais"
+                [(ngModel)]="nota.nfNotaInfoInformacoesAdicionais"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.nfNotaInfoExportacao" for="field_nfNotaInfoExportacao">Nf Nota Info Exportacao</label>
+            <input type="text" class="form-control" name="nfNotaInfoExportacao" id="field_nfNotaInfoExportacao"
+                [(ngModel)]="nota.nfNotaInfoExportacao"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.nfNotaInfoCompra" for="field_nfNotaInfoCompra">Nf Nota Info Compra</label>
+            <input type="text" class="form-control" name="nfNotaInfoCompra" id="field_nfNotaInfoCompra"
+                [(ngModel)]="nota.nfNotaInfoCompra"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.nfNotaInfoCana" for="field_nfNotaInfoCana">Nf Nota Info Cana</label>
+            <input type="text" class="form-control" name="nfNotaInfoCana" id="field_nfNotaInfoCana"
+                [(ngModel)]="nota.nfNotaInfoCana"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.xml" for="field_xml">Xml</label>
+            <textarea class="form-control" name="xml" id="field_xml"
+                [(ngModel)]="nota.xml"  ></textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.danfe" for="field_danfe">Danfe</label>
+            <textarea class="form-control" name="danfe" id="field_danfe"
+                [(ngModel)]="nota.danfe"  ></textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.qrcodeImage" for="field_qrcodeImage">Qrcode Image</label>
+            <div>
+                <img [src]="'data:' + nota.qrcodeImageContentType + ';base64,' + nota.qrcodeImage" style="max-height: 100px;" *ngIf="nota.qrcodeImage" alt="nota image"/>
+                <div *ngIf="nota.qrcodeImage" class="form-text text-danger clearfix">
+                    <span class="pull-left">{{nota.qrcodeImageContentType}}, {{byteSize(nota.qrcodeImage)}}</span>
+                    <button type="button" (click)="clearInputImage('qrcodeImage', 'qrcodeImageContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" id="file_qrcodeImage" (change)="setFileData($event, nota, 'qrcodeImage', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+            </div>
+            <input type="hidden" class="form-control" name="qrcodeImage" id="field_qrcodeImage"
+                [(ngModel)]="nota.qrcodeImage"  />
+            <input type="hidden" class="form-control" name="qrcodeImageContentType" id="field_qrcodeImageContentType"
+                [(ngModel)]="nota.qrcodeImageContentType" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.nota.imposto" for="field_imposto">Imposto</label>
+            <select class="form-control" id="field_imposto" name="imposto" [(ngModel)]="nota.imposto" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="impostoOption.id === nota.imposto?.id ? nota.imposto : impostoOption" *ngFor="let impostoOption of impostos; trackBy: trackImpostoById">{{impostoOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

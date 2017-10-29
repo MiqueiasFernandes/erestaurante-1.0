@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Cardapio.
+    -->
+    <changeSet id="20171029164441-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="cardapios_id"
+                                 baseTableName="cardapio_produtos"
+                                 constraintName="fk_cardapio_produtos_cardapios_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cardapio"/>
+        <addForeignKeyConstraint baseColumnNames="produtos_id"
+                                 baseTableName="cardapio_produtos"
+                                 constraintName="fk_cardapio_produtos_produtos_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="produto"/>
+        
+    </changeSet>
+</databaseChangeLog>

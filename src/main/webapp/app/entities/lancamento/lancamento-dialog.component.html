@@ -1,0 +1,104 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myLancamentoLabel" jhiTranslate="eRestauranteApp.lancamento.home.createOrEditLabel">Create or edit a Lancamento</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!lancamento.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="lancamento.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.isentrada" for="field_isentrada">Isentrada</label>
+            <input type="checkbox" class="form-control" name="isentrada" id="field_isentrada"
+                [(ngModel)]="lancamento.isentrada"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.data" for="field_data">Data</label>
+            <div class="d-flex">
+                <input id="field_data" type="datetime-local" class="form-control" name="data" [(ngModel)]="lancamento.data"
+                required  />
+            </div>
+            <div [hidden]="!(editForm.controls.data?.dirty && editForm.controls.data?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.data?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.data?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.vencimento" for="field_vencimento">Vencimento</label>
+            <div class="d-flex">
+                <input id="field_vencimento" type="datetime-local" class="form-control" name="vencimento" [(ngModel)]="lancamento.vencimento"
+                required  />
+            </div>
+            <div [hidden]="!(editForm.controls.vencimento?.dirty && editForm.controls.vencimento?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.vencimento?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.vencimento?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.natureza" for="field_natureza">Natureza</label>
+            <select class="form-control" name="natureza" [(ngModel)]="lancamento.natureza" id="field_natureza" >
+                <option value="A_VISTA_DINHEIRO">{{'eRestauranteApp.Natureza.A_VISTA_DINHEIRO' | translate}}</option>
+                <option value="A_PRAZO_DINHEIRO">{{'eRestauranteApp.Natureza.A_PRAZO_DINHEIRO' | translate}}</option>
+                <option value="A_VISTA_CARTAO">{{'eRestauranteApp.Natureza.A_VISTA_CARTAO' | translate}}</option>
+                <option value="A_PRAZO_CARTAO">{{'eRestauranteApp.Natureza.A_PRAZO_CARTAO' | translate}}</option>
+                <option value="A_VISTA_CHEQUE">{{'eRestauranteApp.Natureza.A_VISTA_CHEQUE' | translate}}</option>
+                <option value="A_PRAZO_CHEQUE">{{'eRestauranteApp.Natureza.A_PRAZO_CHEQUE' | translate}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.valor" for="field_valor">Valor</label>
+            <input type="number" class="form-control" name="valor" id="field_valor"
+                [(ngModel)]="lancamento.valor"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.parcelas" for="field_parcelas">Parcelas</label>
+            <input type="number" class="form-control" name="parcelas" id="field_parcelas"
+                [(ngModel)]="lancamento.parcelas"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.observacao" for="field_observacao">Observacao</label>
+            <input type="text" class="form-control" name="observacao" id="field_observacao"
+                [(ngModel)]="lancamento.observacao"  />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.comanda" for="field_comanda">Comanda</label>
+            <select class="form-control" id="field_comanda" name="comanda" [(ngModel)]="lancamento.comanda" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="comandaOption.id === lancamento.comanda?.id ? lancamento.comanda : comandaOption" *ngFor="let comandaOption of comandas; trackBy: trackComandaById">{{comandaOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.colaborador" for="field_colaborador">Colaborador</label>
+            <select class="form-control" id="field_colaborador" name="colaborador" [(ngModel)]="lancamento.colaborador" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="colaboradorOption.id === lancamento.colaborador?.id ? lancamento.colaborador : colaboradorOption" *ngFor="let colaboradorOption of colaboradors; trackBy: trackColaboradorById">{{colaboradorOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

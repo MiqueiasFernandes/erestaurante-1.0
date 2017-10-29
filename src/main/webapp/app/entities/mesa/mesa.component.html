@@ -1,0 +1,79 @@
+<div>
+    <h2>
+        <span jhiTranslate="eRestauranteApp.mesa.home.title">Mesas</span>
+        <button class="btn btn-primary float-right jh-create-entity create-mesa" [routerLink]="['/', { outlets: { popup: ['mesa-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="eRestauranteApp.mesa.home.createLabel">
+            Create new Mesa
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+ <div #tableH>
+    </div>
+
+
+        <div class="table-responsive" *ngIf="mesas">
+            <table class="table table-striped" [jhiTableheader]="{'view': tableHeader, 'entidade': 'mesa'}">
+                <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
+            <th jhiSortBy="codigo"><span jhiTranslate="eRestauranteApp.mesa.codigo">Codigo</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="local"><span jhiTranslate="eRestauranteApp.mesa.local">Local</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="descricao"><span jhiTranslate="eRestauranteApp.mesa.descricao">Descricao</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="qrcode"><span jhiTranslate="eRestauranteApp.mesa.qrcode">Qrcode</span> <span class="fa fa-sort"></span></th>
+                    <th style="text-align: center;"><span><span>Ações</span></span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let mesa of mesas ;trackBy: trackId">
+                    <!--<td><a [routerLink]="['../mesa', mesa.id ]">{{mesa.id}}</a></td>-->
+                <td>{{mesa.codigo}}</td>
+                <td>{{mesa.local}}</td>
+                <td>{{mesa.descricao}}</td>
+                <td>
+                    <a *ngIf="mesa.qrcode" (click)="openFile(mesa.qrcodeContentType, mesa.qrcode)">
+                        <img [src]="'data:' + mesa.qrcodeContentType + ';base64,' + mesa.qrcode" style="max-height: 30px;" alt="mesa image"/>
+                    </a>
+                    <span *ngIf="mesa.qrcode">{{mesa.qrcodeContentType}}, {{byteSize(mesa.qrcode)}}</span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../mesa', mesa.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'mesa/'+ mesa.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'mesa/'+ mesa.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+        <div *ngIf="mesas && mesas.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [maxSize]="5" [pageSize]="itemsPerPage" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
+</div>

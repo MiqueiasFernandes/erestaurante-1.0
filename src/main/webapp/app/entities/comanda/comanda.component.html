@@ -1,0 +1,78 @@
+<div>
+    <h2>
+        <span jhiTranslate="eRestauranteApp.comanda.home.title">Comandas</span>
+        <button class="btn btn-primary float-right jh-create-entity create-comanda" [routerLink]="['/', { outlets: { popup: ['comanda-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="eRestauranteApp.comanda.home.createLabel">
+            Create new Comanda
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+ <div #tableH>
+    </div>
+
+
+        <div class="table-responsive" *ngIf="comandas">
+            <table class="table table-striped" [jhiTableheader]="{'view': tableHeader, 'entidade': 'comanda'}">
+                <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
+            <th jhiSortBy="codigo"><span jhiTranslate="eRestauranteApp.comanda.codigo">Codigo</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="total"><span jhiTranslate="eRestauranteApp.comanda.total">Total</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="status"><span jhiTranslate="eRestauranteApp.comanda.status">Status</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="gorjeta"><span jhiTranslate="eRestauranteApp.comanda.gorjeta">Gorjeta</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nota.id"><span jhiTranslate="eRestauranteApp.comanda.nota">Nota</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="pagador.id"><span jhiTranslate="eRestauranteApp.comanda.pagador">Pagador</span> <span class="fa fa-sort"></span></th>
+                    <th style="text-align: center;"><span><span>Ações</span></span></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let comanda of comandas ;trackBy: trackId">
+                    <!--<td><a [routerLink]="['../comanda', comanda.id ]">{{comanda.id}}</a></td>-->
+                <td>{{comanda.codigo}}</td>
+                <td>{{comanda.total}}</td>
+                <td jhiTranslate="{{'eRestauranteApp.Status.' + comanda.status}}">{{comanda.status}}</td>
+                <td>{{comanda.gorjeta}}</td>
+                <td>
+                    <div *ngIf="comanda.nota">
+                        <a [routerLink]="['../nota', comanda.nota?.id ]" >{{comanda.nota?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="comanda.pagador">
+                        <a [routerLink]="['../cliente', comanda.pagador?.id ]" >{{comanda.pagador?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../comanda', comanda.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'comanda/'+ comanda.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'comanda/'+ comanda.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

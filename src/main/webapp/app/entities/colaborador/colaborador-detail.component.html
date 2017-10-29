@@ -1,0 +1,69 @@
+
+<div *ngIf="colaborador">
+    <h2><span jhiTranslate="eRestauranteApp.colaborador.detail.title">Colaborador</span> {{colaborador.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="eRestauranteApp.colaborador.nome">Nome</span></dt>
+        <dd>
+            <span>{{colaborador.nome}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.colaborador.nascimento">Nascimento</span></dt>
+        <dd>
+            <span>{{colaborador.nascimento | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.colaborador.sexomasculino">Sexomasculino</span></dt>
+        <dd>
+            <span>{{colaborador.sexomasculino}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.colaborador.documento">Documento</span></dt>
+        <dd>
+            <span>{{colaborador.documento}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.colaborador.telefone">Telefone</span></dt>
+        <dd>
+            <span>{{colaborador.telefone}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.colaborador.email">Email</span></dt>
+        <dd>
+            <span>{{colaborador.email}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.colaborador.horario">Horario</span></dt>
+        <dd>
+            <span>{{colaborador.horario}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.colaborador.preferencia">Preferencia</span></dt>
+        <dd>
+            <span>{{colaborador.preferencia}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.colaborador.usuario">Usuario</span></dt>
+        <dd>
+            {{colaborador.usuario?.login}}
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.colaborador.endereco">Endereco</span></dt>
+        <dd>
+            <div *ngIf="colaborador.endereco">
+                <a [routerLink]="['/endereco', colaborador.endereco?.id]">{{colaborador.endereco?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.colaborador.cargos">Cargos</span></dt>
+        <dd>
+            <span *ngFor="let cargos of colaborador.cargos; let last = last">
+                <a [routerLink]="['/cargo', cargos?.id ]">{{cargos.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'colaborador/'+ colaborador.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

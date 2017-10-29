@@ -1,0 +1,51 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "produto",
+            "otherEntityName": "produto",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "comanda",
+            "otherEntityName": "comanda",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "data",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "quantidade",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "desconto",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "valorizacao",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "VendaStatus",
+            "fieldValues": "PEDIDO,AUTORIZADO,PRODUZINDO,ENTREGUE,CANCELADO"
+        }
+    ],
+    "changelogDate": "20171029164437",
+    "entityTableName": "venda",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

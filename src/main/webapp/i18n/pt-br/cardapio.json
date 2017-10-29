@@ -1,0 +1,27 @@
+{
+    "eRestauranteApp": {
+        "cardapio" : {
+            "home": {
+                "title": "Cardapios",
+                "createLabel": "Criar novo Cardapio",
+                "createOrEditLabel": "Criar ou editar Cardapio"
+            },
+            "created": "Um novo Cardapio foi criado com o identificador {{ param }}",
+            "updated": "Um Cardapio foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Cardapio foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Cardapio {{ id }}?"
+            },
+            "detail": {
+                "title": "Cardapio"
+            },
+            "nome": "Nome",
+            "dia": "Dia",
+            "periodo": "Periodo",
+            "disposicao": "Disposicao",
+            "html": "Html",
+            "habilitar": "Habilitar",
+            "produtos": "Produtos"
+        }
+    }
+}

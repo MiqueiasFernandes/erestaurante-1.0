@@ -41,6 +41,26 @@ public class CacheConfiguration {
             cm.createCache(com.mikeias.erestaurante.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.mikeias.erestaurante.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.mikeias.erestaurante.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Produto.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Endereco.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Cliente.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Mesa.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Venda.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Comanda.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Comanda.class.getName() + ".lancamentos", jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Comanda.class.getName() + ".mesas", jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Comanda.class.getName() + ".colaboradores", jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Colaborador.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Colaborador.class.getName() + ".lancamentos", jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Colaborador.class.getName() + ".cargos", jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Cargo.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Cardapio.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Cardapio.class.getName() + ".produtos", jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Imposto.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Lancamento.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Nota.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Restaurante.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Restaurante.class.getName() + ".proprietarios", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

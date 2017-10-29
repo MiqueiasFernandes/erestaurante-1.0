@@ -1,0 +1,114 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "imposto",
+            "otherEntityName": "imposto",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "nfIDENT",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "qrcode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "codigo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "identificador",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "versao",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nfNotaInfoIdentificacao",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nfNotaInfoEmitente",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nfNotaInfoAvulsa",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nfNotaInfoDestinatario",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nfNotaInfoLocal",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nfPessoaAutorizadaDownloadNFe",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "itens",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nfNotaInfoTotal",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nfNotaInfoTransporte",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nfNotaInfoCobranca",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nfNotaInfoPagamento",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nfNotaInfoInformacoesAdicionais",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nfNotaInfoExportacao",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nfNotaInfoCompra",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nfNotaInfoCana",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "xml",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "danfe",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "qrcodeImage",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        }
+    ],
+    "changelogDate": "20171029164444",
+    "entityTableName": "nota",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

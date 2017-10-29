@@ -1,0 +1,19 @@
+{
+    "eRestauranteApp": {
+        "Unidade" : {
+            "null": "",
+            "METRO": "METRO",
+            "METRO_QUADRADO": "METRO_QUADRADO",
+            "METRO_CUBICO": "METRO_CUBICO",
+            "KILOGRAMA": "KILOGRAMA",
+            "TONELADA": "TONELADA",
+            "LITRO": "LITRO",
+            "UNIDADE": "UNIDADE",
+            "DEZENA": "DEZENA",
+            "DUZIA": "DUZIA",
+            "CENTENA": "CENTENA",
+            "MILHAR": "MILHAR",
+            "SACA": "SACA"
+        }
+    }
+}

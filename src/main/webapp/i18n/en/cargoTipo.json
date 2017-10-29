@@ -1,0 +1,12 @@
+{
+    "eRestauranteApp": {
+        "CargoTipo" : {
+            "null": "",
+            "GERENCIA": "GERENCIA",
+            "PRODUCAO": "PRODUCAO",
+            "CAIXA": "CAIXA",
+            "ATENDIMENTO": "ATENDIMENTO",
+            "ENTREGA": "ENTREGA"
+        }
+    }
+}

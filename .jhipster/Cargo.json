@@ -1,0 +1,34 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "nome",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "salario",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "comissao",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "tipo",
+            "fieldType": "CargoTipo",
+            "fieldValues": "GERENCIA,PRODUCAO,CAIXA,ATENDIMENTO,ENTREGA"
+        },
+        {
+            "fieldName": "permissao",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        }
+    ],
+    "changelogDate": "20171029164440",
+    "entityTableName": "cargo",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

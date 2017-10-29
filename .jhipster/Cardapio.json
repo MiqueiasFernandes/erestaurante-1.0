@@ -1,0 +1,47 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "produtos",
+            "otherEntityName": "produto",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "nome",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dia",
+            "fieldType": "Dia",
+            "fieldValues": "DOMINGO,SEGUNDA,TERCA,QUARTA,QUINTA,SEXTA,SABADO"
+        },
+        {
+            "fieldName": "periodo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "disposicao",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "html",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "habilitar",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20171029164441",
+    "entityTableName": "cardapio",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

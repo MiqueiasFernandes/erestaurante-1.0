@@ -1,0 +1,33 @@
+{
+    "eRestauranteApp": {
+        "imposto" : {
+            "home": {
+                "title": "Impostos",
+                "createLabel": "Criar novo Imposto",
+                "createOrEditLabel": "Criar ou editar Imposto"
+            },
+            "created": "Um novo Imposto foi criado com o identificador {{ param }}",
+            "updated": "Um Imposto foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Imposto foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Imposto {{ id }}?"
+            },
+            "detail": {
+                "title": "Imposto"
+            },
+            "descricao": "Descricao",
+            "ivTotTrib": "Iv Tot Trib",
+            "iICMS": "I ICMS",
+            "iIPI": "I IPI",
+            "iII": "I II",
+            "iISSQN": "I ISSQN",
+            "iPIS": "I PIS",
+            "iPISST": "I PISST",
+            "iCOFINS": "I COFINS",
+            "iCOFINSST": "I COFINSST",
+            "iICMSUFDest": "I ICMSUF Dest",
+            "ioutros": "Ioutros",
+            "configurar": "Configurar"
+        }
+    }
+}

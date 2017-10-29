@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
 
+import { JhiEventManager } from 'ng-jhipster';
 import { Principal } from '../auth/principal.service';
 import { AuthServerProvider } from '../auth/auth-jwt.service';
 import { JhiTrackerService } from '../tracker/tracker.service';
@@ -9,6 +10,7 @@ import { JhiTrackerService } from '../tracker/tracker.service';
 export class LoginService {
 
     constructor(
+        private eventManager: JhiEventManager,
         private languageService: JhiLanguageService,
         private principal: Principal,
         private trackerService: JhiTrackerService,
@@ -42,8 +44,27 @@ export class LoginService {
         return this.authServerProvider.loginWithToken(jwt, rememberMe);
     }
 
-    logout() {
-        this.authServerProvider.logout().subscribe();
+    logout(nonotify? :boolean) {
+        if (this.principal.isAuthenticated()) {
+            this.authServerProvider.logout()
+                .subscribe(
+                () => {
+                },
+                () => {
+                },
+                () => {
+
+                    if(nonotify) {
+                        return;
+                    }
+
+                    this.eventManager.broadcast({
+                        name: 'logout',
+                        content: 'logout'
+                    });
+                }
+            );
+        }
         this.principal.authenticate(null);
     }
 }

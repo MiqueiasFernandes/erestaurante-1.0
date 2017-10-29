@@ -16,6 +16,8 @@ import {
     JhiTrackerService,
     HasAnyAuthorityDirective,
 } from './';
+import {TableheaderDirective} from "./utils/tableheader.directive";
+import {AutologinService} from './login/autologin.service';
 
 @NgModule({
     imports: [
@@ -23,10 +25,12 @@ import {
         ERestauranteSharedCommonModule
     ],
     declarations: [
+TableheaderDirective,
         JhiLoginModalComponent,
         HasAnyAuthorityDirective
     ],
     providers: [
+AutologinService,
         LoginService,
         LoginModalService,
         AccountService,
@@ -40,6 +44,7 @@ import {
     ],
     entryComponents: [JhiLoginModalComponent],
     exports: [
+TableheaderDirective,
         ERestauranteSharedCommonModule,
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,

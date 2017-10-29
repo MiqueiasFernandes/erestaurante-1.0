@@ -1,0 +1,80 @@
+<div>
+    <h2>
+        <span jhiTranslate="eRestauranteApp.venda.home.title">Vendas</span>
+        <button class="btn btn-primary float-right jh-create-entity create-venda" [routerLink]="['/', { outlets: { popup: ['venda-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="eRestauranteApp.venda.home.createLabel">
+            Create new Venda
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+ <div #tableH>
+    </div>
+
+
+        <div class="table-responsive" *ngIf="vendas">
+            <table class="table table-striped" [jhiTableheader]="{'view': tableHeader, 'entidade': 'venda'}">
+                <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
+            <th jhiSortBy="data"><span jhiTranslate="eRestauranteApp.venda.data">Data</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="quantidade"><span jhiTranslate="eRestauranteApp.venda.quantidade">Quantidade</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="desconto"><span jhiTranslate="eRestauranteApp.venda.desconto">Desconto</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="valorizacao"><span jhiTranslate="eRestauranteApp.venda.valorizacao">Valorizacao</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="status"><span jhiTranslate="eRestauranteApp.venda.status">Status</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="produto.id"><span jhiTranslate="eRestauranteApp.venda.produto">Produto</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="comanda.id"><span jhiTranslate="eRestauranteApp.venda.comanda">Comanda</span> <span class="fa fa-sort"></span></th>
+                    <th style="text-align: center;"><span><span>Ações</span></span></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let venda of vendas ;trackBy: trackId">
+                    <!--<td><a [routerLink]="['../venda', venda.id ]">{{venda.id}}</a></td>-->
+                <td>{{venda.data | date:'medium'}}</td>
+                <td>{{venda.quantidade}}</td>
+                <td>{{venda.desconto}}</td>
+                <td>{{venda.valorizacao}}</td>
+                <td jhiTranslate="{{'eRestauranteApp.VendaStatus.' + venda.status}}">{{venda.status}}</td>
+                <td>
+                    <div *ngIf="venda.produto">
+                        <a [routerLink]="['../produto', venda.produto?.id ]" >{{venda.produto?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="venda.comanda">
+                        <a [routerLink]="['../comanda', venda.comanda?.id ]" >{{venda.comanda?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../venda', venda.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'venda/'+ venda.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'venda/'+ venda.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

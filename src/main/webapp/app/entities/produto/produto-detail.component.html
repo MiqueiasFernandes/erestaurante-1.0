@@ -1,0 +1,84 @@
+
+<div *ngIf="produto">
+    <h2><span jhiTranslate="eRestauranteApp.produto.detail.title">Produto</span> {{produto.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="eRestauranteApp.produto.codigo">Codigo</span></dt>
+        <dd>
+            <span>{{produto.codigo}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.produto.nome">Nome</span></dt>
+        <dd>
+            <span>{{produto.nome}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.produto.fornecedor">Fornecedor</span></dt>
+        <dd>
+            <span>{{produto.fornecedor}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.produto.estoque">Estoque</span></dt>
+        <dd>
+            <span>{{produto.estoque}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.produto.valor">Valor</span></dt>
+        <dd>
+            <span>{{produto.valor}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.produto.preco">Preco</span></dt>
+        <dd>
+            <span>{{produto.preco}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.produto.foto">Foto</span></dt>
+        <dd>
+            <div *ngIf="produto.foto">
+                <a (click)="openFile(produto.fotoContentType, produto.foto)">
+                    <img [src]="'data:' + produto.fotoContentType + ';base64,' + produto.foto" style="max-width: 100%;" alt="produto image"/>
+                </a>
+                {{produto.fotoContentType}}, {{byteSize(produto.foto)}}
+            </div>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.produto.descricao">Descricao</span></dt>
+        <dd>
+            <span>{{produto.descricao}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.produto.html">Html</span></dt>
+        <dd>
+            <span>{{produto.html}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.produto.observacao">Observacao</span></dt>
+        <dd>
+            <span>{{produto.observacao}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.produto.opcional">Opcional</span></dt>
+        <dd>
+            <span>{{produto.opcional}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.produto.adicional">Adicional</span></dt>
+        <dd>
+            <span>{{produto.adicional}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.produto.unidade">Unidade</span></dt>
+        <dd>
+            <span jhiTranslate="{{'eRestauranteApp.Unidade.' + produto.unidade}}">{{produto.unidade}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.produto.imposto">Imposto</span></dt>
+        <dd>
+            <div *ngIf="produto.imposto">
+                <a [routerLink]="['/imposto', produto.imposto?.id]">{{produto.imposto?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'produto/'+ produto.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

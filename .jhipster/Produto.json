@@ -1,0 +1,74 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "imposto",
+            "otherEntityName": "imposto",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "codigo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nome",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fornecedor",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "estoque",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "valor",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "preco",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "foto",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "descricao",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "html",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "observacao",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "opcional",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "adicional",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "unidade",
+            "fieldType": "Unidade",
+            "fieldValues": "METRO,METRO_QUADRADO,METRO_CUBICO,KILOGRAMA,TONELADA,LITRO,UNIDADE,DEZENA,DUZIA,CENTENA,MILHAR,SACA"
+        }
+    ],
+    "changelogDate": "20171029164433",
+    "javadoc": "NOVO ESQUEMA ERESTAURANTE",
+    "entityTableName": "produto",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

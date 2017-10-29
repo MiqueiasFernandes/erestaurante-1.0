@@ -1,0 +1,29 @@
+{
+    "eRestauranteApp": {
+        "comanda" : {
+            "home": {
+                "title": "Comandas",
+                "createLabel": "Create a new Comanda",
+                "createOrEditLabel": "Create or edit a Comanda"
+            },
+            "created": "A new Comanda is created with identifier {{ param }}",
+            "updated": "A Comanda is updated with identifier {{ param }}",
+            "deleted": "A Comanda is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Comanda {{ id }}?"
+            },
+            "detail": {
+                "title": "Comanda"
+            },
+            "codigo": "Codigo",
+            "total": "Total",
+            "status": "Status",
+            "gorjeta": "Gorjeta",
+            "nota": "Nota",
+            "lancamento": "Lancamento",
+            "pagador": "Pagador",
+            "mesas": "Mesas",
+            "colaboradores": "Colaboradores"
+        }
+    }
+}

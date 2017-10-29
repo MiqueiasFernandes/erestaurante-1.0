@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Colaborador.
+    -->
+    <changeSet id="20171029164439-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="usuario_id"
+                                 baseTableName="colaborador"
+                                 constraintName="fk_colaborador_usuario_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="endereco_id"
+                                 baseTableName="colaborador"
+                                 constraintName="fk_colaborador_endereco_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="endereco"/>
+
+        <addForeignKeyConstraint baseColumnNames="colaboradors_id"
+                                 baseTableName="colaborador_cargos"
+                                 constraintName="fk_colaborador_cargos_colaboradors_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="colaborador"/>
+        <addForeignKeyConstraint baseColumnNames="cargos_id"
+                                 baseTableName="colaborador_cargos"
+                                 constraintName="fk_colaborador_cargos_cargos_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cargo"/>
+        
+    </changeSet>
+</databaseChangeLog>

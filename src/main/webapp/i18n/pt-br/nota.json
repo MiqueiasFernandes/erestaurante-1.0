@@ -1,0 +1,44 @@
+{
+    "eRestauranteApp": {
+        "nota" : {
+            "home": {
+                "title": "Notas",
+                "createLabel": "Criar novo Nota",
+                "createOrEditLabel": "Criar ou editar Nota"
+            },
+            "created": "Um novo Nota foi criado com o identificador {{ param }}",
+            "updated": "Um Nota foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Nota foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Nota {{ id }}?"
+            },
+            "detail": {
+                "title": "Nota"
+            },
+            "nfIDENT": "Nf IDENT",
+            "qrcode": "Qrcode",
+            "codigo": "Codigo",
+            "identificador": "Identificador",
+            "versao": "Versao",
+            "nfNotaInfoIdentificacao": "Nf Nota Info Identificacao",
+            "nfNotaInfoEmitente": "Nf Nota Info Emitente",
+            "nfNotaInfoAvulsa": "Nf Nota Info Avulsa",
+            "nfNotaInfoDestinatario": "Nf Nota Info Destinatario",
+            "nfNotaInfoLocal": "Nf Nota Info Local",
+            "nfPessoaAutorizadaDownloadNFe": "Nf Pessoa Autorizada Download N Fe",
+            "itens": "Itens",
+            "nfNotaInfoTotal": "Nf Nota Info Total",
+            "nfNotaInfoTransporte": "Nf Nota Info Transporte",
+            "nfNotaInfoCobranca": "Nf Nota Info Cobranca",
+            "nfNotaInfoPagamento": "Nf Nota Info Pagamento",
+            "nfNotaInfoInformacoesAdicionais": "Nf Nota Info Informacoes Adicionais",
+            "nfNotaInfoExportacao": "Nf Nota Info Exportacao",
+            "nfNotaInfoCompra": "Nf Nota Info Compra",
+            "nfNotaInfoCana": "Nf Nota Info Cana",
+            "xml": "Xml",
+            "danfe": "Danfe",
+            "qrcodeImage": "Qrcode Image",
+            "imposto": "Imposto"
+        }
+    }
+}

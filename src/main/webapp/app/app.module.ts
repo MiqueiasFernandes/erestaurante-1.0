@@ -25,6 +25,9 @@ import {
     ActiveMenuDirective,
     ErrorComponent
 } from './layouts';
+import { TableheaderComponent } from './layouts/tableheader/tableheader.component';
+import {PreferenciasService} from "./entities/preferencias.service";
+import {PrivilegiosService} from "./entities/privilegios.service";
 
 @NgModule({
     imports: [
@@ -38,7 +41,11 @@ import {
         ERestauranteEntityModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
+    entryComponents: [
+        TableheaderComponent,
+    ],
     declarations: [
+TableheaderComponent,
         JhiMainComponent,
         NavbarComponent,
         ErrorComponent,
@@ -47,6 +54,8 @@ import {
         FooterComponent
     ],
     providers: [
+        PreferenciasService,
+        PrivilegiosService,
         ProfileService,
         customHttpProvider(),
         PaginationConfig,

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Comanda.
+    -->
+    <changeSet id="20171029164438-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="nota_id"
+                                 baseTableName="comanda"
+                                 constraintName="fk_comanda_nota_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="nota"/>
+
+        <addForeignKeyConstraint baseColumnNames="pagador_id"
+                                 baseTableName="comanda"
+                                 constraintName="fk_comanda_pagador_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cliente"/>
+
+        <addForeignKeyConstraint baseColumnNames="comandas_id"
+                                 baseTableName="comanda_mesas"
+                                 constraintName="fk_comanda_mesas_comandas_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="comanda"/>
+        <addForeignKeyConstraint baseColumnNames="mesas_id"
+                                 baseTableName="comanda_mesas"
+                                 constraintName="fk_comanda_mesas_mesas_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="mesa"/>
+        
+        <addForeignKeyConstraint baseColumnNames="comandas_id"
+                                 baseTableName="comanda_colaboradores"
+                                 constraintName="fk_comanda_colaboradores_comandas_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="comanda"/>
+        <addForeignKeyConstraint baseColumnNames="colaboradores_id"
+                                 baseTableName="comanda_colaboradores"
+                                 constraintName="fk_comanda_colaboradores_colaboradores_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="colaborador"/>
+        
+    </changeSet>
+</databaseChangeLog>

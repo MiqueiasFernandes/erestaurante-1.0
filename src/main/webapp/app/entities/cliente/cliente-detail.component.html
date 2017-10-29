@@ -1,0 +1,51 @@
+
+<div *ngIf="cliente">
+    <h2><span jhiTranslate="eRestauranteApp.cliente.detail.title">Cliente</span> {{cliente.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="eRestauranteApp.cliente.nome">Nome</span></dt>
+        <dd>
+            <span>{{cliente.nome}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.cliente.cpf">Cpf</span></dt>
+        <dd>
+            <span>{{cliente.cpf}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.cliente.cnpj">Cnpj</span></dt>
+        <dd>
+            <span>{{cliente.cnpj}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.cliente.telefone">Telefone</span></dt>
+        <dd>
+            <span>{{cliente.telefone}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.cliente.email">Email</span></dt>
+        <dd>
+            <span>{{cliente.email}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.cliente.observacoes">Observacoes</span></dt>
+        <dd>
+            <span>{{cliente.observacoes}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.cliente.endereco">Endereco</span></dt>
+        <dd>
+            <div *ngIf="cliente.endereco">
+                <a [routerLink]="['/endereco', cliente.endereco?.id]">{{cliente.endereco?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'cliente/'+ cliente.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

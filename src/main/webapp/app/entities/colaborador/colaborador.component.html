@@ -1,0 +1,92 @@
+<div>
+    <h2>
+        <span jhiTranslate="eRestauranteApp.colaborador.home.title">Colaboradors</span>
+        <button class="btn btn-primary float-right jh-create-entity create-colaborador" [routerLink]="['/', { outlets: { popup: ['colaborador-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="eRestauranteApp.colaborador.home.createLabel">
+            Create new Colaborador
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+ <div #tableH>
+    </div>
+
+
+        <div class="table-responsive" *ngIf="colaboradors">
+            <table class="table table-striped" [jhiTableheader]="{'view': tableHeader, 'entidade': 'colaborador'}">
+                <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
+            <th jhiSortBy="nome"><span jhiTranslate="eRestauranteApp.colaborador.nome">Nome</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nascimento"><span jhiTranslate="eRestauranteApp.colaborador.nascimento">Nascimento</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="sexomasculino"><span jhiTranslate="eRestauranteApp.colaborador.sexomasculino">Sexomasculino</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="documento"><span jhiTranslate="eRestauranteApp.colaborador.documento">Documento</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="telefone"><span jhiTranslate="eRestauranteApp.colaborador.telefone">Telefone</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="email"><span jhiTranslate="eRestauranteApp.colaborador.email">Email</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="horario"><span jhiTranslate="eRestauranteApp.colaborador.horario">Horario</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="preferencia"><span jhiTranslate="eRestauranteApp.colaborador.preferencia">Preferencia</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="usuario.login"><span jhiTranslate="eRestauranteApp.colaborador.usuario">Usuario</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="endereco.id"><span jhiTranslate="eRestauranteApp.colaborador.endereco">Endereco</span> <span class="fa fa-sort"></span></th>
+                    <th style="text-align: center;"><span><span>Ações</span></span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let colaborador of colaboradors ;trackBy: trackId">
+                    <!--<td><a [routerLink]="['../colaborador', colaborador.id ]">{{colaborador.id}}</a></td>-->
+                <td>{{colaborador.nome}}</td>
+                <td>{{colaborador.nascimento | date:'medium'}}</td>
+                <td>{{colaborador.sexomasculino}}</td>
+                <td>{{colaborador.documento}}</td>
+                <td>{{colaborador.telefone}}</td>
+                <td>{{colaborador.email}}</td>
+                <td>{{colaborador.horario}}</td>
+                <td>{{colaborador.preferencia}}</td>
+                <td>
+                    {{colaborador.usuario?.login}}
+                </td>
+                <td>
+                    <div *ngIf="colaborador.endereco">
+                        <a [routerLink]="['../endereco', colaborador.endereco?.id ]" >{{colaborador.endereco?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../colaborador', colaborador.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'colaborador/'+ colaborador.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'colaborador/'+ colaborador.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+        <div *ngIf="colaboradors && colaboradors.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [maxSize]="5" [pageSize]="itemsPerPage" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
+</div>

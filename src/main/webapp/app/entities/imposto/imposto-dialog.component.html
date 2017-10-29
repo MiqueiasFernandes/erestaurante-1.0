@@ -1,0 +1,90 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myImpostoLabel" jhiTranslate="eRestauranteApp.imposto.home.createOrEditLabel">Create or edit a Imposto</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!imposto.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="imposto.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.imposto.descricao" for="field_descricao">Descricao</label>
+            <input type="text" class="form-control" name="descricao" id="field_descricao"
+                [(ngModel)]="imposto.descricao"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.imposto.ivTotTrib" for="field_ivTotTrib">Iv Tot Trib</label>
+            <input type="number" class="form-control" name="ivTotTrib" id="field_ivTotTrib"
+                [(ngModel)]="imposto.ivTotTrib"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.imposto.iICMS" for="field_iICMS">I ICMS</label>
+            <input type="number" class="form-control" name="iICMS" id="field_iICMS"
+                [(ngModel)]="imposto.iICMS"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.imposto.iIPI" for="field_iIPI">I IPI</label>
+            <input type="number" class="form-control" name="iIPI" id="field_iIPI"
+                [(ngModel)]="imposto.iIPI"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.imposto.iII" for="field_iII">I II</label>
+            <input type="number" class="form-control" name="iII" id="field_iII"
+                [(ngModel)]="imposto.iII"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.imposto.iISSQN" for="field_iISSQN">I ISSQN</label>
+            <input type="number" class="form-control" name="iISSQN" id="field_iISSQN"
+                [(ngModel)]="imposto.iISSQN"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.imposto.iPIS" for="field_iPIS">I PIS</label>
+            <input type="number" class="form-control" name="iPIS" id="field_iPIS"
+                [(ngModel)]="imposto.iPIS"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.imposto.iPISST" for="field_iPISST">I PISST</label>
+            <input type="number" class="form-control" name="iPISST" id="field_iPISST"
+                [(ngModel)]="imposto.iPISST"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.imposto.iCOFINS" for="field_iCOFINS">I COFINS</label>
+            <input type="number" class="form-control" name="iCOFINS" id="field_iCOFINS"
+                [(ngModel)]="imposto.iCOFINS"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.imposto.iCOFINSST" for="field_iCOFINSST">I COFINSST</label>
+            <input type="number" class="form-control" name="iCOFINSST" id="field_iCOFINSST"
+                [(ngModel)]="imposto.iCOFINSST"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.imposto.iICMSUFDest" for="field_iICMSUFDest">I ICMSUF Dest</label>
+            <input type="number" class="form-control" name="iICMSUFDest" id="field_iICMSUFDest"
+                [(ngModel)]="imposto.iICMSUFDest"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.imposto.ioutros" for="field_ioutros">Ioutros</label>
+            <input type="text" class="form-control" name="ioutros" id="field_ioutros"
+                [(ngModel)]="imposto.ioutros"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="eRestauranteApp.imposto.configurar" for="field_configurar">Configurar</label>
+            <input type="text" class="form-control" name="configurar" id="field_configurar"
+                [(ngModel)]="imposto.configurar"  />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

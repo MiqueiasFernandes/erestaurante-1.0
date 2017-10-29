@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity Nota.
+    -->
+    <changeSet id="20171029164444-1" author="jhipster">
+        <createTable tableName="nota">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nf_ident" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="qrcode" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="codigo" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="identificador" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="versao" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nf_nota_info_identificacao" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nf_nota_info_emitente" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nf_nota_info_avulsa" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nf_nota_info_destinatario" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nf_nota_info_local" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nf_pessoa_autorizada_download_n_fe" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="itens" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nf_nota_info_total" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nf_nota_info_transporte" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nf_nota_info_cobranca" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nf_nota_info_pagamento" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nf_nota_info_informacoes_adicionais" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nf_nota_info_exportacao" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nf_nota_info_compra" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="nf_nota_info_cana" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="xml" type="clob">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="danfe" type="clob">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="qrcode_image" type="longblob">
+                <constraints nullable="true" />
+            </column>
+            <column name="qrcode_image_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="imposto_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+</databaseChangeLog>

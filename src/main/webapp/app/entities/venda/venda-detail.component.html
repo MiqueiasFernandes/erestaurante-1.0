@@ -1,0 +1,53 @@
+
+<div *ngIf="venda">
+    <h2><span jhiTranslate="eRestauranteApp.venda.detail.title">Venda</span> {{venda.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="eRestauranteApp.venda.data">Data</span></dt>
+        <dd>
+            <span>{{venda.data | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.venda.quantidade">Quantidade</span></dt>
+        <dd>
+            <span>{{venda.quantidade}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.venda.desconto">Desconto</span></dt>
+        <dd>
+            <span>{{venda.desconto}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.venda.valorizacao">Valorizacao</span></dt>
+        <dd>
+            <span>{{venda.valorizacao}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.venda.status">Status</span></dt>
+        <dd>
+            <span jhiTranslate="{{'eRestauranteApp.VendaStatus.' + venda.status}}">{{venda.status}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.venda.produto">Produto</span></dt>
+        <dd>
+            <div *ngIf="venda.produto">
+                <a [routerLink]="['/produto', venda.produto?.id]">{{venda.produto?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.venda.comanda">Comanda</span></dt>
+        <dd>
+            <div *ngIf="venda.comanda">
+                <a [routerLink]="['/comanda', venda.comanda?.id]">{{venda.comanda?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'venda/'+ venda.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

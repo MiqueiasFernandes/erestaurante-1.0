@@ -1,0 +1,57 @@
+
+<div *ngIf="endereco">
+    <h2><span jhiTranslate="eRestauranteApp.endereco.detail.title">Endereco</span> {{endereco.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="eRestauranteApp.endereco.pais">Pais</span></dt>
+        <dd>
+            <span>{{endereco.pais}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.endereco.estado">Estado</span></dt>
+        <dd>
+            <span>{{endereco.estado}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.endereco.cidade">Cidade</span></dt>
+        <dd>
+            <span>{{endereco.cidade}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.endereco.bairro">Bairro</span></dt>
+        <dd>
+            <span>{{endereco.bairro}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.endereco.logradouro">Logradouro</span></dt>
+        <dd>
+            <span>{{endereco.logradouro}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.endereco.local">Local</span></dt>
+        <dd>
+            <span>{{endereco.local}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.endereco.cep">Cep</span></dt>
+        <dd>
+            <span>{{endereco.cep}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.endereco.numero">Numero</span></dt>
+        <dd>
+            <span>{{endereco.numero}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.endereco.complemento">Complemento</span></dt>
+        <dd>
+            <span>{{endereco.complemento}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'endereco/'+ endereco.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

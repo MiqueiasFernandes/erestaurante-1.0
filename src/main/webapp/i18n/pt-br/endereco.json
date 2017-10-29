@@ -1,0 +1,29 @@
+{
+    "eRestauranteApp": {
+        "endereco" : {
+            "home": {
+                "title": "Enderecos",
+                "createLabel": "Criar novo Endereco",
+                "createOrEditLabel": "Criar ou editar Endereco"
+            },
+            "created": "Um novo Endereco foi criado com o identificador {{ param }}",
+            "updated": "Um Endereco foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Endereco foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Endereco {{ id }}?"
+            },
+            "detail": {
+                "title": "Endereco"
+            },
+            "pais": "Pais",
+            "estado": "Estado",
+            "cidade": "Cidade",
+            "bairro": "Bairro",
+            "logradouro": "Logradouro",
+            "local": "Local",
+            "cep": "Cep",
+            "numero": "Numero",
+            "complemento": "Complemento"
+        }
+    }
+}
