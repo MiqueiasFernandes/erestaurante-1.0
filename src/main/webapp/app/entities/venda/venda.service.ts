@@ -5,7 +5,7 @@ import { SERVER_API_URL } from '../../app.constants';
 
 import { JhiDateUtils } from 'ng-jhipster';
 
-import { Venda } from './venda.model';
+import {Venda, VendaStatus} from './venda.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
 
 @Injectable()
@@ -47,6 +47,17 @@ export class VendaService {
     delete(id: number): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
+
+    getVendasForComandaId(id :number, modo? :string): Observable<Venda[]>  {
+
+        if (!modo) {
+            modo = Venda.getAllToString().join(',');
+        }
+
+        return this.http.get(`${this.resourceUrl}/comanda/${id}/${modo}`)
+            .map((res: Response) => this.convertResponse(res).json);
+    }
+
 
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();

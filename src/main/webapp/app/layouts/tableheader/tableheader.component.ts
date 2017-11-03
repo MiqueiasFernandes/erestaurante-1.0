@@ -8,6 +8,7 @@ import {PreferenciasService} from "../../entities/preferencias.service";
 })
 export class TableheaderComponent implements OnInit {
 
+    exibindo = false;
     entidade :string;
     colunas1 :string[]  = [];
     colunas2 :string[]  = [];

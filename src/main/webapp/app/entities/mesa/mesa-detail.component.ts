@@ -5,6 +5,9 @@ import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
 
 import { Mesa } from './mesa.model';
 import { MesaService } from './mesa.service';
+import {RestauranteService} from "../restaurante/restaurante.service";
+import {Restaurante} from "../restaurante/restaurante.model";
+
 
 @Component({
     selector: 'jhi-mesa-detail',
@@ -15,16 +18,26 @@ export class MesaDetailComponent implements OnInit, OnDestroy {
     mesa: Mesa;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
+    host = 'localhost:8080';
 
     constructor(
         private eventManager: JhiEventManager,
         private dataUtils: JhiDataUtils,
         private mesaService: MesaService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private restaurante: RestauranteService
     ) {
     }
 
     ngOnInit() {
+        this.restaurante.query().subscribe(
+            (res) => {
+                if (res && res.json && res.json[0]) {
+                    const rest :Restaurante = res.json[0];
+                    this.host = rest.localhost;
+                }
+            }
+        );
         this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });

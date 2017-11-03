@@ -154,11 +154,12 @@ public class ComandaResource {
 //////////////////////////////////REQUER PRIVILEGIOS
         Page<Comanda> page = comandaRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comandas");
+        page.getContent().forEach(comanda -> comanda.calculaComanda(this.vendaRepository));
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
-     * GET  /comandas/aberta/:status : get all the comandas abertas.
+     * GET  /comandas/status/:status : get all the comandas abertas.
      *
      * @param status the id of the comanda to retrieve
      * @return the ResponseEntity with status 200 (OK) and the list of comandas in body
@@ -184,7 +185,9 @@ public class ComandaResource {
         }
 
 //////////////////////////////////REQUER PRIVILEGIOS
-        return comandaRepository.findAllWithEagerRelationshipByStatus(stat);
+        List<Comanda> cs = comandaRepository.findAllWithEagerRelationshipByStatus(stat);
+        cs.forEach(c -> c.calculaComanda(vendaRepository));
+        return cs;
     }
 
     boolean temComanda(String status, Long idMesa) {
@@ -220,7 +223,7 @@ public class ComandaResource {
             for(Comanda c : getAllComandasByStatus("ABERTA")) {
                 for (Mesa mesa :c.getMesas()) {
                     if (mesa.getId().equals(id * -1)) {
-                        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(c));
+                        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(c.getComandaCalculada(vendaRepository)));
                     }
                 }
             }

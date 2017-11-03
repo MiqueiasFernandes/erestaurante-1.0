@@ -14,11 +14,11 @@
         </dd>
         <dt><span jhiTranslate="eRestauranteApp.venda.desconto">Desconto</span></dt>
         <dd>
-            <span>{{venda.desconto}}</span>
+            <span>{{venda.desconto | currency:'BRL':true:'.2-2'}}</span>
         </dd>
         <dt><span jhiTranslate="eRestauranteApp.venda.valorizacao">Valorizacao</span></dt>
         <dd>
-            <span>{{venda.valorizacao}}</span>
+            <span>{{venda.valorizacao | currency:'BRL':true:'.2-2'}}</span>
         </dd>
         <dt><span jhiTranslate="eRestauranteApp.venda.status">Status</span></dt>
         <dd>

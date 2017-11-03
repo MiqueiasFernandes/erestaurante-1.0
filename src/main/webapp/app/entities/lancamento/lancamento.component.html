@@ -2,7 +2,7 @@
     <h2>
         <span jhiTranslate="eRestauranteApp.lancamento.home.title">Lancamentos</span>
 
-        <button class="btn btn-secondary float-right" style="margin-left: 15px;">
+        <button class="btn btn-secondary float-right" (click)="setModoTabela()" style="margin-left: 15px;">
             <span [ngClass]="{
                     'fa': true,
                     'fa-th-list': !modoTabela,
@@ -21,28 +21,28 @@
 
     <br/>
 
-    <!--<div class="row" *ngIf="lancamentos && !modoTabela">-->
-        <!--<div class="col-12" *ngIf="anual">-->
-            <!--<div class="graph">-->
-                <!--<canvas baseChart-->
-                        <!--[datasets]="lineChartData"-->
-                        <!--[labels]="chartAnual"-->
-                        <!--[options]="lineChartOptions"-->
-                        <!--[legend]="lineChartLegend"-->
-                        <!--[chartType]="lineChartType"></canvas>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="col-12" *ngIf="!anual">-->
-            <!--<div class="graph">-->
-                <!--<canvas baseChart-->
-                        <!--[datasets]="lineChartData"-->
-                        <!--[labels]="chartMensal"-->
-                        <!--[options]="lineChartOptions"-->
-                        <!--[legend]="lineChartLegend"-->
-                        <!--[chartType]="lineChartType"></canvas>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
+    <div class="row" *ngIf="lancamentos && !modoTabela">
+        <div class="col-12" *ngIf="anual">
+            <div class="graph">
+                <canvas baseChart
+                        [datasets]="lineChartData"
+                        [labels]="chartAnual"
+                        [options]="lineChartOptions"
+                        [legend]="lineChartLegend"
+                        [chartType]="lineChartType"></canvas>
+            </div>
+        </div>
+        <div class="col-12" *ngIf="!anual">
+            <div class="graph">
+                <canvas baseChart
+                        [datasets]="lineChartData"
+                        [labels]="chartMensal"
+                        [options]="lineChartOptions"
+                        [legend]="lineChartLegend"
+                        [chartType]="lineChartType"></canvas>
+            </div>
+        </div>
+    </div>
 
     <br>
 
@@ -67,9 +67,33 @@
 
     <div class="row calend spac" *ngIf="lancamentos && modoTabela">
         <b>Filtrar lançamentos:</b>
-        <ng-datepicker [(ngModel)]="date1" [options]="opt" class="spac"></ng-datepicker>
+
+        <form class="form-inline spac">
+            <div class="form-group">
+                <div class="input-group">
+                    <input class="form-control" placeholder="dd-mm-yyyy" [firstDayOfWeek]="7"
+                           name="dp" [(ngModel)]="date1" ngbDatepicker #d="ngbDatepicker">
+                    <button class="input-group-addon" (click)="d.toggle()" type="button">
+                        <span class="fa fa-calendar"></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+
         <b>  ate:</b>
-        <ng-datepicker [(ngModel)]="date2" [options]="opt" class="spac"></ng-datepicker>
+
+        <form class="form-inline spac">
+            <div class="form-group">
+                <div class="input-group">
+                    <input class="form-control" placeholder="dd-mm-yyyy" [firstDayOfWeek]="7"
+                           name="dp" [(ngModel)]="date2" ngbDatepicker #d2="ngbDatepicker">
+                    <button class="input-group-addon" (click)="d2.toggle()" type="button">
+                        <span class="fa fa-calendar"></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+
         <button class="btn btn-success spac" (click)="loadAll(true)"><span class="fa fa-search"></span>Processar</button>
     </div>
 
@@ -78,7 +102,7 @@
     </div>
 
 
-        <div class="table-responsive" *ngIf="lancamentos">
+        <div class="table-responsive" *ngIf="lancamentos&& modoTabela">
             <table class="table table-striped" [jhiTableheader]="{'view': tableHeader, 'entidade': 'lancamento'}">
                 <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
@@ -97,25 +121,59 @@
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let lancamento of lancamentos ;trackBy: trackId">
-                    <!--<td><a [routerLink]="['../lancamento', lancamento.id ]">{{lancamento.id}}</a></td>-->
-                <td>{{lancamento.isentrada}}</td>
-                <td>{{lancamento.data | date:'medium'}}</td>
-                <td>{{lancamento.vencimento | date:'medium'}}</td>
-                <td jhiTranslate="{{'eRestauranteApp.Natureza.' + lancamento.natureza}}">{{lancamento.natureza}}</td>
-                <td>{{lancamento.valor}}</td>
-                <td>{{lancamento.parcelas}}</td>
-                <td>{{lancamento.observacao}}</td>
-                <td>
+                <!--<td><a [routerLink]="['../lancamento', lancamento.id ]">{{lancamento.id}}</a></td>-->
+                <td [ngClass]="{
+                'vermelho': !lancamento.isentrada,
+                'verde': lancamento.isentrada
+                }"><span [ngClass]="{
+                'fa': true,
+                'fa-arrow-down': !lancamento.isentrada,
+                'fa-arrow-up': lancamento.isentrada
+                }"></span></td>
+                <td [ngClass]="{
+                'vermelho': !lancamento.isentrada,
+                'verde': lancamento.isentrada
+                }">{{lancamento.data | date:'medium'}}</td>
+                <td [ngClass]="{
+                'vermelho': !lancamento.isentrada,
+                'verde': lancamento.isentrada
+                }">{{lancamento.vencimento | date:'medium'}}</td>
+                <td  [ngClass]="{
+                'vermelho': !lancamento.isentrada,
+                'verde': lancamento.isentrada
+                }" jhiTranslate="{{'eRestauranteApp.Natureza.' + lancamento.natureza}}">{{lancamento.natureza}}</td>
+                <td [ngClass]="{
+                'vermelho': !lancamento.isentrada,
+                'verde': lancamento.isentrada
+                }">{{lancamento.valor | currency:'BRL':true:'.2-2'}}</td>
+                <td [ngClass]="{
+                'vermelho': !lancamento.isentrada,
+                'verde': lancamento.isentrada
+                }">{{lancamento.parcelas}}</td>
+                <td [ngClass]="{
+                'vermelho': !lancamento.isentrada,
+                'verde': lancamento.isentrada
+                }">{{lancamento.observacao}}</td>
+                <td [ngClass]="{
+                'vermelho': !lancamento.isentrada,
+                'verde': lancamento.isentrada
+                }">
                     <div *ngIf="lancamento.comanda">
                         <a [routerLink]="['../comanda', lancamento.comanda?.id ]" >{{lancamento.comanda?.id}}</a>
                     </div>
                 </td>
-                <td>
+                <td [ngClass]="{
+                'vermelho': !lancamento.isentrada,
+                'verde': lancamento.isentrada
+                }">
                     <div *ngIf="lancamento.colaborador">
                         <a [routerLink]="['../colaborador', lancamento.colaborador?.id ]" >{{lancamento.colaborador?.id}}</a>
                     </div>
                 </td>
-                <td class="text-right">
+                <td  [ngClass]="{
+                'vermelho': !lancamento.isentrada,
+                'verde': lancamento.isentrada
+                }" class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 [routerLink]="['../lancamento', lancamento.id ]"
@@ -143,4 +201,19 @@
             </tbody>
         </table>
     </div>
+
+    <div class="table-responsive" *ngIf="modoTabela && lancamentos">
+        <table class="table table-striped">
+            <tbody>
+            <td>Total do período</td>
+            <td class="tt"><b>{{total| currency:'BRL':true:'.2-2'}}</b></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div *ngIf="!lancamentos">
+        ainda não há lançamentos para o periodo...
+    </div>
+
 </div>

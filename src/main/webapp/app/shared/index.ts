@@ -14,8 +14,8 @@ export * from './language/language.helper';
 export * from './language/find-language-from-key.pipe';
 export * from './tracker/tracker.service';
 export * from './login/login.component';
-export * from './login/login-modal.service';
 export * from './login/login.service';
+export * from './login/login-modal.service';
 export * from './user/account.model';
 export * from './user/user.model';
 export * from './user/user.service';
@@ -28,3 +28,4 @@ export * from './shared.module';
 
 export * from './login/autologin.service';
 export * from './utils/tableheader.directive';
+export * from './utils/variaveis.service';

@@ -28,6 +28,10 @@ import {
 import { TableheaderComponent } from './layouts/tableheader/tableheader.component';
 import {PreferenciasService} from "./entities/preferencias.service";
 import {PrivilegiosService} from "./entities/privilegios.service";
+import {NotifyService} from "./entities/notify.service";
+
+
+
 
 @NgModule({
     imports: [
@@ -56,6 +60,7 @@ TableheaderComponent,
     providers: [
         PreferenciasService,
         PrivilegiosService,
+        NotifyService,
         ProfileService,
         customHttpProvider(),
         PaginationConfig,

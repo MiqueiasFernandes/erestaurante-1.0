@@ -5,6 +5,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { LoginService } from './login.service';
 import { StateStorageService } from '../auth/state-storage.service';
+import {AutologinService} from "./autologin.service";
 
 @Component({
     selector: 'jhi-login-modal',
@@ -24,7 +25,8 @@ export class JhiLoginModalComponent implements AfterViewInit {
         private elementRef: ElementRef,
         private renderer: Renderer,
         private router: Router,
-        public activeModal: NgbActiveModal
+        public activeModal: NgbActiveModal,
+        private autologin: AutologinService
     ) {
         this.credentials = {};
     }
@@ -41,6 +43,7 @@ export class JhiLoginModalComponent implements AfterViewInit {
         };
         this.authenticationError = false;
         this.activeModal.dismiss('cancel');
+        this.autologin.autoLogin(true);
     }
 
     login() {
@@ -81,5 +84,10 @@ export class JhiLoginModalComponent implements AfterViewInit {
     requestResetPassword() {
         this.activeModal.dismiss('to state requestReset');
         this.router.navigate(['/reset', 'request']);
+    }
+
+    close() {
+        this.activeModal.dismiss('closed');
+        this.autologin.autoLogin(true);
     }
 }

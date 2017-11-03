@@ -15,6 +15,10 @@ import {
     mesaPopupRoute,
     MesaResolvePagingParams,
 } from './';
+import {MesaSelectPopupComponent, SelectComponent} from './select/select.component';
+
+import { QrScannerModule } from '../qrcode';
+import { QRCodeModule } from 'angular2-qrcode';
 
 const ENTITY_STATES = [
     ...mesaRoute,
@@ -24,7 +28,9 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         ERestauranteSharedModule,
-        RouterModule.forRoot(ENTITY_STATES, { useHash: true })
+        RouterModule.forRoot(ENTITY_STATES, { useHash: true }),
+        QRCodeModule,
+        QrScannerModule
     ],
     declarations: [
         MesaComponent,
@@ -33,6 +39,9 @@ const ENTITY_STATES = [
         MesaDeleteDialogComponent,
         MesaPopupComponent,
         MesaDeletePopupComponent,
+        SelectComponent,
+        MesaSelectPopupComponent,
+        // QrScannerComponent
     ],
     entryComponents: [
         MesaComponent,
@@ -40,6 +49,8 @@ const ENTITY_STATES = [
         MesaPopupComponent,
         MesaDeleteDialogComponent,
         MesaDeletePopupComponent,
+        SelectComponent,
+        MesaSelectPopupComponent
     ],
     providers: [
         MesaService,

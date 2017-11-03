@@ -31,6 +31,7 @@
             <th jhiSortBy="preferencia"><span jhiTranslate="eRestauranteApp.colaborador.preferencia">Preferencia</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="usuario.login"><span jhiTranslate="eRestauranteApp.colaborador.usuario">Usuario</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="endereco.id"><span jhiTranslate="eRestauranteApp.colaborador.endereco">Endereco</span> <span class="fa fa-sort"></span></th>
+                <th><span jhiTranslate="eRestauranteApp.colaborador.cargos">Cargos</span></th>
                     <th style="text-align: center;"><span><span>Ações</span></span></th>
             </tr>
             </thead>
@@ -39,7 +40,14 @@
                     <!--<td><a [routerLink]="['../colaborador', colaborador.id ]">{{colaborador.id}}</a></td>-->
                 <td>{{colaborador.nome}}</td>
                 <td>{{colaborador.nascimento | date:'medium'}}</td>
-                <td>{{colaborador.sexomasculino}}</td>
+                <td>
+
+                    <span class="badge" [ngClass]="{
+                        'badge-danger': !colaborador.sexomasculino,
+                        'badge-primary': colaborador.sexomasculino
+                    }">{{colaborador.sexomasculino ? 'M' : 'F'}}</span>
+
+                </td>
                 <td>{{colaborador.documento}}</td>
                 <td>{{colaborador.telefone}}</td>
                 <td>{{colaborador.email}}</td>
@@ -52,6 +60,11 @@
                     <div *ngIf="colaborador.endereco">
                         <a [routerLink]="['../endereco', colaborador.endereco?.id ]" >{{colaborador.endereco?.id}}</a>
                     </div>
+                </td>
+                <td>
+                    <span *ngFor="let cargos of colaborador.cargos; let last = last">
+                            <a class="form-control-static" [routerLink]="['../cargo', cargos?.id ]">{{cargos.id}}</a>{{last ? '' : ', '}}
+                        </span>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

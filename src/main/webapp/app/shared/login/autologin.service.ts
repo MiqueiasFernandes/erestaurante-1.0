@@ -5,7 +5,7 @@ import {LoginService} from "./login.service";
 import {Principal} from "../auth/principal.service";
 import {Observable} from "rxjs/Observable";
 import {isNullOrUndefined} from "util";
-import {Subject} from 'rxjs';
+import {Router} from "@angular/router";
 
 
 @Injectable()
@@ -14,6 +14,7 @@ export class AutologinService {
     constructor(
         private eventManager: JhiEventManager,
         private loginService :LoginService,
+        private router: Router,
         private princiapl :Principal) {
         this.eventManager.subscribe('logout', (message) => {
             this.broadcast(false);
@@ -21,7 +22,7 @@ export class AutologinService {
     }
 
 
-    public autoLogin() {
+    public autoLogin(router? :boolean) {
         this.loginService.login({
             username: 'user',
             password: 'user',
@@ -29,13 +30,18 @@ export class AutologinService {
         }).then(() => {
             this.broadcast(true);
             console.log('auto login efetuado...');
+            if (router) {
+                this.router.navigate(['']);
+            }
         });
     }
 
-    public verifyAccount(account :any) {
-        if (this.accountIsAutologin(account)) {
+    public verifyAccount(account :any) :boolean{
+        const auto = this.accountIsAutologin(account);
+        if (auto) {
             this.broadcast(true);
         }
+        return auto;
     }
 
     public isAutoLogin() :Promise<boolean> {

@@ -22,7 +22,7 @@
         </dd>
         <dt><span jhiTranslate="eRestauranteApp.lancamento.valor">Valor</span></dt>
         <dd>
-            <span>{{lancamento.valor}}</span>
+            <span>{{lancamento.valor | currency:'BRL':true:'.2-2'}}</span>
         </dd>
         <dt><span jhiTranslate="eRestauranteApp.lancamento.parcelas">Parcelas</span></dt>
         <dd>

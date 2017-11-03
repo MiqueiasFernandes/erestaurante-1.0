@@ -15,6 +15,8 @@ import {
     produtoPopupRoute,
 } from './';
 
+
+import { QuillEditorModule } from 'ngx-quill-editor';
 const ENTITY_STATES = [
     ...produtoRoute,
     ...produtoPopupRoute,
@@ -23,7 +25,8 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         ERestauranteSharedModule,
-        RouterModule.forRoot(ENTITY_STATES, { useHash: true })
+        RouterModule.forRoot(ENTITY_STATES, { useHash: true }),
+        QuillEditorModule
     ],
     declarations: [
         ProdutoComponent,

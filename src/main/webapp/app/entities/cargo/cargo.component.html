@@ -33,8 +33,8 @@
             <tr *ngFor="let cargo of cargos ;trackBy: trackId">
                     <!--<td><a [routerLink]="['../cargo', cargo.id ]">{{cargo.id}}</a></td>-->
                 <td>{{cargo.nome}}</td>
-                <td>{{cargo.salario}}</td>
-                <td>{{cargo.comissao}}</td>
+                <td>{{cargo.salario | currency:'BRL':true:'.2-2'}}</td>
+                <td>{{cargo.comissao | currency:'BRL':true:'.2-2'}}</td>
                 <td jhiTranslate="{{'eRestauranteApp.CargoTipo.' + cargo.tipo}}">{{cargo.tipo}}</td>
                 <td>{{cargo.permissao}}</td>
                 <td class="text-right">

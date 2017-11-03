@@ -28,6 +28,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -133,20 +134,22 @@ public class ColaboradorResource {
     @Timed
     public ResponseEntity<List<Colaborador>> getAllColaboradors(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Colaboradors");
-        Colaborador c = colaboradorRepository.findByUsuarioIsCurrentUser();
+
 
 //////////////////////////////////REQUER PRIVILEGIOS
                                   if (PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {
-                                      c.setId(new Long(-1));
-                                      List<Colaborador> l = colaboradorRepository.findAllWithEagerRelationships();
-                                      l.add(c);
-                                      return  new ResponseEntity<List<Colaborador>>(l, HttpStatus.OK);
-                                  }
+                                      Page<Colaborador> page = colaboradorRepository.findAll(pageable);
+                                      HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/colaboradors");
+                                      return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 
+                                  }
 //////////////////////////////////REQUER PRIVILEGIOS
-        Page<Colaborador> page = colaboradorRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/colaboradors");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.badRequest()
+            .headers(HeaderUtil
+                .createFailureAlert(ENTITY_NAME,
+                    "privilegios insuficientes.",
+                    "Este usuario não possui privilegios sufuentes " +
+                        "para ver/listar esta entidade.")).body(null);
     }
 
     /**
@@ -159,7 +162,18 @@ public class ColaboradorResource {
     @Timed
     public ResponseEntity<Colaborador> getColaborador(@PathVariable Long id) {
         log.debug("REST request to get Colaborador : {}", id);
+
+
+        if (id < 0) {
+            log.debug("REST request to get Current colaborador : {}", id);
+            return ResponseUtil.wrapOrNotFound(
+                Optional.ofNullable(colaboradorRepository.findByUsuarioIsCurrentUser()));
+        }
+
+
         Colaborador colaborador = colaboradorRepository.findOneWithEagerRelationships(id);
+
+
 
 //////////////////////////////////REQUER PRIVILEGIOS
                                   if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {

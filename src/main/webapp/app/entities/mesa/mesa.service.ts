@@ -36,6 +36,14 @@ export class MesaService {
         });
     }
 
+
+    findByCodigo(codigo: string): Observable<Mesa> {
+        return this.http.get(`${this.resourceUrl}/codigo/${codigo}`).map((res: Response) => {
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
+        });
+    }mesa
+
     query(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
         return this.http.get(this.resourceUrl, options)

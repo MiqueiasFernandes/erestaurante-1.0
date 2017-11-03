@@ -7,6 +7,34 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
+
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                <div class="alert alert-success" *ngIf="success" jhiTranslate="register.messages.success">
+                    <strong>Registration saved!</strong> Please check your email for confirmation.
+                </div>
+
+                <div class="alert alert-danger" *ngIf="error" jhiTranslate="register.messages.error.fail">
+                    <strong>Registration failed!</strong> Please try again later.
+                </div>
+
+                <div class="alert alert-danger" *ngIf="errorUserExists" jhiTranslate="register.messages.error.userexists">
+                    <strong>Login name already registered!</strong> Please choose another one.
+                </div>
+
+                <div class="alert alert-danger" *ngIf="errorEmailExists" jhiTranslate="register.messages.error.emailexists">
+                    <strong>Email is already in use!</strong> Please choose another one.
+                </div>
+
+                <div class="alert alert-danger" *ngIf="doNotMatch" jhiTranslate="global.messages.error.dontmatch">
+                    The password and its confirmation do not match!
+                </div>
+            </div>
+        </div>
+
+
         <div class="form-group" [hidden]="!colaborador.id">
             <label for="id" jhiTranslate="global.field.id">ID</label>
             <input type="text" class="form-control" id="id" name="id"
@@ -15,7 +43,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.nome" for="field_nome">Nome</label>
             <input type="text" class="form-control" name="nome" id="field_nome"
-                [(ngModel)]="colaborador.nome" required />
+                   [(ngModel)]="colaborador.nome" required (keyup)="modifyLogin()"/>
             <div [hidden]="!(editForm.controls.nome?.dirty && editForm.controls.nome?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.nome?.errors?.required" jhiTranslate="entity.validation.required">
@@ -23,6 +51,93 @@
                 </small>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="form-control-label" for="login" jhiTranslate="global.form.username">Username</label>
+            <input type="text" class="form-control" [(ngModel)]="registerAccount.login" id="login" name="login" #login="ngModel" placeholder="{{'global.form.username.placeholder' | translate}}"
+                   required minlength="1" maxlength="50" pattern="^[_'.@A-Za-z0-9-]*$">
+            <div *ngIf="login.dirty && login.invalid">
+                <small class="form-text text-danger" *ngIf="login.errors.required" jhiTranslate="register.messages.validate.login.required">
+                    Your username is required.
+                </small>
+                <small class="form-text text-danger" *ngIf="login.errors.minlength"
+                       jhiTranslate="register.messages.validate.login.minlength">
+                    Your username is required to be at least 1 character.
+                </small>
+                <small class="form-text text-danger" *ngIf="login.errors.maxlength"
+                       jhiTranslate="register.messages.validate.login.maxlength">
+                    Your username cannot be longer than 50 characters.
+                </small>
+                <small class="form-text text-danger" *ngIf="login.errors.pattern"
+                       jhiTranslate="register.messages.validate.login.pattern">
+                    Your username can only contain lower-case letters and digits.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="email" jhiTranslate="global.form.email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" #email="ngModel" placeholder="{{'global.form.email.placeholder' | translate}}"
+                   [(ngModel)]="registerAccount.email" minlength=5 maxlength=100 email required>
+            <div *ngIf="email.dirty && email.invalid">
+                <small class="form-text text-danger" *ngIf="email.errors.required"
+                       jhiTranslate="global.messages.validate.email.required">
+                    Your email is required.
+                </small>
+                <small class="form-text text-danger" *ngIf="email.errors.invalid"
+                       jhiTranslate="global.messages.validate.email.invalid">
+                    Your email is invalid.
+                </small>
+                <small class="form-text text-danger" *ngIf="email.errors.minlength"
+                       jhiTranslate="global.messages.validate.email.minlength">
+                    Your email is required to be at least 5 characters.
+                </small>
+                <small class="form-text text-danger" *ngIf="email.errors.maxlength"
+                       jhiTranslate="global.messages.validate.email.maxlength">
+                    Your email cannot be longer than 100 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="password" jhiTranslate="global.form.newpassword">New password</label>
+            <input type="password" class="form-control" id="password" name="password" #password="ngModel" placeholder="{{'global.form.newpassword.placeholder' | translate}}"
+                   [(ngModel)]="registerAccount.password" minlength=4 maxlength=50 required>
+            <div *ngIf="password.dirty && password.invalid">
+                <small class="form-text text-danger" *ngIf="password.errors.required"
+                       jhiTranslate="global.messages.validate.newpassword.required">
+                    Your password is required.
+                </small>
+                <small class="form-text text-danger" *ngIf="password.errors.minlength"
+                       jhiTranslate="global.messages.validate.newpassword.minlength">
+                    Your password is required to be at least 4 characters.
+                </small>
+                <small class="form-text text-danger" *ngIf="password.errors.maxlength"
+                       jhiTranslate="global.messages.validate.newpassword.maxlength">
+                    Your password cannot be longer than 50 characters.
+                </small>
+            </div>
+            <jhi-password-strength-bar [passwordToCheck]="registerAccount.password"></jhi-password-strength-bar>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="confirmPassword" jhiTranslate="global.form.confirmpassword">New password confirmation</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" #confirmPasswordInput="ngModel" placeholder="{{'global.form.confirmpassword.placeholder' | translate}}"
+                   [(ngModel)]="confirmPassword" minlength=4 maxlength=50 required>
+            <div *ngIf="confirmPasswordInput.dirty && confirmPasswordInput.invalid">
+                <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.required"
+                       jhiTranslate="global.messages.validate.confirmpassword.required">
+                    Your confirmation password is required.
+                </small>
+                <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.minlength"
+                       jhiTranslate="global.messages.validate.confirmpassword.minlength">
+                    Your confirmation password is required to be at least 4 characters.
+                </small>
+                <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.maxlength"
+                       jhiTranslate="global.messages.validate.confirmpassword.maxlength">
+                    Your confirmation password cannot be longer than 50 characters.
+                </small>
+            </div>
+            <jhi-password-strength-bar [passwordToCheck]="registerAccount.password"></jhi-password-strength-bar>
+        </div>
+
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.nascimento" for="field_nascimento">Nascimento</label>
             <div class="d-flex">
@@ -31,9 +146,29 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.sexomasculino" for="field_sexomasculino">Sexomasculino</label>
-            <input type="checkbox" class="form-control" name="sexomasculino" id="field_sexomasculino"
-                [(ngModel)]="colaborador.sexomasculino"  />
+            <!--<label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.sexomasculino" for="field_sexomasculino">Sexomasculino</label>-->
+            <!--<input type="checkbox" class="form-control" name="sexomasculino" id="field_sexomasculino"-->
+                   <!--[(ngModel)]="colaborador.sexomasculino"  />-->
+
+
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input [checked]="colaborador.sexomasculino" #chec (change)="alter(chec.checked)"  class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"value="option2">
+                    Masculino
+                </label>
+            </div>
+
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1">
+                    Feminino
+                </label>
+            </div>
+
+
+
+
+
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.documento" for="field_documento">Documento</label>
@@ -45,35 +180,35 @@
             <input type="text" class="form-control" name="telefone" id="field_telefone"
                 [(ngModel)]="colaborador.telefone"  />
         </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.email" for="field_email">Email</label>
-            <input type="text" class="form-control" name="email" id="field_email"
-                [(ngModel)]="colaborador.email"  />
-        </div>
+        <!--<div class="form-group">-->
+            <!--<label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.email" for="field_email">Email</label>-->
+            <!--<input type="text" class="form-control" name="email" id="field_email"-->
+                   <!--[(ngModel)]="colaborador.email"  />-->
+        <!--</div>-->
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.horario" for="field_horario">Horario</label>
             <input type="text" class="form-control" name="horario" id="field_horario"
                 [(ngModel)]="colaborador.horario"  />
         </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.preferencia" for="field_preferencia">Preferencia</label>
-            <textarea class="form-control" name="preferencia" id="field_preferencia"
-                [(ngModel)]="colaborador.preferencia"  ></textarea>
-        </div>
+        <!--<div class="form-group">-->
+            <!--<label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.preferencia" for="field_preferencia">Preferencia</label>-->
+            <!--<textarea class="form-control" name="preferencia" id="field_preferencia"-->
+                      <!--[(ngModel)]="colaborador.preferencia"  ></textarea>-->
+        <!--</div>-->
 
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.usuario" for="field_usuario">Usuario</label>
-            <select class="form-control" id="field_usuario" name="usuario" [(ngModel)]="colaborador.usuario"  required>
-                <option *ngIf="!editForm.value.usuario" [ngValue]="null" selected></option>
-                <option [ngValue]="userOption.id === colaborador.usuario?.id ? colaborador.usuario : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
-            </select>
-        </div>
-        <div [hidden]="!(editForm.controls.usuario?.dirty && editForm.controls.usuario?.invalid)">
-            <small class="form-text text-danger"
-                [hidden]="!editForm.controls.usuario?.errors?.required" jhiTranslate="entity.validation.required">
-                This field is required.
-            </small>
-        </div>
+        <!--<div class="form-group">-->
+            <!--<label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.usuario" for="field_usuario">Usuario</label>-->
+            <!--<select class="form-control" id="field_usuario" name="usuario" [(ngModel)]="colaborador.usuario"  required>-->
+                <!--<option *ngIf="!editForm.value.usuario" [ngValue]="null" selected></option>-->
+                <!--<option [ngValue]="userOption.id === colaborador.usuario?.id ? colaborador.usuario : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>-->
+            <!--</select>-->
+        <!--</div>-->
+        <!--<div [hidden]="!(editForm.controls.usuario?.dirty && editForm.controls.usuario?.invalid)">-->
+            <!--<small class="form-text text-danger"-->
+                   <!--[hidden]="!editForm.controls.usuario?.errors?.required" jhiTranslate="entity.validation.required">-->
+                <!--This field is required.-->
+            <!--</small>-->
+        <!--</div>-->
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="eRestauranteApp.colaborador.endereco" for="field_endereco">Endereco</label>
             <select class="form-control" id="field_endereco" name="endereco" [(ngModel)]="colaborador.endereco">
@@ -84,7 +219,7 @@
         <div class="form-group">
             <label jhiTranslate="eRestauranteApp.colaborador.cargos" for="field_cargos">Cargos</label>
             <select class="form-control" id="field_cargos" multiple name="cargos" [(ngModel)]="colaborador.cargos" required>
-                <option [ngValue]="getSelected(colaborador.cargos, cargoOption)" *ngFor="let cargoOption of cargos; trackBy: trackCargoById">{{cargoOption.id}}</option>
+                <option [ngValue]="getSelected(colaborador.cargos, cargoOption)" *ngFor="let cargoOption of cargos; trackBy: trackCargoById">{{cargoOption.nome}}</option>
             </select>
         </div>
         <div [hidden]="!(editForm.controls.cargos?.dirty && editForm.controls.cargos?.invalid)">
@@ -98,7 +233,7 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
-        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+        <button (click)="register()" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
             <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
         </button>
     </div>

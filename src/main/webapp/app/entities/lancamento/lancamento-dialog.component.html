@@ -12,12 +12,28 @@
             <input type="text" class="form-control" id="id" name="id"
                    [(ngModel)]="lancamento.id" readonly />
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="!fromComanda">
             <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.isentrada" for="field_isentrada">Isentrada</label>
-            <input type="checkbox" class="form-control" name="isentrada" id="field_isentrada"
-                [(ngModel)]="lancamento.isentrada"  />
+            <!--<input type="checkbox" class="form-control" name="isentrada" id="field_isentrada"-->
+                <!--[(ngModel)]="lancamento.isentrada"  />-->
+
+
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input [checked]="lancamento.isentrada" #chec (change)="alter(chec.checked)"  class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"value="option2">
+                    Entrada
+                </label>
+            </div>
+
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1">
+                    Saida
+                </label>
+            </div>
+
         </div>
-        <div class="form-group">
+        <div class="form-group"  *ngIf="!fromComanda">
             <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.data" for="field_data">Data</label>
             <div class="d-flex">
                 <input id="field_data" type="datetime-local" class="form-control" name="data" [(ngModel)]="lancamento.data"
@@ -64,13 +80,13 @@
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.valor" for="field_valor">Valor</label>
-            <input type="number" class="form-control" name="valor" id="field_valor"
+            R$ <input type="number" class="form-control" name="valor" id="field_valor"
                 [(ngModel)]="lancamento.valor"  />
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.parcelas" for="field_parcelas">Parcelas</label>
             <input type="number" class="form-control" name="parcelas" id="field_parcelas"
-                [(ngModel)]="lancamento.parcelas"  />
+                [(ngModel)]="lancamento.parcelas"  min="1" step="1" max="15"/>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.observacao" for="field_observacao">Observacao</label>
@@ -78,14 +94,14 @@
                 [(ngModel)]="lancamento.observacao"  />
         </div>
 
-        <div class="form-group">
+        <div class="form-group"  *ngIf="!fromComanda">
             <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.comanda" for="field_comanda">Comanda</label>
             <select class="form-control" id="field_comanda" name="comanda" [(ngModel)]="lancamento.comanda" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="comandaOption.id === lancamento.comanda?.id ? lancamento.comanda : comandaOption" *ngFor="let comandaOption of comandas; trackBy: trackComandaById">{{comandaOption.id}}</option>
             </select>
         </div>
-        <div class="form-group">
+        <div class="form-group"  *ngIf="!fromComanda">
             <label class="form-control-label" jhiTranslate="eRestauranteApp.lancamento.colaborador" for="field_colaborador">Colaborador</label>
             <select class="form-control" id="field_colaborador" name="colaborador" [(ngModel)]="lancamento.colaborador" >
                 <option [ngValue]="null"></option>

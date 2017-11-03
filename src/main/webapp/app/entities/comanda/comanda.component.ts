@@ -1,22 +1,34 @@
-import {Component, OnInit, OnDestroy, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, ViewContainerRef, ApplicationRef} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
-import { Comanda } from './comanda.model';
+import {Comanda, Status} from './comanda.model';
 import { ComandaService } from './comanda.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 
+import {ColaboradorService} from "../colaborador/colaborador.service";
+import {Cargo, CargoTipo} from "../cargo/cargo.model";
+import {isNullOrUndefined} from "util";
+import {NotifyService} from "../notify.service";
+import {Colaborador} from "../colaborador/colaborador.model";
+import {Cliente} from "../cliente/cliente.model";
+import {Mesa} from '../mesa/mesa.model';
+
+
 @Component({
     selector: 'jhi-comanda',
-    templateUrl: './comanda.component.html'
+    templateUrl: './comanda.component.html',
+    styleUrls: ['./comanda.component.scss']
 })
 export class ComandaComponent implements OnInit, OnDestroy {
-@ViewChild('tableH', {read: ViewContainerRef}) tableHeader;
+    @ViewChild('tableH', {read: ViewContainerRef}) tableHeader;
 
     comandas: Comanda[];
     currentAccount: any;
     eventSubscriber: Subscription;
+    modo :Modo = Modo.ADMIN;
+    alteradas = [];
     itemsPerPage: number;
     links: any;
     page: any;
@@ -24,13 +36,17 @@ export class ComandaComponent implements OnInit, OnDestroy {
     queryCount: any;
     reverse: any;
     totalItems: number;
+    comandasInvalidas :string[]= [];
 
     constructor(
         private comandaService: ComandaService,
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private parseLinks: JhiParseLinks,
-        private principal: Principal
+        private colaboradorService: ColaboradorService,
+        private principal: Principal,
+        private entityNotify: NotifyService,
+        private appref :ApplicationRef
     ) {
         this.comandas = [];
         this.itemsPerPage = ITEMS_PER_PAGE;
@@ -43,6 +59,26 @@ export class ComandaComponent implements OnInit, OnDestroy {
     }
 
     loadAll() {
+        this.comandas = [];
+        this.comandasInvalidas = [];
+        if (this.modo === Modo.CAIXA) {
+            this.comandaService.findByStatus(Status.ABERTA).subscribe(
+                (res: ResponseWrapper) => {
+                    this.comandas = this.comandas.concat(res.json);
+                    this.appref.tick();
+                },
+                (res: ResponseWrapper) => this.onError(res.json)
+            );
+            this.comandaService.findByStatus(Status.FECHADA).subscribe(
+                (res: ResponseWrapper) => {
+                    this.comandas = this.comandas.concat(res.json);
+                    this.appref.tick();
+                },
+                (res: ResponseWrapper) => this.onError(res.json)
+            );
+            return;
+        }
+
         this.comandaService.query({
             page: this.page,
             size: this.itemsPerPage,
@@ -52,6 +88,26 @@ export class ComandaComponent implements OnInit, OnDestroy {
             (res: ResponseWrapper) => this.onError(res.json)
         );
     }
+
+
+    updateMesas(comanda) {
+        if ((!comanda.mesas || comanda.mesas.length < 1) && this.comandasInvalidas.indexOf(comanda.codigo) < 0) {
+            this.comandasInvalidas.push(comanda.codigo);
+            console.log(this.comandas);
+            this.comandas = this.comandas.filter(c2 => c2.id !== comanda.id);
+            console.log(this.comandas);
+            this.comandaService.find(comanda.id).subscribe((c :Comanda) => {
+                console.log(c);
+                if (comanda.mesas && comanda.mesas.length > 0) {
+                    // this.comandas.push(c);
+                    this.comandasInvalidas = this.comandasInvalidas.filter(ci => !ci.match(c.codigo));
+                    this.appref.tick();
+                }
+            });
+        }
+        return comanda.mesas;
+    }
+
 
     reset() {
         this.page = 0;
@@ -64,9 +120,46 @@ export class ComandaComponent implements OnInit, OnDestroy {
         this.loadAll();
     }
     ngOnInit() {
-        this.loadAll();
         this.principal.identity().then((account) => {
             this.currentAccount = account;
+
+            this.colaboradorService.getCurrentColaborador().toPromise().then(
+                (colaborador) => {
+                    if (colaborador.cargos.some(
+                            (cargo) => Cargo.tipoEquals(cargo, CargoTipo.CAIXA))) {
+                        this.modo = Modo.CAIXA;
+                        this.tableHeader.clear();
+                    }
+                    this.loadAll();
+                }
+            );
+
+            this.entityNotify.subscribe();
+            this.entityNotify.receive()
+                .subscribe((data: {entidade :string, id :number, message :string}) => {
+                    if (
+                        !isNullOrUndefined(data.entidade) &&
+                        !isNullOrUndefined(data.message) &&
+                        (data.entidade.startsWith('comanda') || data.entidade.startsWith('venda'))) {
+
+                        if (data.entidade.startsWith('comanda') && data.message.startsWith('fechar')) {
+                            let c = this.comandas.find(c => c.id === data.id);
+                            if (c) {
+                                c.status = Status.FECHADA;
+                                this.comandaService.update(c).subscribe(
+                                    () => {
+                                        this.alteradas[c.id] = true;
+                                        this.loadAll();
+                                        this.appref.tick();
+                                    }
+                                );
+                            }
+                        } else {
+                            this.loadAll();
+                            this.appref.tick();
+                        }
+                    }
+                });
         });
         this.registerChangeInComandas();
     }
@@ -80,6 +173,7 @@ export class ComandaComponent implements OnInit, OnDestroy {
     }
     registerChangeInComandas() {
         this.eventSubscriber = this.eventManager.subscribe('comandaListModification', (response) => this.reset());
+        this.eventSubscriber = this.eventManager.subscribe('lancamentoListModification', (response) => this.loadAll());
     }
 
     sort() {
@@ -93,12 +187,51 @@ export class ComandaComponent implements OnInit, OnDestroy {
     private onSuccess(data, headers) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = headers.get('X-Total-Count');
+        this.comandas = [];
+        this.comandasInvalidas = [];
         for (let i = 0; i < data.length; i++) {
-            this.comandas.push(data[i]);
+            this.comandaService
+                .find((data[i] as Comanda ).id)
+                .subscribe((c) => {
+                    this.comandas.push(c);
+                    if (!c.mesas || !c.codigo || !c.pagador || !c.colaboradores) {
+                        this.comandasInvalidas.push(c.id.toFixed());
+                    }
+                });
         }
     }
 
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
     }
+
+
+
+    getMesas(comanda :Comanda) {
+        return comanda.mesas.map(m => (m as Mesa).codigo).join(', ');
+    }
+
+    getCliente(comanda :Comanda) {
+        return (comanda.pagador as Cliente).nome;
+    }
+
+    getColaboradores(comanda :Comanda) {
+        return comanda.colaboradores.map(c => (c as Colaborador).nome).join(', ');
+    }
+
+    comandaAberta(comanda :Comanda) {
+        return !Comanda.tipoEquals(Status.ABERTA, comanda.status);
+    }
+
+    fechar(comanda :Comanda){
+        comanda.status = Status.FECHADA;
+        this.comandaService.update(comanda).subscribe(() => this.loadAll());
+    }
+
 }
+
+export const enum Modo {
+    'CAIXA',
+    'ADMIN'
+}
+

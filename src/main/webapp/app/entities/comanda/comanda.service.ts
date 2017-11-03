@@ -3,7 +3,7 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { SERVER_API_URL } from '../../app.constants';
 
-import { Comanda } from './comanda.model';
+import {Comanda, Status} from './comanda.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
 
 @Injectable()
@@ -34,6 +34,23 @@ export class ComandaService {
             const jsonResponse = res.json();
             return this.convertItemFromServer(jsonResponse);
         });
+    }
+
+    getComandaAvulsa(id :number): Observable<Comanda> {
+        return this.find(-1 * id);
+    }
+
+    findByMesa(id: number): Observable<Comanda> {
+        return this.http.get(`${this.resourceUrl}/mesa/${id}`)
+            .map((res: Response) => {
+                const jsonResponse = res.json();
+                return this.convertItemFromServer(jsonResponse);
+            });
+    }
+
+    findByStatus(status: Status): Observable<ResponseWrapper> {
+        return this.http.get(`${this.resourceUrl}/status/${Comanda.getStatusString(status)}`)
+            .map((res: Response) => this.convertResponse(res));
     }
 
     query(req?: any): Observable<ResponseWrapper> {

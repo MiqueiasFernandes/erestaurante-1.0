@@ -12,6 +12,7 @@ import { VendaService } from './venda.service';
 import { Produto, ProdutoService } from '../produto';
 import { Comanda, ComandaService } from '../comanda';
 import { ResponseWrapper } from '../../shared';
+import {Mesa} from "../mesa/mesa.model";
 
 @Component({
     selector: 'jhi-venda-dialog',
@@ -38,10 +39,25 @@ export class VendaDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
+        if (this.venda && this.venda.id) {
+            this.vendaService.find(this.venda.id).subscribe(v => this.venda = v);
+        }
         this.produtoService.query()
             .subscribe((res: ResponseWrapper) => { this.produtos = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.comandaService.query()
-            .subscribe((res: ResponseWrapper) => { this.comandas = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: ResponseWrapper) => {
+                this.comandas = res.json;
+                if (this.venda && this.venda.id !== undefined) {
+                    this.venda.comanda = this.comandas.find(c => c.id === this.venda.comanda.id);
+                }
+            }, (res: ResponseWrapper) => this.onError(res.json));
+    }
+
+    getMesa() {
+        if ((this.venda.id !== undefined) && this.venda.comanda && (this.venda.comanda as Comanda).mesas) {
+            return '(' + (this.venda.comanda as Comanda).mesas.map(m => (m as Mesa).codigo).join(', ') + ')';
+        }
+        return '';
     }
 
     clear() {

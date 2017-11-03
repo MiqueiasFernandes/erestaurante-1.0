@@ -22,11 +22,11 @@
         </dd>
         <dt><span jhiTranslate="eRestauranteApp.produto.valor">Valor</span></dt>
         <dd>
-            <span>{{produto.valor}}</span>
+            <span>{{produto.valor | currency:'BRL':true:'.2-2'}}</span>
         </dd>
         <dt><span jhiTranslate="eRestauranteApp.produto.preco">Preco</span></dt>
         <dd>
-            <span>{{produto.preco}}</span>
+            <span>{{produto.preco | currency:'BRL':true:'.2-2'}}</span>
         </dd>
         <dt><span jhiTranslate="eRestauranteApp.produto.foto">Foto</span></dt>
         <dd>

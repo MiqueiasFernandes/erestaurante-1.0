@@ -1,6 +1,12 @@
-<div>
+<div [ngSwitch]="modoTabela">
     <h2>
         <span jhiTranslate="eRestauranteApp.produto.home.title">Produtos</span>
+
+        <button class="btn btn-secondary float-right" (click)="setModoTabela()" style="margin-left: 15px;">
+            <span class="fa  fa-th-list"></span>
+            {{modoTabela ? 'Modo Dinâmico' : 'Modo Tabela'}}
+        </button>
+
         <button class="btn btn-primary float-right jh-create-entity create-produto" [routerLink]="['/', { outlets: { popup: ['produto-new'] } }]">
             <span class="fa fa-plus"></span>
             <span  jhiTranslate="eRestauranteApp.produto.home.createLabel">
@@ -12,9 +18,72 @@
     <div class="row">
     </div>
     <br/>
- <div #tableH>
+
+
+    <div *ngSwitchCase="false" class="row">
+
+        <div *ngFor="let produto of produtos">
+
+            <div class="card produto" *ngIf="hides[produto.id]">
+
+                <div class="card-header">
+                    {{produto.codigo}}
+                    <button class="btn btn-success btn-sm float-right" (click)="modoProd[produto.id] = !modoProd[produto.id]">
+                        <i [ngClass]="{
+                         'fa' : true,
+                         'fa-code': modoProd[produto.id],
+                         'fa-edit': !modoProd[produto.id]
+                         }" aria-hidden="true" aria-hidden="true"></i>
+                    </button>
+                    <button class="btn btn-success btn-sm float-right" (click)="hideProduto(produto, false)" style="margin-right: 5px">
+                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <div class="card-body" >
+                    <img *ngIf="produto.foto" (click)="openFile(produto.fotoContentType, produto.foto)" [src]="'data:' + produto.fotoContentType + ';base64,' + produto.foto" alt="produto image" class="imagem"/>
+                    <textarea [(ngModel)]="produto.html" *ngIf="modoProd[produto.id] === false" class="editor"></textarea>
+                    <quill-editor class="quill" [(ngModel)]="produto.html" *ngIf="modoProd[produto.id] === true"></quill-editor>
+                </div>
+
+                <div class="card-footer">
+                    <div class="btn-group flex-btn-group-container">
+                        <button (click)="salvarProduto(produto)"
+                                class="btn btn-secondary btn-sm">
+                            <span class="fa fa-save"></span>
+                            Salvar
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['../produto', produto.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'produto/'+ produto.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'produto/'+ produto.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
+    <div #tableH>
+    </div>
+
+    <div *ngSwitchCase="true">
 
         <div class="table-responsive" *ngIf="produtos">
             <table class="table table-striped" [jhiTableheader]="{'view': tableHeader, 'entidade': 'produto'}">
@@ -45,8 +114,8 @@
                 <td>{{produto.nome}}</td>
                 <td>{{produto.fornecedor}}</td>
                 <td>{{produto.estoque}}</td>
-                <td>{{produto.valor}}</td>
-                <td>{{produto.preco}}</td>
+                <td>{{produto.valor | currency:'BRL':true:'.2-2'}}</td>
+                <td>{{produto.preco | currency:'BRL':true:'.2-2'}}</td>
                 <td>
                     <a *ngIf="produto.foto" (click)="openFile(produto.fotoContentType, produto.foto)">
                         <img [src]="'data:' + produto.fotoContentType + ';base64,' + produto.foto" style="max-height: 30px;" alt="produto image"/>
@@ -66,9 +135,13 @@
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../produto', produto.id ]"
-                                class="btn btn-info btn-sm">
+                        <!--<button type="submit"-->
+                        <!--[routerLink]="['../produto', produto.id ]"-->
+                        <!--class="btn btn-info btn-sm">-->
+                        <!--<span class="fa fa-eye"></span>-->
+                        <!--<span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>-->
+                        <!--</button>-->
+                        <button class="btn btn-info btn-sm" (click)="hideProduto(produto, true)">
                             <span class="fa fa-eye"></span>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>

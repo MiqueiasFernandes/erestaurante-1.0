@@ -16,8 +16,7 @@ import {
 } from './';
 
 
-// import { ChartsModule } from 'ng2-charts';
-// import { NgDatepickerModule } from 'ng2-datepicker';
+import { ChartsModule } from 'ng2-charts';
 
 
 const ENTITY_STATES = [
@@ -27,10 +26,8 @@ const ENTITY_STATES = [
 
 @NgModule({
     imports: [
-
-        // NgDatepickerModule,
         ERestauranteSharedModule,
-        // ChartsModule,
+        ChartsModule,
         RouterModule.forRoot(ENTITY_STATES, { useHash: true })
     ],
     declarations: [

@@ -56,7 +56,7 @@ server:
 
 info:
     project:
-        version: #project.version#
+        version: 1.0 #project.version#
 
 # ===================================================================
 # JHipster specific properties

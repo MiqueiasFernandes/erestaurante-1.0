@@ -1,20 +1,25 @@
 import {Component, OnInit, OnDestroy, ViewChild, ViewContainerRef} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { JhiEventManager, JhiParseLinks, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
-
+import {isNullOrUndefined} from "util";
 import { Produto } from './produto.model';
 import { ProdutoService } from './produto.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
+import {PreferenciasService} from "../preferencias.service";
 
 @Component({
     selector: 'jhi-produto',
-    templateUrl: './produto.component.html'
+    templateUrl: './produto.component.html',
+    styleUrls: ['./produto.component.scss']
 })
 export class ProdutoComponent implements OnInit, OnDestroy {
-@ViewChild('tableH', {read: ViewContainerRef}) tableHeader;
 
-    produtos: Produto[];
+
+    @ViewChild('tableH', {read: ViewContainerRef}) tableHeader;
+    public modoTabela = false;
+    private produtos: Produto[];
+    private hides :boolean[] = [];
+    private modoProd :boolean[] = [];
     currentAccount: any;
     eventSubscriber: Subscription;
     itemsPerPage: number;
@@ -31,7 +36,8 @@ export class ProdutoComponent implements OnInit, OnDestroy {
         private dataUtils: JhiDataUtils,
         private eventManager: JhiEventManager,
         private parseLinks: JhiParseLinks,
-        private principal: Principal
+        private principal: Principal,
+        private preferenciaService :PreferenciasService
     ) {
         this.produtos = [];
         this.itemsPerPage = ITEMS_PER_PAGE;
@@ -52,8 +58,10 @@ export class ProdutoComponent implements OnInit, OnDestroy {
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
         );
+        this.preferenciaService.getPref('pt').subscribe(
+            (pref: string) => this.modoTabela = (!isNullOrUndefined(pref) && pref.endsWith('T'))
+        );
     }
-
     reset() {
         this.page = 0;
         this.produtos = [];
@@ -109,5 +117,36 @@ export class ProdutoComponent implements OnInit, OnDestroy {
 
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+
+    setModoTabela() {
+        this.modoTabela = !this.modoTabela;
+        this.preferenciaService.setPreferencia('pt', (this.modoTabela ? 'T' : 'F'));
+        if (!this.modoTabela) {
+            if (!isNullOrUndefined(this.tableHeader)) {
+                this.tableHeader.clear();
+            }
+            this.updateView();
+        }
+    }
+
+    private updateView() {
+        this.produtos.forEach((p) => {
+            this.preferenciaService.isProdutoVisivel(p.id).subscribe(
+                (ref :any) => {
+                    this.hides[ref.id] = ref.visivel;
+                    console.log(ref);
+                }
+            );
+        });
+    }
+
+    hideProduto(produto: Produto, hide :boolean) {
+        this.preferenciaService.storeProdPref(produto.id, hide);
+        this.hides[produto.id] = hide;
+    }
+
+    salvarProduto(produto :Produto) {
+        this.produtoService.update(produto).subscribe();
     }
 }

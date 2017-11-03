@@ -8,13 +8,14 @@ import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
-import { Cargo } from './cargo.model';
+import {Cargo, CargoTipo} from './cargo.model';
 import { CargoPopupService } from './cargo-popup.service';
 import { CargoService } from './cargo.service';
 
 @Component({
     selector: 'jhi-cargo-dialog',
-    templateUrl: './cargo-dialog.component.html'
+    templateUrl: './cargo-dialog.component.html',
+    styleUrls: ['../../layouts/tableheader/tableheader.component.scss']
 })
 export class CargoDialogComponent implements OnInit {
 
@@ -22,19 +23,19 @@ export class CargoDialogComponent implements OnInit {
     isSaving: boolean;
 
     entidades: string[] = [
-        "cardapio",
-        "cargo",
-        "cliente",
-        "colaborador",
-        "comanda",
-        "endereco",
-        "imposto",
-        "lancamento",
-        "mesa",
-        "nota",
-        "produto",
-        "restaurante",
-        "venda"
+        "cardapio",   ///// GERENCIA   ATENDIMENTO v CAIXA v PRODUÇAO v ENTREGA v
+        "cargo",      ///// GERENCIA
+        "cliente",    ///// GERENCIA   ATENDIMENTO CAIXA ENTREGA
+        "colaborador",///// GERENCIA    CAIXA
+        "comanda",    ///// GERENCIA   ATENDIMENTO CAIXA
+        "endereco",   ///// GERENCIA    CAIXA ENTREGA
+        "imposto",    ///// GERENCIA    CAIXA
+        "lancamento", ///// GERENCIA    CAIXA
+        "mesa",       ///// GERENCIA   ATENDIMENTO CAIXA
+        "nota",       ///// GERENCIA    CAIXA
+        "produto",    ///// GERENCIA   ATENDIMENTO CAIXA  PRODUÇAO
+        "restaurante",///// GERENCIA   CAIXA
+        "venda"       ///// GERENCIA   ATENDIMENTO CAIXA  PRODUÇAO
     ];
 
     niveis: string[] = [
@@ -65,18 +66,101 @@ export class CargoDialogComponent implements OnInit {
             bols["deletar"] = false;
 
             this.checks[ent] = bols;
-        })
+        });
     }
 
     ngOnInit() {
-this.isSaving = false;
- this.cargo.permissao.split(',').forEach((privilegio: string) => {
-            const data: string[] = privilegio.split("-");
-            if (!isNullOrUndefined(data) && data.length === 2) {
-                this.checks[data[0]][data[1]] = true;
-            }
+        this.isSaving = false;
+        if (!isNullOrUndefined(this.cargo) && !isNullOrUndefined(this.cargo.permissao) && this.cargo.permissao.length > 0) {
+            this.cargo.permissao.split(',').forEach((privilegio: string) => {
+                const data: string[] = privilegio.split("-");
+                if (!isNullOrUndefined(data) && data.length === 2) {
+                    this.checks[data[0]][data[1]] = true;
+                }
+            });
+        }
+    }
+
+
+    alterarTipo() {///at caix entr prod
+
+        this.entidades.forEach((ent: string) => {
+            this.checks[ent] = this.getPermissaoDefault(ent);
         });
     }
+
+    getPermissaoDefault(entidade) :boolean[]{
+
+        let v=false, a=false, e=false,d=false;
+
+        switch (entidade) {
+            case "cardapio":   ///// GERENCIA   ATENDIMENTO v CAIXA v PRODUÇAO v ENTREGA v
+                v = true;///Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                a = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO);/// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                e = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO);/// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                d = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA);//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                break;
+
+            case      "cliente":
+                v = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA);/// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                a = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO);//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                e = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA);//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                d = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA);/// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                break;
+            case       "comanda":
+                v = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                a = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) ;//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                e = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA);////  || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                d = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA);//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                break;
+
+            case       "endereco":
+                v = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                a = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA);//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                e = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA);//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                d = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA);//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                break;
+
+            case       "imposto":
+            case      "lancamento":
+            case      "nota":
+                v = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) ;////|| Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                a = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) ;////| || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                e = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) ;////|ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                d = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) ;////|ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                break;
+
+            case      "mesa":
+            case      "produto":
+            case      "restaurante":
+            case       "cargo":
+                v = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                a = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA);//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                e = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA);/// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                d = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA);//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                break;
+            case "colaborador":
+                v = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA);//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                a = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA);//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                e = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA);/// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                d = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA);//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                break;
+            case     "venda":       ///// GERENCIA   ATENDIMENTO CAIXA  PRODUÇAO
+                v = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                a = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA)  ;
+                e = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;/// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+                d = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA);// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
+        }
+
+        const bols: boolean[] = [];
+        bols["visualizar"] =v;
+        bols["adicionar"] = a;
+        bols["editar"] = e;
+        bols["deletar"] = d;
+        return bols;
+    }
+
+
 
     byteSize(field) {
         return this.dataUtils.byteSize(field);
@@ -94,7 +178,7 @@ this.isSaving = false;
         this.activeModal.dismiss('cancel');
     }
 
-   save() {
+    save() {
         this.isSaving = true;
 
         let priv = "";
@@ -119,7 +203,7 @@ this.isSaving = false;
         }
     }
 
-  setCheck(checked: boolean, entidade: string, nivel: string) {
+    setCheck(checked: boolean, entidade: string, nivel: string) {
         this.checks[entidade][nivel] = checked;
         console.log(checked + entidade + nivel);
         console.log(this.checks);

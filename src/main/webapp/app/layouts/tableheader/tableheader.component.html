@@ -1,7 +1,7 @@
 
-Mostrar colunas
+ <button class="btn btn-outline-info botao" (click)="exibindo = true;" [hidden]="exibindo">Selecionar colunas</button>
 
-<div class="row">
+<div class="row" *ngIf="exibindo">
 
     <div class="col">
         <ul>

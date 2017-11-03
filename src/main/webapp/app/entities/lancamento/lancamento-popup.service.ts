@@ -4,6 +4,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { Lancamento } from './lancamento.model';
 import { LancamentoService } from './lancamento.service';
+import {ComandaService} from "../comanda/comanda.service";
 
 @Injectable()
 export class LancamentoPopupService {
@@ -13,13 +14,14 @@ export class LancamentoPopupService {
         private datePipe: DatePipe,
         private modalService: NgbModal,
         private router: Router,
-        private lancamentoService: LancamentoService
+        private lancamentoService: LancamentoService,
+        private comandaService: ComandaService
 
     ) {
         this.ngbModalRef = null;
     }
 
-    open(component: Component, id?: number | any): Promise<NgbModalRef> {
+    open(component: Component, id?: number | any, comanda?: number | any): Promise<NgbModalRef> {
         return new Promise<NgbModalRef>((resolve, reject) => {
             const isOpen = this.ngbModalRef !== null;
             if (isOpen) {
@@ -38,7 +40,16 @@ export class LancamentoPopupService {
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {
-                    this.ngbModalRef = this.lancamentoModalRef(component, new Lancamento());
+                    let lancamento = new Lancamento();
+                    if (comanda) {
+                        this.comandaService.find(comanda).subscribe((c) => {
+                            lancamento.comanda = c;
+                            this.ngbModalRef = this.lancamentoModalRef(component, lancamento);
+                        });
+                    } else {
+
+                        this.ngbModalRef = this.lancamentoModalRef(component, lancamento);
+                    }
                     resolve(this.ngbModalRef);
                 }, 0);
             }

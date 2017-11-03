@@ -8,6 +8,7 @@ import { MesaComponent } from './mesa.component';
 import { MesaDetailComponent } from './mesa-detail.component';
 import { MesaPopupComponent } from './mesa-dialog.component';
 import { MesaDeletePopupComponent } from './mesa-delete-dialog.component';
+import {MesaSelectPopupComponent} from "./select/select.component";
 
 @Injectable()
 export class MesaResolvePagingParams implements Resolve<any> {
@@ -72,6 +73,16 @@ export const mesaPopupRoute: Routes = [
     {
         path: 'mesa/:id/delete',
         component: MesaDeletePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'eRestauranteApp.mesa.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    },
+    {
+        path: 'mesa/:codigo/set',
+        component: MesaSelectPopupComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'eRestauranteApp.mesa.home.title'

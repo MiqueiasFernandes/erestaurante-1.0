@@ -140,7 +140,9 @@ public class ClienteResource {
     @Timed
     public ResponseEntity<Cliente> getCliente(@PathVariable Long id) {
         log.debug("REST request to get Cliente : {}", id);
-        Cliente cliente = clienteRepository.findOne(id);
+
+        Cliente cliente =
+            id < 0  ? clienteRepository.findOneByNome("anonimo") : clienteRepository.findOne(id);
 
 //////////////////////////////////REQUER PRIVILEGIOS
                                   if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {

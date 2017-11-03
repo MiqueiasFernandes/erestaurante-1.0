@@ -3,7 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { AccountService } from './account.service';
 import { JhiTrackerService } from '../tracker/tracker.service';
-import {isNullOrUndefined} from "util"; // Barrel doesn't work here. No idea why!
+import {isNullOrUndefined} from "util";
+import {NotifyService} from "../../entities/notify.service"; // Barrel doesn't work here. No idea why!
 
 @Injectable()
 export class Principal {
@@ -14,7 +15,8 @@ export class Principal {
 
     constructor(
         private account: AccountService,
-        private trackerService: JhiTrackerService
+        private trackerService: JhiTrackerService,
+        private notifyService: NotifyService,
     ) {}
 
     authenticate(identity) {
@@ -56,7 +58,7 @@ export class Principal {
     identity(force?: boolean): Promise<any> {
 
         if (force === true) {
-            this.userIdentity = undefined;
+            this.isautologin = this.userIdentity = undefined;
         }
 
         // check and see if we have retrieved the userIdentity data from the server.
@@ -73,6 +75,7 @@ export class Principal {
                 this.isautologin = (account.login.length === 4) && account.login.startsWith('user');
                 this.authenticated = true;
                 this.trackerService.connect();
+                this.notifyService.connect();
             } else {
                 this.isautologin = false;
                 this.userIdentity = null;
@@ -82,9 +85,15 @@ export class Principal {
             return this.userIdentity;
         }).catch((err) => {
             this.isautologin = false;
+
             if (this.trackerService.stompClient && this.trackerService.stompClient.connected) {
                 this.trackerService.disconnect();
             }
+
+            if (this.notifyService.stompClient && this.notifyService.stompClient.connected) {
+                this.notifyService.disconnect();
+            }
+
             this.userIdentity = null;
             this.authenticated = false;
             this.authenticationState.next(this.userIdentity);

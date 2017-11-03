@@ -280,5 +280,9 @@ public class Comanda implements Serializable {
         return comanda;
     }
 
+    public void calculaComanda(VendaRepository vendaRepository) {
+        setTotal(getComandaCalculada(vendaRepository).getTotal());
+    }
+
 
 }

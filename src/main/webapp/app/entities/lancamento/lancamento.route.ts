@@ -41,6 +41,16 @@ export const lancamentoPopupRoute: Routes = [
         outlet: 'popup'
     },
     {
+        path: 'lancamento-comanda/:comanda',
+        component: LancamentoPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'eRestauranteApp.lancamento.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    },
+    {
         path: 'lancamento/:id/edit',
         component: LancamentoPopupComponent,
         data: {

@@ -16,20 +16,25 @@ export class ColaboradorService {
 
     constructor(private http: Http, private dateUtils: JhiDateUtils,
                 private eventManager: JhiEventManager,) { }
-public getCurrentColaborador():  Observable<Colaborador> {
-        return this.query().map(
-            (res: ResponseWrapper) => {
-                let c: Colaborador;
-                const cs: Colaborador[] = res.json;
-                if (cs.length < 2){
-                    c = cs[0];
-                } else {
-                    c = cs.find(col  => col.id < 0);
-                    c.id = cs.find( col => col.usuario.id === c.usuario.id ).id;
-                }
-                return c;
-            }
-        )
+
+
+    public getCurrentColaborador():  Observable<Colaborador> {
+        // return this.http.get(this.resourceUrl)
+        //     .map((res: Response) => this.convertResponse(res, true)).map(
+        //         (res: ResponseWrapper) => {
+        //             let c: Colaborador;
+        //             const cs: Colaborador[] = res.json;
+        //             if (cs.length < 2){
+        //                 c = cs[0];
+        //             } else {
+        //                 c = cs.find(col  => col.id < 0);
+        //                 c.id = cs.find( col => col.usuario.id === c.usuario.id ).id;
+        //             }
+        //             return c;
+        //         }
+        //     )
+
+        return this.find(-1);
     }
 
     create(colaborador: Colaborador): Observable<Colaborador> {
@@ -75,10 +80,12 @@ public getCurrentColaborador():  Observable<Colaborador> {
     }
 
     private convertResponse(res: Response): ResponseWrapper {
-        const jsonResponse = res.json();
-        const result = [];
+        const jsonResponse :Colaborador[]= res.json();
+        const result :Colaborador[] = [] ;
         for (let i = 0; i < jsonResponse.length; i++) {
-            result.push(this.convertItemFromServer(jsonResponse[i]));
+            // if (current || (jsonResponse[i].id >= 0)){
+                result.push(this.convertItemFromServer(jsonResponse[i]));
+            // }
         }
         return new ResponseWrapper(res.headers, result, res.status);
     }

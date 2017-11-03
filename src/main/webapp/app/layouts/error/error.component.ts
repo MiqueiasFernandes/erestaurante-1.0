@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {AutologinService} from "../../shared/login/autologin.service";
 
 @Component({
     selector: 'jhi-error',
@@ -10,7 +11,8 @@ export class ErrorComponent implements OnInit {
     error403: boolean;
 
     constructor(
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private autologin: AutologinService
     ) {
     }
 
@@ -23,5 +25,6 @@ export class ErrorComponent implements OnInit {
                 this.errorMessage = routeData.errorMessage;
             }
         });
+        this.autologin.autoLogin(true);
     }
 }

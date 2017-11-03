@@ -36,6 +36,13 @@ export class ClienteService {
         });
     }
 
+    getClienteAnonimo(): Observable<Cliente> {
+        return this.http.get(`${this.resourceUrl}/-1`).map((res: Response) => {
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
+        });
+    }
+
     query(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
         return this.http.get(this.resourceUrl, options)

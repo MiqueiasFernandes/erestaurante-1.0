@@ -11,13 +11,14 @@ import {
     StateStorageService,
     LoginService,
     LoginModalService,
-    JhiLoginModalComponent,
     Principal,
     JhiTrackerService,
     HasAnyAuthorityDirective,
+    JhiLoginModalComponent
 } from './';
 import {TableheaderDirective} from "./utils/tableheader.directive";
 import {AutologinService} from './login/autologin.service';
+import {VariaveisService} from "./utils/variaveis.service";
 
 @NgModule({
     imports: [
@@ -40,7 +41,8 @@ AutologinService,
         JhiTrackerService,
         AuthServerProvider,
         UserService,
-        DatePipe
+        DatePipe,
+        VariaveisService
     ],
     entryComponents: [JhiLoginModalComponent],
     exports: [

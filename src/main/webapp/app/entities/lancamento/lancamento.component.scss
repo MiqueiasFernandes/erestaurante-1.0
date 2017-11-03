@@ -1,0 +1,37 @@
+
+.vermelho {
+    background-color: rgba(255, 150, 150, 0.4);
+}
+
+.verde {
+    background-color: rgba(150, 255, 194, 0.4);
+}
+
+.graph {
+    height: 300px;
+    max-height: 300px;
+    width: 100%;
+    display: block;
+}
+
+.total {
+    border-top: 2px solid;
+}
+
+.tt{
+    text-align: right;
+    display: table-cell !important;
+}
+
+
+.calend {
+    align-items: center;
+}
+
+.spac {
+    margin: 5px;
+}
+
+.ngx-datepicker-calendar-container{
+    z-index: 10000;
+}

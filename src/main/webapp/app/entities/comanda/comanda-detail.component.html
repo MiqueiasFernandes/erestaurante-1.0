@@ -1,8 +1,40 @@
 
 <div *ngIf="comanda">
-    <h2><span jhiTranslate="eRestauranteApp.comanda.detail.title">Comanda</span> {{comanda.id}}</h2>
+    <h2><span jhiTranslate="eRestauranteApp.comanda.detail.title">Comanda</span> {{comanda.codigo}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
+
+
+    <div class="table-responsive" *ngIf="vendas">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><span>Codigo</span></th>
+                <th><span>Descrição</span></th>
+                <th><span>Quantidade</span></th>
+                <th><span>Valor</span></th>
+                <th><span>Total</span></th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let venda of vendas ;trackBy: trackId">
+
+                <td>{{venda.produto.codigo}}</td>
+                <td>{{venda.produto.nome}}</td>
+                <td>{{venda.quantidade}}</td>
+                <td>{{venda.produto.preco | currency:'BRL':true:'.2-2'}}</td>
+                <td>{{ ((venda.produto.preco * venda.quantidade) - venda.desconto + venda.valorizacao) | currency:'BRL':true:'.2-2'}}</td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <br/>
+
+
+
     <dl class="row-md jh-entity-details">
         <dt><span jhiTranslate="eRestauranteApp.comanda.codigo">Codigo</span></dt>
         <dd>
@@ -10,7 +42,7 @@
         </dd>
         <dt><span jhiTranslate="eRestauranteApp.comanda.total">Total</span></dt>
         <dd>
-            <span>{{comanda.total}}</span>
+            <span>{{comanda.total | currency:'BRL':true:'.2-2'}}</span>
         </dd>
         <dt><span jhiTranslate="eRestauranteApp.comanda.status">Status</span></dt>
         <dd>
@@ -18,7 +50,7 @@
         </dd>
         <dt><span jhiTranslate="eRestauranteApp.comanda.gorjeta">Gorjeta</span></dt>
         <dd>
-            <span>{{comanda.gorjeta}}</span>
+            <span>{{comanda.gorjeta | currency:'BRL':true:'.2-2'}}</span>
         </dd>
         <dt><span jhiTranslate="eRestauranteApp.comanda.nota">Nota</span></dt>
         <dd>
@@ -55,7 +87,12 @@
     <button type="button"
             [routerLink]="['/', { outlets: { popup: 'comanda/'+ comanda.id + '/edit'} }]"
             replaceUrl="true"
-            class="btn btn-primary">
+            class="btn btn-primary" *ngIf="!isAutoLogin">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+
+    <button type="button"
+            class="btn btn-danger" (click)="fechar()" *ngIf="noFechada()">
+        <span class="fa fa-close"></span>Fechar Comanda
     </button>
 </div>

@@ -1,0 +1,52 @@
+
+<div class="modal-header">
+    <h4 class="modal-title">Selecionar MESA</h4>
+
+    <div style="width: 17%; margin-left: 100px">
+        <label class="switch">
+            <input type="checkbox" checked="true" [(ngModel)]="auto">
+            <span class="slider round"></span>
+        </label>
+        <span class="fa fa-qrcode fa-lg" aria-hidden="true" style="float: right; margin-top: 5px;"></span>
+    </div>
+
+    <button aria-label="Close" data-dismiss="modal" class="close" type="button" (click)="close()"><span aria-hidden="true">x</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <jhi-alert></jhi-alert>
+    <div class="row" [ngSwitch]="auto" style="justify-content: center;">
+        <div class="col-md-8 offset-md-2" *ngSwitchCase="false">
+            <div class="dropdown pointer">
+                <div ngbDropdown class="nav-item dropdown pointer">
+                    <input ngbDropdownToggle type="text" style="width: 100%" [(ngModel)]="codigo" (keyup)="atualizar()"
+                           placeholder="digite o código da mesa..." (keyup.enter)="setCodigo(autocomplete);setMesa(true)">
+                    <ul class="dropdown-menu" ngbDropdownMenu *ngIf="autocomplete">
+                        <li>
+                            <a class="dropdown-item" (click)="setCodigo(autocomplete)">
+                                {{autocomplete}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 offset-md-2" *ngSwitchCase="true" style="text-align: center">
+            <qr-scanner
+                [debug]="true"
+                [canvasWidth]="320"
+                [canvasHeight]="240"
+                [mirror]="espelhado"
+                (onRead)="decodedOutput($event)"></qr-scanner>
+            <p></p>
+            <button (click)="trocar()" class="btn" [ngClass]="{'btn-primary': espelhado, 'btn-secondary': !espelhado}">
+                <span class="fa fa-exchange" aria-hidden="true"></span>inverter imagem</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-danger float-right" (click)="close()">Cancelar</button>
+    <button  class="btn btn-success float-right" (click)="setMesa(true)">Feito</button>
+</div>

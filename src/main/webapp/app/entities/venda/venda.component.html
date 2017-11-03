@@ -1,7 +1,15 @@
-<div>
+<div [ngSwitch]="tipo.valueOf()">
     <h2>
         <span jhiTranslate="eRestauranteApp.venda.home.title">Vendas</span>
-        <button class="btn btn-primary float-right jh-create-entity create-venda" [routerLink]="['/', { outlets: { popup: ['venda-new'] } }]">
+
+
+        <ngb-alert class="float-right" *ngIf="!vendas || vendas.length < 1">Não há vendas ainda!</ngb-alert>
+
+        <button class="btn btn-primary float-right" (click)="notificar()" style="margin-left: 10px" *ngSwitchCase="0">
+            <span class="fa fa-bell-o"></span>
+            Notificar Vendas Aprovadas
+        </button>
+        <button class="btn btn-primary float-right jh-create-entity create-venda" [routerLink]="['/', { outlets: { popup: ['venda-new'] } }]" *ngIf="tipo !== 1">
             <span class="fa fa-plus"></span>
             <span  jhiTranslate="eRestauranteApp.venda.home.createLabel">
             Create new Venda
@@ -12,10 +20,99 @@
     <div class="row">
     </div>
     <br/>
- <div #tableH>
+
+    <div *ngSwitchCase="0" class="row">
+        <div *ngFor="let venda of vendas ;trackBy: trackId" class="venda">
+            <div *ngIf="vendas" class="card">
+
+                <div class="card-header">
+                    <span class="float-left">{{tipoDeVenda(venda)}}</span>
+                    <span class="float-right badge" [ngClass]="{
+                        'badge-success': isPedidoAvulco(venda),
+                        'badge-secondary': !isPedidoAvulco(venda)
+                    }">{{getMesa(venda)}}</span>
+                </div>
+
+                <div class="card-body row">
+                    <div class="col-md-4">
+                        <img *ngIf="venda.produto.foto" [src]="'data:' + venda.produto.fotoContentType + ';base64,' + venda.produto.foto" alt="produto image" class="imagem" />
+                    </div>
+                    <div class="col-md-8">
+                        <b>comanda:</b> {{ comandaCod(venda) }} ({{venda.comanda.total | currency:'BRL':true:'.2-2'}}) <br>
+                        <b>produto:</b> {{venda.produto.nome}} ({{venda.produto.id}}) <br>
+                        <b>estoque:</b> {{venda.produto.estoque}} ({{venda.quantidade}} : restarão {{venda.produto.estoque - venda.quantidade}})<br>
+                        <b>preço:</b> {{venda.produto.preco | currency:'BRL':true:'.2-2'}} (total {{(venda.produto.preco * venda.quantidade) | currency:'BRL':true:'.2-2'}})<br>
+                        <b>data:</b> {{vendaData(venda)}}
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <span class="float-left">
+                            {{ venda.id }}
+                    </span>
+                    <button class="btn btn-danger btn-sm" (click)="rejeitar(venda)">
+                        Rejeitar
+                    </button>
+                    <button class="btn btn-info btn-sm" (click)="aprovar(venda)">
+                        Aprovar
+                    </button>
+                    <button class="btn btn-warning btn-sm" (click)="salvarComoNovaComanda(venda)" *ngIf="novaComanda[getMesaID(venda)]">
+                        Aprovar Como Nova Comanda ({{novaComanda[getMesaID(venda)].codigo}})
+                    </button>
+                    <button type="submit" [routerLink]="['/', { outlets: { popup: 'venda/'+ venda.id + '/edit'} }]" replaceUrl="true" class="btn btn-primary btn-sm">
+                        <span class="fa fa-pencil"></span>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
     </div>
 
+    <div *ngSwitchCase="1" class="row">
+        <div *ngFor="let venda of vendas ;trackBy: trackId" class="venda">
+            <div *ngIf="vendas" class="card">
 
+                <div class="card-header">
+                    <span class="float-left">{{tipoDeVenda(venda)}}</span>
+                    <span class="float-right badge" [ngClass]="{
+                        'badge-success': isPedidoAvulco(venda),
+                        'badge-secondary': !isPedidoAvulco(venda)
+                    }">{{getMesa(venda)}}</span>
+                </div>
+
+                <div class="card-body row">
+                    <div class="col-md-4">
+                        <img *ngIf="venda.produto.foto" [src]="'data:' + venda.produto.fotoContentType + ';base64,' + venda.produto.foto" alt="produto image" class="imagem" />
+                    </div>
+                    <div class="col-md-8">
+                        <b>comanda:</b> {{ comandaCod(venda) }} ({{venda.comanda.total | currency:'BRL':true:'.2-2'}}) <br>
+                        <b>produto:</b> {{venda.produto.nome}} ({{venda.produto.id}}) <br>
+                        <b>estoque:</b> {{venda.produto.estoque}} ({{venda.quantidade}} : restarão {{venda.produto.estoque - venda.quantidade}})<br>
+                        <b>preço:</b> {{venda.produto.preco | currency:'BRL':true:'.2-2'}} (total {{(venda.produto.preco * venda.quantidade) | currency:'BRL':true:'.2-2'}})<br>
+                        <b>data:</b> {{vendaData(venda)}}
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <span class="float-left">
+                            {{ venda.id }}
+                    </span>
+                    <button class="btn btn-primary btn-sm" (click)="fazer(venda)" [disabled]="podeFazer(venda)" [hidden]="podeFazer(venda)">
+                        Fazer
+                    </button>
+                    <button class="btn btn-success btn-sm" (click)="entregar(venda)" [disabled]="podeEntregar(venda)" [hidden]="podeEntregar(venda)">
+                        Entregar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div #tableH></div>
+
+    <div *ngSwitchCase="2">
         <div class="table-responsive" *ngIf="vendas">
             <table class="table table-striped" [jhiTableheader]="{'view': tableHeader, 'entidade': 'venda'}">
                 <thead>
@@ -34,47 +131,40 @@
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let venda of vendas ;trackBy: trackId">
                     <!--<td><a [routerLink]="['../venda', venda.id ]">{{venda.id}}</a></td>-->
-                <td>{{venda.data | date:'medium'}}</td>
-                <td>{{venda.quantidade}}</td>
-                <td>{{venda.desconto}}</td>
-                <td>{{venda.valorizacao}}</td>
-                <td jhiTranslate="{{'eRestauranteApp.VendaStatus.' + venda.status}}">{{venda.status}}</td>
-                <td>
-                    <div *ngIf="venda.produto">
-                        <a [routerLink]="['../produto', venda.produto?.id ]" >{{venda.produto?.id}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="venda.comanda">
-                        <a [routerLink]="['../comanda', venda.comanda?.id ]" >{{venda.comanda?.id}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../venda', venda.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'venda/'+ venda.id + '/edit'} }]"
-                                replaceUrl="true"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'venda/'+ venda.id + '/delete'} }]"
-                                replaceUrl="true"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                    <td>{{venda.data | date:'medium'}}</td>
+                    <td>{{venda.quantidade}}</td>
+                    <td>{{venda.desconto | currency:'BRL':true:'.2-2'}}</td>
+                    <td>{{venda.valorizacao | currency:'BRL':true:'.2-2'}}</td>
+                    <td jhiTranslate="{{'eRestauranteApp.VendaStatus.' + venda.status}}">{{venda.status}}</td>
+                    <td>
+                        <div *ngIf="venda.produto">
+                            <a [routerLink]="['../produto', venda.produto?.id ]">{{venda.produto?.id}}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="venda.comanda">
+                            <a [routerLink]="['../comanda', venda.comanda?.id ]">{{venda.comanda?.id}}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit" [routerLink]="['../venda', venda.id ]" class="btn btn-info btn-sm">
+                                <span class="fa fa-eye"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+                            <button type="submit" [routerLink]="['/', { outlets: { popup: 'venda/'+ venda.id + '/edit'} }]" replaceUrl="true" class="btn btn-primary btn-sm">
+                                <span class="fa fa-pencil"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+                            <button type="submit" [routerLink]="['/', { outlets: { popup: 'venda/'+ venda.id + '/delete'} }]" replaceUrl="true" class="btn btn-danger btn-sm">
+                                <span class="fa fa-remove"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

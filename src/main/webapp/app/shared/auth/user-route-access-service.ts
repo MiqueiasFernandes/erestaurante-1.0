@@ -4,6 +4,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from
 import { Principal } from '../';
 import { LoginModalService } from '../login/login-modal.service';
 import { StateStorageService } from './state-storage.service';
+import {AutologinService} from "../login/autologin.service";
 
 @Injectable()
 export class UserRouteAccessService implements CanActivate {
@@ -11,7 +12,8 @@ export class UserRouteAccessService implements CanActivate {
     constructor(private router: Router,
                 private loginModalService: LoginModalService,
                 private principal: Principal,
-                private stateStorageService: StateStorageService) {
+                private stateStorageService: StateStorageService,
+                private autologin: AutologinService) {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Promise<boolean> {
@@ -32,14 +34,32 @@ export class UserRouteAccessService implements CanActivate {
             }
 
             if (account) {
-              return principal.hasAnyAuthority(authorities).then(
-                (response) => {
-                  if (response) {
-                    return true;
-                  }
-                  return false;
+
+
+                if (this.autologin.accountIsAutologin(account)) {
+
+                    console.clear();
+                    console.log('tentando acessar ' + url);
+
+                    if (!url || url.length < 4 || /.*comanda\/\d+/.test(url)) {
+                        return true;
+                    } else {
+                        this.router.navigate(['']).then(() => {
+                            this.autologin.autoLogin(true);
+                        });
+                    }
                 }
-              );
+
+
+                return principal.hasAnyAuthority(authorities).then(
+                    (response) => {
+                        if (response) {
+                            return true;
+                        }
+                        this.autologin.autoLogin(true);
+                        return false;
+                    }
+                );
             }
 
             this.stateStorageService.storeUrl(url);
@@ -48,6 +68,7 @@ export class UserRouteAccessService implements CanActivate {
                 if (!account) {
                     this.loginModalService.open();
                 }
+                this.autologin.autoLogin(true);
             });
             return false;
         }));

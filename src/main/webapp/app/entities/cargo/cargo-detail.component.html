@@ -10,11 +10,11 @@
         </dd>
         <dt><span jhiTranslate="eRestauranteApp.cargo.salario">Salario</span></dt>
         <dd>
-            <span>{{cargo.salario}}</span>
+            <span>{{cargo.salario | currency:'BRL':true:'.2-2'}}</span>
         </dd>
         <dt><span jhiTranslate="eRestauranteApp.cargo.comissao">Comissao</span></dt>
         <dd>
-            <span>{{cargo.comissao}}</span>
+            <span>{{cargo.comissao | currency:'BRL':true:'.2-2'}}</span>
         </dd>
         <dt><span jhiTranslate="eRestauranteApp.cargo.tipo">Tipo</span></dt>
         <dd>

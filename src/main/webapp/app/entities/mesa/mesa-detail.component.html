@@ -4,6 +4,19 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
+        <dd class="float-right">
+            <div *ngIf="mesa.qrcode">
+                <a (click)="openFile(mesa.qrcodeContentType, mesa.qrcode)">
+                    <img [src]="'data:' + mesa.qrcodeContentType + ';base64,' + mesa.qrcode" style="max-width: 100%;" alt="mesa image"/>
+                </a>
+                {{mesa.qrcodeContentType}}, {{byteSize(mesa.qrcode)}}
+
+            </div>
+           <qr-code *ngIf="!mesa.qrcode"
+                    [value]="'http://' + host + '/#/(popup:mesa/' + mesa.codigo + '/set)'"
+                    [size]="300">
+            </qr-code>
+            </dd>
         <dt><span jhiTranslate="eRestauranteApp.mesa.codigo">Codigo</span></dt>
         <dd>
             <span>{{mesa.codigo}}</span>
@@ -15,15 +28,6 @@
         <dt><span jhiTranslate="eRestauranteApp.mesa.descricao">Descricao</span></dt>
         <dd>
             <span>{{mesa.descricao}}</span>
-        </dd>
-        <dt><span jhiTranslate="eRestauranteApp.mesa.qrcode">Qrcode</span></dt>
-        <dd>
-            <div *ngIf="mesa.qrcode">
-                <a (click)="openFile(mesa.qrcodeContentType, mesa.qrcode)">
-                    <img [src]="'data:' + mesa.qrcodeContentType + ';base64,' + mesa.qrcode" style="max-width: 100%;" alt="mesa image"/>
-                </a>
-                {{mesa.qrcodeContentType}}, {{byteSize(mesa.qrcode)}}
-            </div>
         </dd>
     </dl>
 

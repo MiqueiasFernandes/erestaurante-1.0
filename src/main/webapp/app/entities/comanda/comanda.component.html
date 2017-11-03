@@ -1,7 +1,10 @@
-<div>
+<div [ngSwitch]="modo.valueOf()">
     <h2>
         <span jhiTranslate="eRestauranteApp.comanda.home.title">Comandas</span>
-        <button class="btn btn-primary float-right jh-create-entity create-comanda" [routerLink]="['/', { outlets: { popup: ['comanda-new'] } }]">
+
+        <ngb-alert class="float-right" *ngIf="!comandas || comandas.length < 1">Não há comandas ainda!</ngb-alert>
+
+        <button class="btn btn-primary float-right jh-create-entity create-comanda" [routerLink]="['/', { outlets: { popup: ['comanda-new'] } }]" *ngSwitchCase="1">
             <span class="fa fa-plus"></span>
             <span  jhiTranslate="eRestauranteApp.comanda.home.createLabel">
             Create new Comanda
@@ -9,34 +12,97 @@
         </button>
     </h2>
     <jhi-alert></jhi-alert>
+
     <div class="row">
+        <span class="badge badge-warning" *ngIf="comandasInvalidas.length > 0">
+            Foram lidas comandas inválidas! códigos: {{comandasInvalidas.join(', ')}}
+        </span>
     </div>
+
+    <div class="row"  *ngSwitchCase="0">
+        <div *ngIf="comandas" class="comandas">
+            <div *ngFor="let comanda of comandas ;trackBy: trackId" class="comanda">
+
+                <div [ngClass]="{'card': true, 'alterada' : alteradas[comanda.id]}">
+                    <div class="card-header">
+                        <span class="float-left">{{comanda.id}}</span>
+                        <span class="float-right badge" [ngClass]="{
+                        'badge-danger': comandaAberta(comanda),
+                        'badge-success':  !comandaAberta(comanda)
+                    }">{{comanda.status}}</span>
+                    </div>
+
+                    <div class="card-body row">
+                        <div class="col-md-4">
+                            <h1 class="total">{{comanda.total| currency:'BRL':true:'.2-2'}}</h1>
+                        </div>
+                        <div class="col-md-8">
+                            <b>mesas:</b> {{getMesas(comanda)}}<br>
+                            <b>colaboradores:</b> {{getColaboradores(comanda)}}<br>
+                            <b>cliente:</b> {{getCliente(comanda)}}<br>
+                            <b>gorjeta:</b> {{comanda.gorjeta| currency:'BRL':true:'.2-2'}}<br>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                    <span class="float-left">
+                            {{ comanda.codigo }}
+                    </span>
+                        <button class="btn btn-danger btn-sm" [hidden]="comandaAberta(comanda)" (click)="fechar(comanda)">
+                            <span class="fa fa-close"></span> Fechar
+                        </button>
+
+                        <button class="btn btn-primary float-right jh-create-entity create-lancamento"
+                                [routerLink]="['/', { outlets: { popup: 'lancamento-comanda/' + comanda.id } }]" [hidden]="!comandaAberta(comanda)">
+
+            <span class="fa fa-money">
+            </span> Pagar
+                        </button>
+
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'comanda/'+ comanda.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <br/>
- <div #tableH>
+
+
+    <div #tableH>
     </div>
 
 
-        <div class="table-responsive" *ngIf="comandas">
-            <table class="table table-striped" [jhiTableheader]="{'view': tableHeader, 'entidade': 'comanda'}">
-                <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
-            <th jhiSortBy="codigo"><span jhiTranslate="eRestauranteApp.comanda.codigo">Codigo</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="total"><span jhiTranslate="eRestauranteApp.comanda.total">Total</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="status"><span jhiTranslate="eRestauranteApp.comanda.status">Status</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="gorjeta"><span jhiTranslate="eRestauranteApp.comanda.gorjeta">Gorjeta</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="nota.id"><span jhiTranslate="eRestauranteApp.comanda.nota">Nota</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="pagador.id"><span jhiTranslate="eRestauranteApp.comanda.pagador">Pagador</span> <span class="fa fa-sort"></span></th>
-                    <th style="text-align: center;"><span><span>Ações</span></span></th>
+    <div class="table-responsive" *ngIf="comandas && (modo.valueOf() === 1)">
+        <table class="table table-striped" [jhiTableheader]="{'view': tableHeader, 'entidade': 'comanda'}">
+            <thead>
+            <tr>
+                <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
+                <th><span jhiTranslate="eRestauranteApp.comanda.codigo">Codigo</span></th>
+                <th><span jhiTranslate="eRestauranteApp.comanda.total">Total</span></th>
+                <th><span jhiTranslate="eRestauranteApp.comanda.status">Status</span></th>
+                <th><span jhiTranslate="eRestauranteApp.comanda.gorjeta">Gorjeta</span></th>
+                <th><span jhiTranslate="eRestauranteApp.comanda.nota">Nota</span></th>
+                <th><span jhiTranslate="eRestauranteApp.comanda.pagador">Pagador</span></th>
+                <th><span jhiTranslate="eRestauranteApp.comanda.mesas">Mesas</span></th>
+                <th><span jhiTranslate="eRestauranteApp.comanda.colaboradores">Colaboradores</span></th>
+                <th style="text-align: center;"><span><span>Ações</span></span></th>
             </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let comanda of comandas ;trackBy: trackId">
                     <!--<td><a [routerLink]="['../comanda', comanda.id ]">{{comanda.id}}</a></td>-->
                 <td>{{comanda.codigo}}</td>
-                <td>{{comanda.total}}</td>
+                <td>{{comanda.total | currency:'BRL':true:'.2-2'}}</td>
                 <td jhiTranslate="{{'eRestauranteApp.Status.' + comanda.status}}">{{comanda.status}}</td>
-                <td>{{comanda.gorjeta}}</td>
+                <td>{{comanda.gorjeta | currency:'BRL':true:'.2-2'}}</td>
                 <td>
                     <div *ngIf="comanda.nota">
                         <a [routerLink]="['../nota', comanda.nota?.id ]" >{{comanda.nota?.id}}</a>
@@ -46,6 +112,16 @@
                     <div *ngIf="comanda.pagador">
                         <a [routerLink]="['../cliente', comanda.pagador?.id ]" >{{comanda.pagador?.id}}</a>
                     </div>
+                </td>
+                <td>
+                    <span *ngFor="let mesas of comanda.mesas; let last = last">
+                            <a class="form-control-static" [routerLink]="['../mesa', mesas?.id ]">{{mesas.id}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let colaboradores of comanda.colaboradores; let last = last">
+                            <a class="form-control-static" [routerLink]="['../colaborador', colaboradores?.id ]">{{colaboradores.id}}</a>{{last ? '' : ', '}}
+                        </span>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

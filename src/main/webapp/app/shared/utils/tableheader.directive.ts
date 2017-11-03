@@ -4,16 +4,22 @@ import {
     ComponentFactoryResolver,
     ViewContainerRef,
     AfterViewInit,
-    Input, ViewChild
+    Input, ViewChild, OnDestroy
 } from '@angular/core';
 
 import {TableheaderComponent} from "../../layouts/tableheader/tableheader.component";
 import {isNullOrUndefined} from "util";
 
+
+import { Subscription } from 'rxjs/Rx';
+import { JhiEventManager } from 'ng-jhipster';
+
+
+
 @Directive({
     selector: '[jhiTableheader]'
 })
-export class TableheaderDirective implements AfterViewInit{
+export class TableheaderDirective implements AfterViewInit, OnDestroy{
 
     factory = this.componentFactoryResolver.resolveComponentFactory(TableheaderComponent);
 
@@ -22,22 +28,52 @@ export class TableheaderDirective implements AfterViewInit{
     switches :string[] = [];
     colunasRef :ElementRef[][] = [];
     tableHeaderInstance :TableheaderComponent;
+    opt = null;
+    eventSubscriber: Subscription;
 
-    @Input() entidade: string = 'undefined';
+    registerChanges() {
+        this.eventSubscriber = this.eventManager.
+        subscribe(this.opt.entidade + 'ListModification',
+            (response) => {
+                setTimeout(()=> {
+                    this.jhiTableheader = this.opt;
+                    this.ngAfterViewInit();
+                }, 5000);
+            });
+    }
+
+    ngOnDestroy() {
+        if (this.eventSubscriber) {
+            this.eventManager.destroy(this.eventSubscriber);
+        }
+    }
 
     @Input()
     set jhiTableheader(opt :{view :ViewContainerRef, entidade: string}) {
-        if (isNullOrUndefined(opt.view))
+
+        if (isNullOrUndefined(opt.view)){
             return;
+        }
+
+        if (isNullOrUndefined(this.opt)){
+          this.opt = opt;
+          this.registerChanges();
+        }
+
         opt.view.clear();
         const ref = opt.view.createComponent(this.factory);
         this.tableHeaderInstance = ref.instance as TableheaderComponent;
         ref.changeDetectorRef.detectChanges();
-        this.entidade = opt.entidade;
     }
 
 
     ngAfterViewInit(): void {
+
+       const colunas = [];
+       const checksHeader  = [];
+       const switches= [];
+       const colunasRef = [];
+
         const thread :Element[]  = this._elementRef.nativeElement
             .getElementsByTagName("THEAD");
         if (thread && thread.length > 0) {
@@ -52,24 +88,24 @@ export class TableheaderDirective implements AfterViewInit{
 
                         if (el[1]) {
                             const elref = new ElementRef(el[1]);
-                            const coluna :string =  elref.nativeElement.innerText
+                            const coluna :string =  elref.nativeElement.innerText;
 
-                            this.colunas.push(coluna);
-                            this.checksHeader[coluna] = true;
-                            this.colunasRef[coluna] = [new ElementRef(th[i])];
-                            this.switches.push(
+                            colunas.push(coluna);
+                            checksHeader[coluna] = true;
+                            colunasRef[coluna] = [new ElementRef(th[i])];
+                            switches.push(
                                 coluna +
                                 ': <label class="switch">\n' +
-                                '      <input type="checkbox" id="jhiTableheader-' + this.switches.length + '">\n' +
+                                '      <input type="checkbox" id="jhiTableheader-' + switches.length + '">\n' +
                                 '           <span class="slider round"></span>\n' +
                                 '  </label>');
                         }
                     }
 
-                    this.importCampos();
+                    this.importCampos(colunas, colunasRef);
 
                     if (! isNullOrUndefined(this.tableHeaderInstance)) {
-                        this.tableHeaderInstance.createSwitches(this.entidade, this.colunas, this.colunasRef);
+                        this.tableHeaderInstance.createSwitches(this.opt.entidade, colunas, colunasRef);
                     }
 
                 }
@@ -78,18 +114,18 @@ export class TableheaderDirective implements AfterViewInit{
     }
 
 
-    private importCampos() {
+    private importCampos(colunas, colunasRef) {
         const trs :NodeListOf<Element>  =
             this._elementRef
-            .nativeElement.getElementsByTagName("TR");
+                .nativeElement.getElementsByTagName("TR");
 
         for(let i =0; i<trs.length; i++) {
 
             if(trs[i]) {
                 const tds :NodeListOf<Element>  = trs[i].getElementsByTagName('TD');
                 if (tds && tds.length > 0) {
-                    this.colunas.forEach((v, i) => {
-                        this.colunasRef[v].push(new ElementRef(tds[i]));
+                    colunas.forEach((v, i) => {
+                        colunasRef[v].push(new ElementRef(tds[i]));
                     });
                 }
             }
@@ -98,6 +134,7 @@ export class TableheaderDirective implements AfterViewInit{
 
     constructor(
         private _elementRef: ElementRef,
+        private eventManager: JhiEventManager,
         private componentFactoryResolver: ComponentFactoryResolver
     ) {}
 

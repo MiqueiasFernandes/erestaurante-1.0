@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Mesa } from './mesa.model';
 import { MesaService } from './mesa.service';
+import {isNullOrUndefined} from "util";
 
 @Injectable()
 export class MesaPopupService {
@@ -25,10 +26,21 @@ export class MesaPopupService {
             }
 
             if (id) {
-                this.mesaService.find(id).subscribe((mesa) => {
-                    this.ngbModalRef = this.mesaModalRef(component, mesa);
-                    resolve(this.ngbModalRef);
-                });
+                if(!new String(id).match(/\d+/)){
+
+                    this.mesaService.findByCodigo(id).subscribe((mesa) => {
+                        if (!isNullOrUndefined(mesa)){
+                            this.ngbModalRef = this.mesaModalRef(component, mesa);
+                            resolve(this.ngbModalRef);
+                        }
+                    });
+
+                } else {
+                    this.mesaService.find(id).subscribe((mesa) => {
+                        this.ngbModalRef = this.mesaModalRef(component, mesa);
+                        resolve(this.ngbModalRef);
+                    });
+                }
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {

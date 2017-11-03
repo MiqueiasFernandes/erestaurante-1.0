@@ -1,4 +1,5 @@
 import { BaseEntity } from './../../shared';
+import {isNullOrUndefined, isNumber} from "util";
 
 export const enum CargoTipo {
     'GERENCIA',
@@ -16,6 +17,48 @@ export class Cargo implements BaseEntity {
         public comissao?: number,
         public tipo?: CargoTipo,
         public permissao?: any,
-    ) {
+    ) { }
+
+
+    public compare(cargo) :boolean {
+        return Cargo.comparar(this.tipo, cargo);
+    }
+
+    public static comparar(cargo1, cargo2) :boolean {
+        return Cargo.tipoEquals(cargo1, cargo2);
+    }
+
+    static tipoEquals(c1, c2) :boolean{
+        return this.getTipo(c1) === this.getTipo(c2);
+    }
+
+
+    static getTipo(t) :number{
+        if (isNumber(t))
+            return t;
+        if (CargoTipo.GERENCIA === t)
+            return 0;
+        if (CargoTipo.PRODUCAO === t)
+            return 1;
+        if (CargoTipo.CAIXA === t)
+            return 2;
+        if (CargoTipo.ATENDIMENTO === t)
+            return 3;
+        if (CargoTipo.ENTREGA === t)
+            return 4;
+        if ("GERENCIA".startsWith(t))
+            return 0;
+        if ("PRODUCAO".startsWith(t))
+            return 1;
+        if ("CAIXA".startsWith(t))
+            return 2;
+        if ("ATENDIMENTO".startsWith(t))
+            return 3;
+        if ("ENTREGA".startsWith(t))
+            return 4;
+        if (!isNullOrUndefined(t.tipo)) {
+            return this.getTipo(t.tipo);
+        }
+        return -1;
     }
 }
