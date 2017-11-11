@@ -8,6 +8,7 @@ import { LancamentoComponent } from './lancamento.component';
 import { LancamentoDetailComponent } from './lancamento-detail.component';
 import { LancamentoPopupComponent } from './lancamento-dialog.component';
 import { LancamentoDeletePopupComponent } from './lancamento-delete-dialog.component';
+import {LancamentoFecharPopupComponent} from "./fechar/fechar.component";
 
 export const lancamentoRoute: Routes = [
     {
@@ -63,6 +64,16 @@ export const lancamentoPopupRoute: Routes = [
     {
         path: 'lancamento/:id/delete',
         component: LancamentoDeletePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'eRestauranteApp.lancamento.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    },
+    {
+        path: 'lancamento/:id/fechar',
+        component: LancamentoFecharPopupComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'eRestauranteApp.lancamento.home.title'

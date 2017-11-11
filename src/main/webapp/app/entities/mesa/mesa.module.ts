@@ -19,6 +19,7 @@ import {MesaSelectPopupComponent, SelectComponent} from './select/select.compone
 
 import { QrScannerModule } from '../qrcode';
 import { QRCodeModule } from 'angular2-qrcode';
+import { MenuComponent } from './menu/menu.component';
 
 const ENTITY_STATES = [
     ...mesaRoute,
@@ -41,6 +42,7 @@ const ENTITY_STATES = [
         MesaDeletePopupComponent,
         SelectComponent,
         MesaSelectPopupComponent,
+        MenuComponent,
         // QrScannerComponent
     ],
     entryComponents: [

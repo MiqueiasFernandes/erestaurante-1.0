@@ -7,6 +7,8 @@ import com.mikeias.erestaurante.ERestauranteApp;
 import com.mikeias.erestaurante.domain.Venda;
 import com.mikeias.erestaurante.domain.Produto;
 import com.mikeias.erestaurante.domain.Comanda;
+import com.mikeias.erestaurante.repository.ComandaRepository;
+import com.mikeias.erestaurante.repository.LancamentoRepository;
 import com.mikeias.erestaurante.repository.VendaRepository;
 import com.mikeias.erestaurante.web.rest.errors.ExceptionTranslator;
 
@@ -66,8 +68,13 @@ public class VendaResourceIntTest {
     @Autowired
     private CargoRepository cargoRepository;
 
-     @Autowired
+    @Autowired
     private VendaRepository vendaRepository;
+
+    @Autowired
+    private ComandaRepository comandaRepository;
+    @Autowired
+    private LancamentoRepository lancamentoRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -88,7 +95,7 @@ public class VendaResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final VendaResource vendaResource = new VendaResource(vendaRepository,cargoRepository);
+        final VendaResource vendaResource = new VendaResource(vendaRepository,cargoRepository,lancamentoRepository,comandaRepository);
         this.restVendaMockMvc = MockMvcBuilders.standaloneSetup(vendaResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 import { Lancamento } from './lancamento.model';
 import { LancamentoService } from './lancamento.service';
 import {ComandaService} from "../comanda/comanda.service";
+import {Comanda} from "../comanda/comanda.model";
 
 @Injectable()
 export class LancamentoPopupService {
@@ -29,14 +30,22 @@ export class LancamentoPopupService {
             }
 
             if (id) {
-                this.lancamentoService.find(id).subscribe((lancamento) => {
-                    lancamento.data = this.datePipe
-                        .transform(lancamento.data, 'yyyy-MM-ddTHH:mm:ss');
-                    lancamento.vencimento = this.datePipe
-                        .transform(lancamento.vencimento, 'yyyy-MM-ddTHH:mm:ss');
-                    this.ngbModalRef = this.lancamentoModalRef(component, lancamento);
-                    resolve(this.ngbModalRef);
-                });
+
+                if (comanda) {
+                    this.comandaService.find(id).subscribe((c) => {
+                        this.ngbModalRef = this.fecharModalRef(component, c);
+                    });
+                } else {
+
+                    this.lancamentoService.find(id).subscribe((lancamento) => {
+                        lancamento.data = this.datePipe
+                            .transform(lancamento.data, 'yyyy-MM-ddTHH:mm:ss');
+                        lancamento.vencimento = this.datePipe
+                            .transform(lancamento.vencimento, 'yyyy-MM-ddTHH:mm:ss');
+                        this.ngbModalRef = this.lancamentoModalRef(component, lancamento);
+                        resolve(this.ngbModalRef);
+                    });
+                }
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {
@@ -59,6 +68,19 @@ export class LancamentoPopupService {
     lancamentoModalRef(component: Component, lancamento: Lancamento): NgbModalRef {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.lancamento = lancamento;
+        modalRef.result.then((result) => {
+            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
+            this.ngbModalRef = null;
+        }, (reason) => {
+            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
+            this.ngbModalRef = null;
+        });
+        return modalRef;
+    }
+
+    fecharModalRef(component: Component, comanda: Comanda): NgbModalRef {
+        const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
+        modalRef.componentInstance.comanda = comanda;
         modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
             this.ngbModalRef = null;

@@ -216,4 +216,11 @@ public class Lancamento implements Serializable {
             ", observacao='" + getObservacao() + "'" +
             "}";
     }
+
+    public Double getDesconto() {
+        if (this.getObservacao().contains(",\"desconto\":")){
+           return Double.valueOf(this.getObservacao().replaceAll(".*desconto.{2}", "").split(",")[0]);
+        }
+        return 0.0;
+    }
 }

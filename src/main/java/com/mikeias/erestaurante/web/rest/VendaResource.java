@@ -1,5 +1,7 @@
 package com.mikeias.erestaurante.web.rest;
 
+import com.mikeias.erestaurante.repository.ComandaRepository;
+import com.mikeias.erestaurante.repository.LancamentoRepository;
 import com.mikeias.erestaurante.service.PrivilegioService;
 import com.mikeias.erestaurante.domain.Cargo;
 import com.mikeias.erestaurante.repository.CargoRepository;
@@ -42,14 +44,22 @@ public class VendaResource {
     private static final String ENTITY_NAME = "venda";
 
     private final VendaRepository vendaRepository;
+    private final LancamentoRepository lancamentoRepository;
+    private final ComandaRepository comandaRepository;
 
 
 //////////////////////////////////REQUER PRIVILEGIOS
                                   private final CargoRepository cargoRepository;
 
-                                  public VendaResource(VendaRepository vendaRepository, CargoRepository cargoRepository) {
+                                  public VendaResource(
+                                      VendaRepository vendaRepository,
+                                      CargoRepository cargoRepository,
+                                      LancamentoRepository lancamentoRepository,
+                                      ComandaRepository comandaRepository) {
                                   this.vendaRepository = vendaRepository;
                                   this.cargoRepository = cargoRepository;
+                                      this.lancamentoRepository = lancamentoRepository;
+                                      this.comandaRepository = comandaRepository;
                                   }
 //////////////////////////////////REQUER PRIVILEGIOS
 
@@ -107,6 +117,8 @@ public class VendaResource {
             return createVenda(venda);
         }
         Venda result = vendaRepository.save(DoubleUtil.handleVenda(venda));
+
+        ComandaResource.verificarComanda(result.getComanda(), comandaRepository, vendaRepository, lancamentoRepository, log);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, venda.getId().toString()))
             .body(result);

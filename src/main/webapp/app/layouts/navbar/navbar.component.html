@@ -58,6 +58,23 @@
                 </ul>
             </li>
 
+            <li *ngSwitchCase="true" [ngClass]="{'oculto' : ((permissoes.length < 1) || autoLogin)}" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="gerencia-menu">
+                    <span>
+                        <i class="fa fa-cog" aria-hidden="true"></i>
+                            Gerencia
+                    </span>
+                    <ul class="dropdown-menu" ngbDropdownMenu>
+                    <li>
+                        <a class="dropdown-item" routerLink="mesa/menu" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            Mesas
+                        </a>
+                    </li>
+                    </ul>
+                </a>
+            </li>
+
 
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
             <li *ngSwitchCase="true" [ngClass]="{'oculto' : ((permissoes.length < 1) || autoLogin)}" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">

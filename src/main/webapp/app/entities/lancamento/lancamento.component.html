@@ -52,12 +52,14 @@
             <button class="btn btn-success" (click)="setAnual()">{{anual ?  'Modo Mensal':'Modo Anual'}}</button>
 
             <div *ngIf="!anual" class="float-right">
+                <div class="btn-group flex-btn-group-container">
                 <button *ngFor="let botao of chartAnual" (click)="setMes(botao)" style="margin-left: 10px"
                         [ngClass]="{
                     'btn': true,
                     'btn-secondary': chartAnual[mes] === botao,
                     'btn-primary': chartAnual[mes] !== botao}"
                 >{{botao}}</button>
+                </div>
             </div>
 
         </div>

@@ -49,22 +49,22 @@ public class LancamentoResource {
     private static final String ENTITY_NAME = "lancamento";
 
     private final LancamentoRepository lancamentoRepository;
-    private final VendaRepository vendaRepository;
     private final ComandaRepository comandaRepository;
+    private final VendaRepository vendaRepository;
 
 
-//////////////////////////////////REQUER PRIVILEGIOS
-                                  private final CargoRepository cargoRepository;
+    //////////////////////////////////REQUER PRIVILEGIOS
+    private final CargoRepository cargoRepository;
 
     public LancamentoResource(
         LancamentoRepository lancamentoRepository,
+        ComandaRepository comandaRepository,
         CargoRepository cargoRepository,
-        VendaRepository vendaRepository,
-        ComandaRepository comandaRepository) {
+        VendaRepository vendaRepository) {
         this.lancamentoRepository = lancamentoRepository;
+        this.comandaRepository = comandaRepository;
         this.cargoRepository = cargoRepository;
         this.vendaRepository = vendaRepository;
-        this.comandaRepository = comandaRepository;
     }
 //////////////////////////////////REQUER PRIVILEGIOS
 
@@ -81,16 +81,16 @@ public class LancamentoResource {
         log.debug("REST request to save Lancamento : {}", lancamento);
         lancamento = DoubleUtil.handleLancamento(lancamento);
 //////////////////////////////////REQUER PRIVILEGIOS
-                                  if (!PrivilegioService.podeCriar(cargoRepository, ENTITY_NAME)) {
-                                  log.error("TENTATIVA DE CRIAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME  + " : {}", lancamento);
-                                  return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "privilegios insuficientes.", "Este usuario não possui privilegios sufuentes para criar esta entidade.")).body(null);
-                                  }
+        if (!PrivilegioService.podeCriar(cargoRepository, ENTITY_NAME)) {
+            log.error("TENTATIVA DE CRIAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME  + " : {}", lancamento);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "privilegios insuficientes.", "Este usuario não possui privilegios sufuentes para criar esta entidade.")).body(null);
+        }
 //////////////////////////////////REQUER PRIVILEGIOS
         if (lancamento.getId() != null) {
             throw new BadRequestAlertException("A new lancamento cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Lancamento result = lancamentoRepository.save(lancamento);
-        verificarComanda(result);
+        ComandaResource.verificarComanda(result.getComanda(), comandaRepository, vendaRepository, lancamentoRepository, log);
         return ResponseEntity.created(new URI("/api/lancamentos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -111,47 +111,19 @@ public class LancamentoResource {
         log.debug("REST request to update Lancamento : {}", lancamento);
 
 //////////////////////////////////REQUER PRIVILEGIOS
-                                  if (!PrivilegioService.podeEditar(cargoRepository, ENTITY_NAME)) {
-                                  log.error("TENTATIVA DE EDITAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME  + " : {}", lancamento);
-                                  return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "privilegios insuficientes.", "Este usuario não possui privilegios sufuentes para editar esta entidade.")).body(null);
-                                  }
+        if (!PrivilegioService.podeEditar(cargoRepository, ENTITY_NAME)) {
+            log.error("TENTATIVA DE EDITAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME  + " : {}", lancamento);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "privilegios insuficientes.", "Este usuario não possui privilegios sufuentes para editar esta entidade.")).body(null);
+        }
 //////////////////////////////////REQUER PRIVILEGIOS
         if (lancamento.getId() == null) {
             return createLancamento(lancamento);
         }
         Lancamento result = lancamentoRepository.save(lancamento);
-        verificarComanda(result);
+       ComandaResource.verificarComanda(result.getComanda(), comandaRepository, vendaRepository, lancamentoRepository, log);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, lancamento.getId().toString()))
             .body(result);
-    }
-
-
-    void verificarComanda(Lancamento lancamento) {
-        Comanda comanda = lancamento.getComanda();
-        if (lancamento.isIsentrada()) {
-            Double total =
-                comanda.getComandaCalculada(vendaRepository).getTotal() +
-                    comanda.getGorjeta();
-
-            for (Lancamento lancamento1 : getAllLancamentosByComanda(comanda.getId())) {
-                if (lancamento1.isIsentrada()) {
-                    total -= (lancamento1.getParcelas() * lancamento1.getValor());
-                }
-            }
-            if (total <= 0) {
-                List<Venda>  vs = vendaRepository.findAllByComandaId(comanda.getId());
-                vs.removeIf(v -> (
-                    (v.getStatus() == VendaStatus.ENTREGUE) || (v.getStatus() == VendaStatus.CANCELADO))
-                );
-                if (vs.size() < 1) {
-                    comanda.setStatus(Status.PAGA);
-                    this.comandaRepository.save(comanda);
-                } else {
-                    log.warn("Comanda não pode ser fechada por possir vendas em aberto {}", comanda);
-                }
-            }
-        }
     }
 
 
@@ -167,10 +139,10 @@ public class LancamentoResource {
         log.debug("REST request to get a page of Lancamentos");
 
 //////////////////////////////////REQUER PRIVILEGIOS
-                                  if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {
-                                  log.error("TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME);
-                                  return  null;
-                                  }
+        if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {
+            log.error("TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME);
+            return  null;
+        }
 
 //////////////////////////////////REQUER PRIVILEGIOS
         Page<Lancamento> page = lancamentoRepository.findAll(pageable);
@@ -213,10 +185,10 @@ public class LancamentoResource {
         Lancamento lancamento = lancamentoRepository.findOne(id);
 
 //////////////////////////////////REQUER PRIVILEGIOS
-                                  if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {
-                                  lancamento = null;
-                                  log.error("TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME + " : {}", id);
-                                  }
+        if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {
+            lancamento = null;
+            log.error("TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME + " : {}", id);
+        }
 //////////////////////////////////REQUER PRIVILEGIOS
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(lancamento));
     }
@@ -233,12 +205,12 @@ public class LancamentoResource {
         log.debug("REST request to delete Lancamento : {}", id);
 
 //////////////////////////////////REQUER PRIVILEGIOS
-                                  if (PrivilegioService.podeDeletar(cargoRepository, ENTITY_NAME)) {
-                                  lancamentoRepository.delete(id);
-                                  } else {
-                                  log.error("TENTATIVA DE EXCUIR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME + " : {}", id);
-                                  return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "privilegios insuficientes.", "Este usuario não possui privilegios sufuentes para deletar esta entidade.")).body(null);
-                                  }
+        if (PrivilegioService.podeDeletar(cargoRepository, ENTITY_NAME)) {
+            lancamentoRepository.delete(id);
+        } else {
+            log.error("TENTATIVA DE EXCUIR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME + " : {}", id);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "privilegios insuficientes.", "Este usuario não possui privilegios sufuentes para deletar esta entidade.")).body(null);
+        }
 //////////////////////////////////REQUER PRIVILEGIOS
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }

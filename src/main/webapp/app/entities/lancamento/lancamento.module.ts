@@ -17,6 +17,7 @@ import {
 
 
 import { ChartsModule } from 'ng2-charts';
+import {FecharComponent, LancamentoFecharPopupComponent} from './fechar/fechar.component';
 
 
 const ENTITY_STATES = [
@@ -37,6 +38,8 @@ const ENTITY_STATES = [
         LancamentoDeleteDialogComponent,
         LancamentoPopupComponent,
         LancamentoDeletePopupComponent,
+        LancamentoFecharPopupComponent,
+        FecharComponent,
     ],
     entryComponents: [
         LancamentoComponent,
@@ -44,6 +47,8 @@ const ENTITY_STATES = [
         LancamentoPopupComponent,
         LancamentoDeleteDialogComponent,
         LancamentoDeletePopupComponent,
+        FecharComponent,
+        LancamentoFecharPopupComponent
     ],
     providers: [
         LancamentoService,

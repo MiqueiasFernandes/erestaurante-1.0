@@ -16,10 +16,11 @@ export class ProdutoComponent implements OnInit, OnDestroy {
 
 
     @ViewChild('tableH', {read: ViewContainerRef}) tableHeader;
-    public modoTabela = false;
-    private produtos: Produto[];
+    public modoTabela = 0;
+    public modoTabelaB = 0;
+    private produtos: Produto[]  = [];
+    modoProd = [];
     private hides :boolean[] = [];
-    private modoProd :boolean[] = [];
     currentAccount: any;
     eventSubscriber: Subscription;
     itemsPerPage: number;
@@ -29,6 +30,7 @@ export class ProdutoComponent implements OnInit, OnDestroy {
     queryCount: any;
     reverse: any;
     totalItems: number;
+    htmls = [];
 
     constructor(
         private produtoService: ProdutoService,
@@ -39,7 +41,6 @@ export class ProdutoComponent implements OnInit, OnDestroy {
         private principal: Principal,
         private preferenciaService :PreferenciasService
     ) {
-        this.produtos = [];
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.page = 0;
         this.links = {
@@ -58,10 +59,8 @@ export class ProdutoComponent implements OnInit, OnDestroy {
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
         );
-        this.preferenciaService.getPref('pt').subscribe(
-            (pref: string) => this.modoTabela = (!isNullOrUndefined(pref) && pref.endsWith('T'))
-        );
     }
+
     reset() {
         this.page = 0;
         this.produtos = [];
@@ -73,9 +72,18 @@ export class ProdutoComponent implements OnInit, OnDestroy {
         this.loadAll();
     }
     ngOnInit() {
+        console.clear();
         this.loadAll();
         this.principal.identity().then((account) => {
             this.currentAccount = account;
+            this.preferenciaService.getPref('pt').subscribe(
+                (pref: string) => {
+                    if (this.produtos && this.produtos.length > 0) {
+                        this.modoTabela = ((!isNullOrUndefined(pref) && pref.endsWith('T')) ? 2 : 1);
+                    }
+                    this.modoTabelaB = ((!isNullOrUndefined(pref) && pref.endsWith('T')) ? 2 : 1);
+                }
+            );
         });
         this.registerChangeInProdutos();
     }
@@ -112,7 +120,10 @@ export class ProdutoComponent implements OnInit, OnDestroy {
         this.totalItems = headers.get('X-Total-Count');
         for (let i = 0; i < data.length; i++) {
             this.produtos.push(data[i]);
+            this.htmls[data[i].id] = data[i].html;
         }
+        this.modoTabela = this.modoTabelaB;
+        this.updateView();
     }
 
     private onError(error) {
@@ -120,9 +131,9 @@ export class ProdutoComponent implements OnInit, OnDestroy {
     }
 
     setModoTabela() {
-        this.modoTabela = !this.modoTabela;
-        this.preferenciaService.setPreferencia('pt', (this.modoTabela ? 'T' : 'F'));
-        if (!this.modoTabela) {
+        this.modoTabela = ((this.modoTabela < 2) ? 2 : 1);
+        this.preferenciaService.setPreferencia('pt', ((this.modoTabela < 2) ? 'F' : 'T'));
+        if (this.modoTabela < 2) {
             if (!isNullOrUndefined(this.tableHeader)) {
                 this.tableHeader.clear();
             }
@@ -135,7 +146,6 @@ export class ProdutoComponent implements OnInit, OnDestroy {
             this.preferenciaService.isProdutoVisivel(p.id).subscribe(
                 (ref :any) => {
                     this.hides[ref.id] = ref.visivel;
-                    console.log(ref);
                 }
             );
         });
@@ -147,6 +157,12 @@ export class ProdutoComponent implements OnInit, OnDestroy {
     }
 
     salvarProduto(produto :Produto) {
-        this.produtoService.update(produto).subscribe();
+        this.produtoService.update(produto).subscribe((p) => this.htmls[p.id] = p.html);
+    }
+
+    tratar($elemento) {
+        const nodes = $elemento.elementRef.nativeElement.childNodes;
+        nodes[0].style.maxWidth = '350px';
+        nodes[1].style.height = 'auto';
     }
 }

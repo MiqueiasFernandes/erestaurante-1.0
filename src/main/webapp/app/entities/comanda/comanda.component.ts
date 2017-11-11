@@ -14,6 +14,10 @@ import {NotifyService} from "../notify.service";
 import {Colaborador} from "../colaborador/colaborador.model";
 import {Cliente} from "../cliente/cliente.model";
 import {Mesa} from '../mesa/mesa.model';
+import {VendaService} from "../venda/venda.service";
+import {Venda, VendaStatus} from "../venda/venda.model";
+import {LancamentoService} from "../lancamento/lancamento.service";
+import {Lancamento} from "../lancamento/lancamento.model";
 
 
 @Component({
@@ -37,6 +41,8 @@ export class ComandaComponent implements OnInit, OnDestroy {
     reverse: any;
     totalItems: number;
     comandasInvalidas :string[]= [];
+    comandasPendentes = [];
+    pago :number[] = [];
 
     constructor(
         private comandaService: ComandaService,
@@ -46,7 +52,9 @@ export class ComandaComponent implements OnInit, OnDestroy {
         private colaboradorService: ColaboradorService,
         private principal: Principal,
         private entityNotify: NotifyService,
-        private appref :ApplicationRef
+        private appref :ApplicationRef,
+        private vendaService :VendaService,
+        private lancamentoService: LancamentoService
     ) {
         this.comandas = [];
         this.itemsPerPage = ITEMS_PER_PAGE;
@@ -65,6 +73,7 @@ export class ComandaComponent implements OnInit, OnDestroy {
             this.comandaService.findByStatus(Status.ABERTA).subscribe(
                 (res: ResponseWrapper) => {
                     this.comandas = this.comandas.concat(res.json);
+                    this.loadVendas();
                     this.appref.tick();
                 },
                 (res: ResponseWrapper) => this.onError(res.json)
@@ -72,6 +81,7 @@ export class ComandaComponent implements OnInit, OnDestroy {
             this.comandaService.findByStatus(Status.FECHADA).subscribe(
                 (res: ResponseWrapper) => {
                     this.comandas = this.comandas.concat(res.json);
+                    this.loadVendas();
                     this.appref.tick();
                 },
                 (res: ResponseWrapper) => this.onError(res.json)
@@ -90,22 +100,82 @@ export class ComandaComponent implements OnInit, OnDestroy {
     }
 
 
-    updateMesas(comanda) {
-        if ((!comanda.mesas || comanda.mesas.length < 1) && this.comandasInvalidas.indexOf(comanda.codigo) < 0) {
-            this.comandasInvalidas.push(comanda.codigo);
-            console.log(this.comandas);
-            this.comandas = this.comandas.filter(c2 => c2.id !== comanda.id);
-            console.log(this.comandas);
-            this.comandaService.find(comanda.id).subscribe((c :Comanda) => {
-                console.log(c);
-                if (comanda.mesas && comanda.mesas.length > 0) {
-                    // this.comandas.push(c);
-                    this.comandasInvalidas = this.comandasInvalidas.filter(ci => !ci.match(c.codigo));
-                    this.appref.tick();
+    // updateMesas(comanda) {
+    //     if ((!comanda.mesas || comanda.mesas.length < 1) && this.comandasInvalidas.indexOf(comanda.codigo) < 0) {
+    //         this.comandasInvalidas.push(comanda.codigo);
+    //         console.log(this.comandas);
+    //         this.comandas = this.comandas.filter(c2 => c2.id !== comanda.id);
+    //         console.log(this.comandas);
+    //         this.comandaService.find(comanda.id).subscribe((c :Comanda) => {
+    //             console.log(c);
+    //             if (comanda.mesas && comanda.mesas.length > 0) {
+    //                 // this.comandas.push(c);
+    //                 this.comandasInvalidas = this.comandasInvalidas.filter(ci => !ci.match(c.codigo));
+    //                 this.appref.tick();
+    //             }
+    //         });
+    //     }
+    //     return comanda.mesas;
+    // }
+
+
+
+    loadVendas() {
+        console.log(this.comandas);
+        this.comandas.forEach(comanda => {
+            this.vendaService.getVendasForComandaId(
+                comanda.id, Venda.getPendentesToString().join(','))
+                .subscribe(vendas => {
+                        vendas.forEach(v => {
+                            if (!v.isEntregue()) {
+                                this.comandasPendentes.push(comanda.id);
+                            }
+                        });
+                    }
+                );
+            this.lancamentoService.findByComanda(comanda.id).subscribe(
+                (res) => {
+                    const lancamentos: Lancamento[] = res.json;
+                    let total = 0.0;
+                    lancamentos.forEach(l => l.isentrada ? total += l.valor : total -= l.valor);
+                    this.pago[comanda.id] = total;
                 }
-            });
+            );
+        });
+    }
+
+    entregarProdutos(comanda){
+        this.vendaService.getVendasForComandaId(
+            comanda.id, Venda.getPendentesToString().join(','))
+            .subscribe(vendas => {
+                    vendas.forEach(v => {
+                        if (!v.isEntregue()) {
+                            v.status = VendaStatus.ENTREGUE;
+                            v.data = this.vendaData(v);
+                            this.vendaService.update(v).subscribe(() => this.verificar(comanda.id));
+                        }
+                    });
+                }
+            );
+    }
+
+    vendaData(venda: Venda) {
+        return venda.data ? new Date(venda.data).toISOString()
+            .replace('T', ' ')
+            .replace('Z', '') : '';
+    }
+
+    verificar(id) {
+        if (this.comandasPendentes.indexOf(id) >= 0) {
+            this.vendaService.getVendasForComandaId(
+                id, Venda.getPendentesToString().join(','))
+                .subscribe(vendas => {
+                    console.log(vendas);
+                    if (vendas.length < 1) {
+                        this.comandasPendentes = this.comandasPendentes.filter(num => num !== id);
+                    }
+                });
         }
-        return comanda.mesas;
     }
 
 

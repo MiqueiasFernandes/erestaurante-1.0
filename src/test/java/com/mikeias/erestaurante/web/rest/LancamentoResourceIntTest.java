@@ -102,7 +102,7 @@ public class LancamentoResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         final LancamentoResource lancamentoResource =
-            new LancamentoResource(lancamentoRepository,cargoRepository,vendaRepository,comandaRepository);
+            new LancamentoResource(lancamentoRepository,comandaRepository,cargoRepository,vendaRepository);
         this.restLancamentoMockMvc = MockMvcBuilders.standaloneSetup(lancamentoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -107,6 +107,7 @@ export class LancamentoComponent implements OnInit, OnDestroy {
         private principal: Principal
     ) {
         this.lancamentos = [];
+        this.geraGrafico(false);
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.page = 0;
         this.links = {
@@ -178,11 +179,11 @@ export class LancamentoComponent implements OnInit, OnDestroy {
                     }
                 } else {
                     if (l.isentrada) {
-                        arr[1].data[data.getDate()] += l.valor;
-                        arr[2].data[data.getDate()] += l.valor;
+                        arr[1].data[data.getDate() - 1] += l.valor;
+                        arr[2].data[data.getDate() - 1] += l.valor;
                     } else {
-                        arr[0].data[data.getDate()] += l.valor;
-                        arr[2].data[data.getDate()] -= l.valor;
+                        arr[0].data[data.getDate() - 1] += l.valor;
+                        arr[2].data[data.getDate() - 1] -= l.valor;
                     }
                 }
             }
@@ -234,10 +235,10 @@ export class LancamentoComponent implements OnInit, OnDestroy {
         for (let i = 0; i < data.length; i++) {
             this.lancamentos.push(data[i]);
         }
-
+        this.total = 0;
         if (filter) {
             const dt1 = this.date1 < this.date2 ? this.date1 : this.date2;
-            const dt2 = this.date1 > this.date2 ? this.date1 : this.date2;
+            const dt2 = dt1 === this.date1 ? this.date2 : this.date1;
             this.lancamentos = this.lancamentos.filter(l => l.vencimento >= dt1 && l.vencimento <= dt2);
         }
         this.lancamentos.forEach(l => l.isentrada ? this.total += l.valor : this.total -= l.valor);

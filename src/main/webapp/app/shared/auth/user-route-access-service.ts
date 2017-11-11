@@ -26,6 +26,7 @@ export class UserRouteAccessService implements CanActivate {
     }
 
     checkLogin(authorities: string[], url: string): Promise<boolean> {
+
         const principal = this.principal;
         return Promise.resolve(principal.identity().then((account) => {
 
@@ -38,39 +39,39 @@ export class UserRouteAccessService implements CanActivate {
 
                 if (this.autologin.accountIsAutologin(account)) {
 
-                    console.clear();
-                    console.log('tentando acessar ' + url);
-
-                    if (!url || url.length < 4 || /.*comanda\/\d+/.test(url)) {
+                    if (!url || url.length < 4 || /.*comanda\/\d+/.test(url) || /.*mesa\/\d+/.test(url)) {
                         return true;
                     } else {
                         this.router.navigate(['']).then(() => {
                             this.autologin.autoLogin(true);
                         });
                     }
-                }
+                } else {
 
+                    this.stateStorageService.storeUrl(url);
 
-                return principal.hasAnyAuthority(authorities).then(
-                    (response) => {
-                        if (response) {
-                            return true;
+                    return principal.hasAnyAuthority(authorities).then(
+                        (response) => {
+                            if (response) {
+                                return true;
+                            }
+                            this.autologin.autoLogin(true);
+                            return false;
                         }
-                        this.autologin.autoLogin(true);
-                        return false;
-                    }
-                );
-            }
-
-            this.stateStorageService.storeUrl(url);
-            this.router.navigate(['accessdenied']).then(() => {
-                // only show the login dialog, if the user hasn't logged in yet
-                if (!account) {
-                    this.loginModalService.open();
+                    );
                 }
-                this.autologin.autoLogin(true);
-            });
-            return false;
+            } else {
+
+                this.stateStorageService.storeUrl(url);
+                this.router.navigate(['accessdenied']).then(() => {
+                    // only show the login dialog, if the user hasn't logged in yet
+                    if (!account) {
+                        this.loginModalService.open();
+                    }
+                    this.autologin.autoLogin(true);
+                });
+                return false;
+            }
         }));
     }
 }

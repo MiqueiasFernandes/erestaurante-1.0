@@ -1,19 +1,17 @@
 package com.mikeias.erestaurante.web.rest;
 
-import com.mikeias.erestaurante.domain.Mesa;
-import com.mikeias.erestaurante.domain.Venda;
+import com.mikeias.erestaurante.domain.*;
 import com.mikeias.erestaurante.domain.enumeration.Status;
 import com.mikeias.erestaurante.domain.enumeration.VendaStatus;
+import com.mikeias.erestaurante.repository.LancamentoRepository;
 import com.mikeias.erestaurante.repository.VendaRepository;
 import com.mikeias.erestaurante.web.rest.util.DoubleUtil;
 
 
 import com.mikeias.erestaurante.service.PrivilegioService;
-import com.mikeias.erestaurante.domain.Cargo;
 import com.mikeias.erestaurante.repository.CargoRepository;
 
 import com.codahale.metrics.annotation.Timed;
-import com.mikeias.erestaurante.domain.Comanda;
 
 import com.mikeias.erestaurante.repository.ComandaRepository;
 import com.mikeias.erestaurante.web.rest.errors.BadRequestAlertException;
@@ -320,4 +318,30 @@ public class ComandaResource {
 //////////////////////////////////REQUER PRIVILEGIOS
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    public static void  verificarComanda(Comanda comanda,ComandaRepository comandaRepository, VendaRepository vendaRepository, LancamentoRepository lancamentoRepository,Logger log) {
+        Double total =
+            comanda.getComandaCalculada(vendaRepository).getTotal() +
+                comanda.getGorjeta();
+
+        for (Lancamento lancamento1 : lancamentoRepository.findAllByComandaId(comanda.getId())) {
+            if (lancamento1.isIsentrada()) {
+                total -= (lancamento1.getValor() + lancamento1.getDesconto());
+            }
+        }
+        if (total <= 0) {
+            List<Venda>  vs = vendaRepository.findAllByComandaId(comanda.getId());
+            vs.removeIf(v -> (
+                (v.getStatus() == VendaStatus.ENTREGUE) || (v.getStatus() == VendaStatus.CANCELADO))
+            );
+            if (vs.size() < 1) {
+                comanda.setStatus(Status.PAGA);
+                comandaRepository.save(comanda);
+            } else {
+                log.warn("Comanda não pode ser fechada por possir vendas em aberto {}", comanda);
+            }
+        }
+    }
+
+
 }

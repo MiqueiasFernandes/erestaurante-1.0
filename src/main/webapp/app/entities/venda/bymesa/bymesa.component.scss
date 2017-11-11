@@ -1,0 +1,41 @@
+
+.nopad{
+    padding: 5px;
+}
+
+.botoes {
+    margin: 10px;
+}
+
+.mesaimg {
+    display: inline-block;
+    width: 60px;
+    height: 40px;
+    background-color: lightgrey;
+    background: url("../../../../content/images/mesa.png") no-repeat center top;
+    background-size: cover;
+}
+
+.separada {
+    border-right: 1px solid grey;
+}
+
+.centrado {
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}
+
+
+.filtro {
+    width: 100%;
+}
+
+.imagem {
+    height: 100px;
+}
+
+.produto {
+    margin: 10px;
+}

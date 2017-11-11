@@ -26,15 +26,25 @@
                 <div [ngClass]="{'card': true, 'alterada' : alteradas[comanda.id]}">
                     <div class="card-header">
                         <span class="float-left">{{comanda.id}}</span>
+
                         <span class="float-right badge" [ngClass]="{
                         'badge-danger': comandaAberta(comanda),
                         'badge-success':  !comandaAberta(comanda)
                     }">{{comanda.status}}</span>
+
+                    <span class="pointer toR float-right badge badge-warning"
+                          (click)="entregarProdutos(comanda)"
+                          *ngIf="comandasPendentes.indexOf(comanda.id) >= 0">
+                        Há produtos não entregues para esta comanda!
+                    </span>
+
                     </div>
 
                     <div class="card-body row">
                         <div class="col-md-4">
-                            <h1 class="total">{{comanda.total| currency:'BRL':true:'.2-2'}}</h1>
+                            <h1 class="total">TOTAL: {{comanda.total| currency:'BRL':true:'.2-2'}}</h1> <br>
+                            <h4 *ngIf="!pago[comanda.id]" class="vermelho">nenhum pagamento realizado.</h4>
+                            <h4 *ngIf="pago[comanda.id]">pago: {{pago[comanda.id] | currency:'BRL':true:'.2-2'}}</h4>
                         </div>
                         <div class="col-md-8">
                             <b>mesas:</b> {{getMesas(comanda)}}<br>
@@ -51,9 +61,11 @@
                         <button class="btn btn-danger btn-sm" [hidden]="comandaAberta(comanda)" (click)="fechar(comanda)">
                             <span class="fa fa-close"></span> Fechar
                         </button>
+                        <!--[routerLink]="['/', { outlets: { popup: 'lancamento-comanda/' + comanda.id } }]"-->
 
                         <button class="btn btn-primary float-right jh-create-entity create-lancamento"
-                                [routerLink]="['/', { outlets: { popup: 'lancamento-comanda/' + comanda.id } }]" [hidden]="!comandaAberta(comanda)">
+                                [routerLink]="['/', { outlets: { popup: 'lancamento/' + comanda.id + '/fechar' } }]"
+                                [hidden]="!comandaAberta(comanda)">
 
             <span class="fa fa-money">
             </span> Pagar

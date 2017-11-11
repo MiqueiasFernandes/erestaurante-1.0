@@ -19,13 +19,9 @@
     </div>
     <br/>
 
-
-    <div *ngSwitchCase="false" class="row">
-
+    <div *ngSwitchCase="1" class="row centro">
         <div *ngFor="let produto of produtos">
-
             <div class="card produto" *ngIf="hides[produto.id]">
-
                 <div class="card-header">
                     {{produto.codigo}}
                     <button class="btn btn-success btn-sm float-right" (click)="modoProd[produto.id] = !modoProd[produto.id]">
@@ -42,14 +38,18 @@
 
                 <div class="card-body" >
                     <img *ngIf="produto.foto" (click)="openFile(produto.fotoContentType, produto.foto)" [src]="'data:' + produto.fotoContentType + ';base64,' + produto.foto" alt="produto image" class="imagem"/>
+                    <div class="editor" *ngIf="!modoProd[produto.id]" [innerHTML]="produto.html"></div>
                     <textarea [(ngModel)]="produto.html" *ngIf="modoProd[produto.id] === false" class="editor"></textarea>
-                    <quill-editor class="quill" [(ngModel)]="produto.html" *ngIf="modoProd[produto.id] === true"></quill-editor>
+                    <quill-editor [(ngModel)]="produto.html" *ngIf="modoProd[produto.id] === true" #elemento (ready)="tratar(elemento)"></quill-editor>
                 </div>
 
                 <div class="card-footer">
                     <div class="btn-group flex-btn-group-container">
                         <button (click)="salvarProduto(produto)"
-                                class="btn btn-secondary btn-sm">
+                                class="btn  btn-sm" [ngClass]="{
+                                'btn-secondary' : (produto.html === htmls[produto.id]),
+                                'btn-warning' : (produto.html !== htmls[produto.id])
+                                }">
                             <span class="fa fa-save"></span>
                             Salvar
                         </button>
@@ -83,86 +83,86 @@
     <div #tableH>
     </div>
 
-    <div *ngSwitchCase="true">
-
+    <div *ngSwitchCase="2">
         <div class="table-responsive" *ngIf="produtos">
             <table class="table table-striped" [jhiTableheader]="{'view': tableHeader, 'entidade': 'produto'}">
                 <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
                     <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
-            <th jhiSortBy="codigo"><span jhiTranslate="eRestauranteApp.produto.codigo">Codigo</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="nome"><span jhiTranslate="eRestauranteApp.produto.nome">Nome</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="fornecedor"><span jhiTranslate="eRestauranteApp.produto.fornecedor">Fornecedor</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="estoque"><span jhiTranslate="eRestauranteApp.produto.estoque">Estoque</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="valor"><span jhiTranslate="eRestauranteApp.produto.valor">Valor</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="preco"><span jhiTranslate="eRestauranteApp.produto.preco">Preco</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="foto"><span jhiTranslate="eRestauranteApp.produto.foto">Foto</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="descricao"><span jhiTranslate="eRestauranteApp.produto.descricao">Descricao</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="html"><span jhiTranslate="eRestauranteApp.produto.html">Html</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="observacao"><span jhiTranslate="eRestauranteApp.produto.observacao">Observacao</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="opcional"><span jhiTranslate="eRestauranteApp.produto.opcional">Opcional</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="adicional"><span jhiTranslate="eRestauranteApp.produto.adicional">Adicional</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="unidade"><span jhiTranslate="eRestauranteApp.produto.unidade">Unidade</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="imposto.id"><span jhiTranslate="eRestauranteApp.produto.imposto">Imposto</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="codigo"><span jhiTranslate="eRestauranteApp.produto.codigo">Codigo</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="nome"><span jhiTranslate="eRestauranteApp.produto.nome">Nome</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="fornecedor"><span jhiTranslate="eRestauranteApp.produto.fornecedor">Fornecedor</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="estoque"><span jhiTranslate="eRestauranteApp.produto.estoque">Estoque</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="valor"><span jhiTranslate="eRestauranteApp.produto.valor">Valor</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="preco"><span jhiTranslate="eRestauranteApp.produto.preco">Preco</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="foto"><span jhiTranslate="eRestauranteApp.produto.foto">Foto</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="descricao"><span jhiTranslate="eRestauranteApp.produto.descricao">Descricao</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="html"><span jhiTranslate="eRestauranteApp.produto.html">Html</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="observacao"><span jhiTranslate="eRestauranteApp.produto.observacao">Observacao</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="opcional"><span jhiTranslate="eRestauranteApp.produto.opcional">Opcional</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="adicional"><span jhiTranslate="eRestauranteApp.produto.adicional">Adicional</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="unidade"><span jhiTranslate="eRestauranteApp.produto.unidade">Unidade</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="imposto.id"><span jhiTranslate="eRestauranteApp.produto.imposto">Imposto</span> <span class="fa fa-sort"></span></th>
                     <th style="text-align: center;"><span><span>Ações</span></span></th>
-            </tr>
-            </thead>
-            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
-            <tr *ngFor="let produto of produtos ;trackBy: trackId">
+                </tr>
+                </thead>
+                <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+                <tr *ngFor="let produto of produtos ;trackBy: trackId">
                     <!--<td><a [routerLink]="['../produto', produto.id ]">{{produto.id}}</a></td>-->
-                <td>{{produto.codigo}}</td>
-                <td>{{produto.nome}}</td>
-                <td>{{produto.fornecedor}}</td>
-                <td>{{produto.estoque}}</td>
-                <td>{{produto.valor | currency:'BRL':true:'.2-2'}}</td>
-                <td>{{produto.preco | currency:'BRL':true:'.2-2'}}</td>
-                <td>
-                    <a *ngIf="produto.foto" (click)="openFile(produto.fotoContentType, produto.foto)">
-                        <img [src]="'data:' + produto.fotoContentType + ';base64,' + produto.foto" style="max-height: 30px;" alt="produto image"/>
-                    </a>
-                    <span *ngIf="produto.foto">{{produto.fotoContentType}}, {{byteSize(produto.foto)}}</span>
-                </td>
-                <td>{{produto.descricao}}</td>
-                <td>{{produto.html}}</td>
-                <td>{{produto.observacao}}</td>
-                <td>{{produto.opcional}}</td>
-                <td>{{produto.adicional}}</td>
-                <td jhiTranslate="{{'eRestauranteApp.Unidade.' + produto.unidade}}">{{produto.unidade}}</td>
-                <td>
-                    <div *ngIf="produto.imposto">
-                        <a [routerLink]="['../imposto', produto.imposto?.id ]" >{{produto.imposto?.id}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <!--<button type="submit"-->
-                        <!--[routerLink]="['../produto', produto.id ]"-->
-                        <!--class="btn btn-info btn-sm">-->
-                        <!--<span class="fa fa-eye"></span>-->
-                        <!--<span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>-->
-                        <!--</button>-->
-                        <button class="btn btn-info btn-sm" (click)="hideProduto(produto, true)">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'produto/'+ produto.id + '/edit'} }]"
-                                replaceUrl="true"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'produto/'+ produto.id + '/delete'} }]"
-                                replaceUrl="true"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                    <td>{{produto.codigo}}</td>
+                    <td>{{produto.nome}}</td>
+                    <td>{{produto.fornecedor}}</td>
+                    <td>{{produto.estoque}}</td>
+                    <td>{{produto.valor | currency:'BRL':true:'.2-2'}}</td>
+                    <td>{{produto.preco | currency:'BRL':true:'.2-2'}}</td>
+                    <td>
+                        <a *ngIf="produto.foto" (click)="openFile(produto.fotoContentType, produto.foto)">
+                            <img [src]="'data:' + produto.fotoContentType + ';base64,' + produto.foto" style="max-height: 30px;" alt="produto image"/>
+                        </a>
+                        <span *ngIf="produto.foto">{{produto.fotoContentType}}, {{byteSize(produto.foto)}}</span>
+                    </td>
+                    <td>{{produto.descricao}}</td>
+                    <td>{{produto.html}}</td>
+                    <td>{{produto.observacao}}</td>
+                    <td>{{produto.opcional}}</td>
+                    <td>{{produto.adicional}}</td>
+                    <td jhiTranslate="{{'eRestauranteApp.Unidade.' + produto.unidade}}">{{produto.unidade}}</td>
+                    <td>
+                        <div *ngIf="produto.imposto">
+                            <a [routerLink]="['../imposto', produto.imposto?.id ]" >{{produto.imposto?.id}}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <!--<button type="submit"-->
+                            <!--[routerLink]="['../produto', produto.id ]"-->
+                            <!--class="btn btn-info btn-sm">-->
+                            <!--<span class="fa fa-eye"></span>-->
+                            <!--<span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>-->
+                            <!--</button>-->
+                            <button class="btn btn-info btn-sm" (click)="hideProduto(produto, true)">
+                                <span class="fa fa-eye"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+                            <button type="submit"
+                                    [routerLink]="['/', { outlets: { popup: 'produto/'+ produto.id + '/edit'} }]"
+                                    replaceUrl="true"
+                                    class="btn btn-primary btn-sm">
+                                <span class="fa fa-pencil"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+                            <button type="submit"
+                                    [routerLink]="['/', { outlets: { popup: 'produto/'+ produto.id + '/delete'} }]"
+                                    replaceUrl="true"
+                                    class="btn btn-danger btn-sm">
+                                <span class="fa fa-remove"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

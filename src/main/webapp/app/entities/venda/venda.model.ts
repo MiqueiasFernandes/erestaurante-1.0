@@ -23,12 +23,12 @@ export class Venda implements BaseEntity {
     ) {
     }
 
-  public  static tipoEquals(c1, c2) :boolean{
+    public  static tipoEquals(c1, c2) :boolean{
         return this.getTipo(c1) === this.getTipo(c2);
     }
 
 
-   public static getTipo(t) :number{
+    public static getTipo(t) :number{
         if (isNumber(t))
             return t;
         if (VendaStatus.PEDIDO === t)
@@ -73,6 +73,18 @@ export class Venda implements BaseEntity {
             Venda.getStatusToString(2),
             Venda.getStatusToString(3)
         ];
+    }
+
+    static getPendentesToString() {
+        return [
+            Venda.getStatusToString(1),
+            Venda.getStatusToString(2),
+            Venda.getStatusToString(0)
+        ];
+    }
+
+    public isEntregue() {
+        return this.status.valueOf() > 2;
     }
 
     static getStatusToString(status) :string{

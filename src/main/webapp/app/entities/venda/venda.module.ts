@@ -14,6 +14,7 @@ import {
     vendaRoute,
     vendaPopupRoute,
 } from './';
+import { BymesaComponent } from './bymesa/bymesa.component';
 
 const ENTITY_STATES = [
     ...vendaRoute,
@@ -32,6 +33,7 @@ const ENTITY_STATES = [
         VendaDeleteDialogComponent,
         VendaPopupComponent,
         VendaDeletePopupComponent,
+        BymesaComponent,
     ],
     entryComponents: [
         VendaComponent,
