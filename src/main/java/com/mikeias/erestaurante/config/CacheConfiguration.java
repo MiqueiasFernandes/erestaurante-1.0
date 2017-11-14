@@ -61,6 +61,7 @@ public class CacheConfiguration {
             cm.createCache(com.mikeias.erestaurante.domain.Nota.class.getName(), jcacheConfiguration);
             cm.createCache(com.mikeias.erestaurante.domain.Restaurante.class.getName(), jcacheConfiguration);
             cm.createCache(com.mikeias.erestaurante.domain.Restaurante.class.getName() + ".proprietarios", jcacheConfiguration);
+            cm.createCache(com.mikeias.erestaurante.domain.Impressora.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

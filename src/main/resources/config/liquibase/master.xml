@@ -18,6 +18,7 @@
     <include file="config/liquibase/changelog/20171029164443_added_entity_Lancamento.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171029164444_added_entity_Nota.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171029164445_added_entity_Restaurante.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171114203952_added_entity_Impressora.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20171029164433_added_entity_constraints_Produto.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171029164435_added_entity_constraints_Cliente.xml" relativeToChangelogFile="false"/>

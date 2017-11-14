@@ -13,6 +13,7 @@ import { ERestauranteImpostoModule } from './imposto/imposto.module';
 import { ERestauranteLancamentoModule } from './lancamento/lancamento.module';
 import { ERestauranteNotaModule } from './nota/nota.module';
 import { ERestauranteRestauranteModule } from './restaurante/restaurante.module';
+import { ERestauranteImpressoraModule } from './impressora/impressora.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -30,6 +31,7 @@ import { ERestauranteRestauranteModule } from './restaurante/restaurante.module'
         ERestauranteLancamentoModule,
         ERestauranteNotaModule,
         ERestauranteRestauranteModule,
+        ERestauranteImpressoraModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

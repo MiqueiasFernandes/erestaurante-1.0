@@ -20,6 +20,7 @@
                 "lancamento": "Lancamento",
                 "nota": "Nota",
                 "restaurante": "Restaurante",
+                "impressora": "Impressora",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
