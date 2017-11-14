@@ -8,6 +8,7 @@ import { JhiDateUtils } from 'ng-jhipster';
 
 import { Colaborador } from './colaborador.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
+import {Cargo, CargoTipo} from "../cargo/cargo.model";
 
 @Injectable()
 export class ColaboradorService {
@@ -19,21 +20,6 @@ export class ColaboradorService {
 
 
     public getCurrentColaborador():  Observable<Colaborador> {
-        // return this.http.get(this.resourceUrl)
-        //     .map((res: Response) => this.convertResponse(res, true)).map(
-        //         (res: ResponseWrapper) => {
-        //             let c: Colaborador;
-        //             const cs: Colaborador[] = res.json;
-        //             if (cs.length < 2){
-        //                 c = cs[0];
-        //             } else {
-        //                 c = cs.find(col  => col.id < 0);
-        //                 c.id = cs.find( col => col.usuario.id === c.usuario.id ).id;
-        //             }
-        //             return c;
-        //         }
-        //     )
-
         return this.find(-1);
     }
 
@@ -73,6 +59,11 @@ export class ColaboradorService {
         const options = createRequestOption(req);
         return this.http.get(this.resourceUrl, options)
             .map((res: Response) => this.convertResponse(res));
+    }
+
+    getColaboradorByCargo(cargo: CargoTipo): Observable<Colaborador[]> {
+        return this.http.get(`${this.resourceUrl}/cargo/${Cargo.getCargoString(cargo)}`)
+            .map((res: Response) => this.convertResponse(res).json);
     }
 
     delete(id: number): Observable<Response> {

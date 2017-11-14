@@ -38,13 +38,16 @@
 
                 <div class="card-body" >
                     <img *ngIf="produto.foto" (click)="openFile(produto.fotoContentType, produto.foto)" [src]="'data:' + produto.fotoContentType + ';base64,' + produto.foto" alt="produto image" class="imagem"/>
-                    <div class="editor" *ngIf="!modoProd[produto.id]" [innerHTML]="produto.html"></div>
+
+                    <div class="editor" *ngIf="!modoProd[produto.id]" [innerHTML]="sanitize(produto.html)"></div>
+
                     <textarea [(ngModel)]="produto.html" *ngIf="modoProd[produto.id] === false" class="editor"></textarea>
                     <quill-editor [(ngModel)]="produto.html" *ngIf="modoProd[produto.id] === true" #elemento (ready)="tratar(elemento)"></quill-editor>
+                    <i *ngIf="modoProd[produto.id]" class="float-right count">{{produto.html ? produto.html.length : 0}}</i>
                 </div>
 
                 <div class="card-footer">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group flex-btn-group-container centro">
                         <button (click)="salvarProduto(produto)"
                                 class="btn  btn-sm" [ngClass]="{
                                 'btn-secondary' : (produto.html === htmls[produto.id]),

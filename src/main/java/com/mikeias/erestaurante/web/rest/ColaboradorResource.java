@@ -1,6 +1,7 @@
 package com.mikeias.erestaurante.web.rest;
 
 import com.google.common.collect.Iterables;
+import com.mikeias.erestaurante.domain.enumeration.CargoTipo;
 import com.mikeias.erestaurante.service.PrivilegioService;
 import com.mikeias.erestaurante.domain.Cargo;
 import com.mikeias.erestaurante.repository.CargoRepository;
@@ -48,14 +49,14 @@ public class ColaboradorResource {
     private final UserService userService;
 
 
-//////////////////////////////////REQUER PRIVILEGIOS
-                                  private final CargoRepository cargoRepository;
+    //////////////////////////////////REQUER PRIVILEGIOS
+    private final CargoRepository cargoRepository;
 
-                                  public ColaboradorResource(ColaboradorRepository colaboradorRepository, UserService userService, CargoRepository cargoRepository) {
-                                  this.colaboradorRepository = colaboradorRepository;
-                                  this.userService = userService;
-                                  this.cargoRepository = cargoRepository;
-                                  }
+    public ColaboradorResource(ColaboradorRepository colaboradorRepository, UserService userService, CargoRepository cargoRepository) {
+        this.colaboradorRepository = colaboradorRepository;
+        this.userService = userService;
+        this.cargoRepository = cargoRepository;
+    }
 //////////////////////////////////REQUER PRIVILEGIOS
 
     /**
@@ -71,17 +72,17 @@ public class ColaboradorResource {
         log.debug("REST request to save Colaborador : {}", colaborador);
 
 //////////////////////////////////REQUER PRIVILEGIOS
-                                  if (!PrivilegioService.podeCriar(cargoRepository, ENTITY_NAME)) {
-                                  log.error("TENTATIVA DE CRIAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME  + " : {}", colaborador);
-                                  return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "privilegios insuficientes.", "Este usuario não possui privilegios sufuentes para criar esta entidade.")).body(null);
-                                  }
+        if (!PrivilegioService.podeCriar(cargoRepository, ENTITY_NAME)) {
+            log.error("TENTATIVA DE CRIAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME + " : {}", colaborador);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "privilegios insuficientes.", "Este usuario não possui privilegios sufuentes para criar esta entidade.")).body(null);
+        }
 //////////////////////////////////REQUER PRIVILEGIOS
         if (colaborador.getId() != null) {
             throw new BadRequestAlertException("A new colaborador cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Colaborador result = colaboradorRepository.save(colaborador);
 
-         ////ativar o usuario
+        ////ativar o usuario
         if (result != null) {
             this.userService.getUserWithAuthoritiesByLogin(
                 colaborador.getUsuario().getLogin()
@@ -110,10 +111,10 @@ public class ColaboradorResource {
         log.debug("REST request to update Colaborador : {}", colaborador);
 
 //////////////////////////////////REQUER PRIVILEGIOS
-                                  if (!PrivilegioService.podeEditar(cargoRepository, ENTITY_NAME)) {
-                                  log.error("TENTATIVA DE EDITAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME  + " : {}", colaborador);
-                                  return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "privilegios insuficientes.", "Este usuario não possui privilegios sufuentes para editar esta entidade.")).body(null);
-                                  }
+        if (!PrivilegioService.podeEditar(cargoRepository, ENTITY_NAME)) {
+            log.error("TENTATIVA DE EDITAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME + " : {}", colaborador);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "privilegios insuficientes.", "Este usuario não possui privilegios sufuentes para editar esta entidade.")).body(null);
+        }
 //////////////////////////////////REQUER PRIVILEGIOS
         if (colaborador.getId() == null) {
             return createColaborador(colaborador);
@@ -137,12 +138,12 @@ public class ColaboradorResource {
 
 
 //////////////////////////////////REQUER PRIVILEGIOS
-                                  if (PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {
-                                      Page<Colaborador> page = colaboradorRepository.findAll(pageable);
-                                      HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/colaboradors");
-                                      return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        if (PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {
+            Page<Colaborador> page = colaboradorRepository.findAll(pageable);
+            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/colaboradors");
+            return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 
-                                  }
+        }
 //////////////////////////////////REQUER PRIVILEGIOS
         return ResponseEntity.badRequest()
             .headers(HeaderUtil
@@ -174,12 +175,11 @@ public class ColaboradorResource {
         Colaborador colaborador = colaboradorRepository.findOneWithEagerRelationships(id);
 
 
-
 //////////////////////////////////REQUER PRIVILEGIOS
-                                  if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {
-                                  colaborador = null;
-                                  log.error("TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME + " : {}", id);
-                                  }
+        if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {
+            colaborador = null;
+            log.error("TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME + " : {}", id);
+        }
 //////////////////////////////////REQUER PRIVILEGIOS
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(colaborador));
     }
@@ -196,13 +196,44 @@ public class ColaboradorResource {
         log.debug("REST request to delete Colaborador : {}", id);
 
 //////////////////////////////////REQUER PRIVILEGIOS
-                                  if (PrivilegioService.podeDeletar(cargoRepository, ENTITY_NAME)) {
-                                  colaboradorRepository.delete(id);
-                                  } else {
-                                  log.error("TENTATIVA DE EXCUIR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME + " : {}", id);
-                                  return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "privilegios insuficientes.", "Este usuario não possui privilegios sufuentes para deletar esta entidade.")).body(null);
-                                  }
+        if (PrivilegioService.podeDeletar(cargoRepository, ENTITY_NAME)) {
+            colaboradorRepository.delete(id);
+        } else {
+            log.error("TENTATIVA DE EXCUIR SEM PERMISSÃO BLOQUEADA! " + ENTITY_NAME + " : {}", id);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "privilegios insuficientes.", "Este usuario não possui privilegios sufuentes para deletar esta entidade.")).body(null);
+        }
 //////////////////////////////////REQUER PRIVILEGIOS
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+
+    @GetMapping("/colaboradors/cargo/{cargo}")
+    @Timed
+    public ResponseEntity<List<Colaborador>> getColaboradorByCargo(@PathVariable String cargo) {
+        log.debug("REST request to get Colaborador by cargo: {}", cargo);
+
+
+//////////////////////////////////REQUER PRIVILEGIOS
+        if (PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {
+            List<Colaborador> colaboradores = colaboradorRepository.findAllWithEagerRelationships();
+
+            colaboradores.removeIf(c -> {
+                for (Cargo a : c.getCargos())
+                    if (a.getTipo().toString().equals(cargo))
+                        return false;
+                return true;
+            });
+
+
+            return new ResponseEntity<>(colaboradores, HttpStatus.OK);
+
+        }
+//////////////////////////////////REQUER PRIVILEGIOS
+        return ResponseEntity.badRequest()
+            .headers(HeaderUtil
+                .createFailureAlert(ENTITY_NAME,
+                    "privilegios insuficientes.",
+                    "Este usuario não possui privilegios sufuentes " +
+                        "para ver/listar esta entidade.")).body(null);
     }
 }

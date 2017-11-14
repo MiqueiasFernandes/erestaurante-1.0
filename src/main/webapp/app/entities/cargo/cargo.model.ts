@@ -61,4 +61,16 @@ export class Cargo implements BaseEntity {
         }
         return -1;
     }
+
+
+    public static getCargoString(cargo) :string {
+        return [
+            'GERENCIA',
+            'PRODUCAO',
+            'CAIXA',
+            'ATENDIMENTO',
+            'ENTREGA'
+        ][(Cargo.getTipo(cargo))];
+    }
+
 }

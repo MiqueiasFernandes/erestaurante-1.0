@@ -163,7 +163,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
             (colaborador) => {
                 switch (colaborador.getMaxCargo()) {
                     case CargoTipo.GERENCIA:
-                        this.router.navigate(['lancamento/']);
+                        this.router.navigate(['menugerencial/']);
                         break;
                     case CargoTipo.CAIXA:
                         this.router.navigate(['comanda/']);

@@ -6,11 +6,13 @@ import { Produto } from './produto.model';
 import { ProdutoService } from './produto.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import {PreferenciasService} from "../preferencias.service";
+import {DomSanitizerImpl} from "@angular/platform-browser/src/security/dom_sanitization_service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
     selector: 'jhi-produto',
     templateUrl: './produto.component.html',
-    styleUrls: ['./produto.component.scss']
+    styleUrls: ['./produto.component.scss', '../../../../../../node_modules/quill/dist/quill.snow.css']
 })
 export class ProdutoComponent implements OnInit, OnDestroy {
 
@@ -39,7 +41,8 @@ export class ProdutoComponent implements OnInit, OnDestroy {
         private eventManager: JhiEventManager,
         private parseLinks: JhiParseLinks,
         private principal: Principal,
-        private preferenciaService :PreferenciasService
+        private preferenciaService :PreferenciasService,
+        private sanitizer: DomSanitizer
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.page = 0;
@@ -164,5 +167,9 @@ export class ProdutoComponent implements OnInit, OnDestroy {
         const nodes = $elemento.elementRef.nativeElement.childNodes;
         nodes[0].style.maxWidth = '350px';
         nodes[1].style.height = 'auto';
+    }
+
+    sanitize(html) {
+        return this.sanitizer.bypassSecurityTrustHtml(html);
     }
 }

@@ -29,3 +29,5 @@ export * from './shared.module';
 export * from './login/autologin.service';
 export * from './utils/tableheader.directive';
 export * from './utils/variaveis.service';
+
+export * from './utils/IncrementoPipe.pipe';

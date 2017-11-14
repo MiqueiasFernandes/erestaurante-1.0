@@ -14,14 +14,16 @@ import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-produto-dialog',
-    templateUrl: './produto-dialog.component.html'
+    templateUrl: './produto-dialog.component.html',
+    styleUrls: ['./produto-dialog.component.scss']
 })
 export class ProdutoDialogComponent implements OnInit {
 
     produto: Produto;
     isSaving: boolean;
-
+    temp = '';
     impostos: Imposto[];
+    chipFocus = false;
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -38,6 +40,13 @@ export class ProdutoDialogComponent implements OnInit {
         this.isSaving = false;
         this.impostoService.query()
             .subscribe((res: ResponseWrapper) => { this.impostos = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        if(!this.produto.descricao || this.produto.descricao.length < 1) {
+            this.produto.descricao = 'Todos,Bebidas,Restaurante,Sobremesas,popular'
+        }
+
+        if (this.produto.descricao.startsWith(',')) {
+            this.produto.descricao = this.produto.descricao.substring(1);
+        }
     }
 
     byteSize(field) {
@@ -93,6 +102,22 @@ export class ProdutoDialogComponent implements OnInit {
     trackImpostoById(index: number, item: Imposto) {
         return item.id;
     }
+
+    remover(key) {
+        this.produto.descricao = this.produto.descricao.split(',')
+            .filter( p => !p.match(key)).join(',');
+    }
+
+    adicionar() {
+        const str = this.temp.replace(',', '');
+        if (str && str.length > 0) {
+            this.produto.descricao =
+                this.produto.descricao += (',' + str);
+            this.temp = '';
+        }
+    }
+
+
 }
 
 @Component({

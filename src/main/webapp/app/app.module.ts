@@ -29,6 +29,7 @@ import { TableheaderComponent } from './layouts/tableheader/tableheader.componen
 import {PreferenciasService} from "./entities/preferencias.service";
 import {PrivilegiosService} from "./entities/privilegios.service";
 import {NotifyService} from "./entities/notify.service";
+import { MenuGerencialModule } from './menu-gerencial/menu-gerencial.module';
 
 
 
@@ -43,6 +44,7 @@ import {NotifyService} from "./entities/notify.service";
         ERestauranteAdminModule,
         ERestauranteAccountModule,
         ERestauranteEntityModule,
+        MenuGerencialModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     entryComponents: [

@@ -9,6 +9,7 @@ import {
     JhiAlertComponent,
     JhiAlertErrorComponent
 } from './';
+import {IncrementoPipe} from "./utils/IncrementoPipe.pipe";
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import {
     declarations: [
         FindLanguageFromKeyPipe,
         JhiAlertComponent,
-        JhiAlertErrorComponent
+        JhiAlertErrorComponent,
+        IncrementoPipe
     ],
     providers: [
         JhiLanguageHelper,
@@ -32,7 +34,8 @@ import {
         ERestauranteSharedLibsModule,
         FindLanguageFromKeyPipe,
         JhiAlertComponent,
-        JhiAlertErrorComponent
+        JhiAlertErrorComponent,
+        IncrementoPipe
     ]
 })
 export class ERestauranteSharedCommonModule {}

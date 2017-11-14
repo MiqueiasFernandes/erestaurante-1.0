@@ -42,6 +42,11 @@ export class ProdutoService {
             .map((res: Response) => this.convertResponse(res));
     }
 
+    queryFromCategoria(tipo :string, pesquisa :string): Observable<Produto[]> {
+        return this.http.get(`${this.resourceUrl}/pesquisa/${tipo}/${pesquisa}`)
+            .map((res: Response) => this.convertResponse(res).json);
+    }
+
     delete(id: number): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
