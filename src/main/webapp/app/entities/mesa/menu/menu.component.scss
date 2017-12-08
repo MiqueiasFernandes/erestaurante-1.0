@@ -5,14 +5,14 @@
 }
 
 
-.mesaimg {
-    display: inline-block;
-    width: 200px;
-    height: 130px;
-    background-color: lightgrey;
-    background: url("../../../../content/images/mesa.png") no-repeat center top;
-    background-size: cover;
-}
+//.mesaimg {
+//    display: inline-block;
+//    width: 200px;
+//    height: 130px;
+//    background-color: lightgrey;
+//    background: url("../../../../content/images/mesa.png") no-repeat center top;
+//    background-size: cover;
+//}
 
 .row {
     justify-content: center;
@@ -21,4 +21,36 @@
 
 .botao {
    text-align: center;
+}
+
+.nopad {
+    margin: 10px;
+}
+
+
+
+
+
+
+
+
+.nopad{
+    padding: 5px;
+}
+
+
+.mesaimg {
+    display: inline-block;
+    width: 60px;
+    height: 40px;
+    background-color: lightgrey;
+    background: url("../../../../content/images/mesa.png") no-repeat center top;
+    background-size: cover;
+}
+
+.centrado {
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
 }

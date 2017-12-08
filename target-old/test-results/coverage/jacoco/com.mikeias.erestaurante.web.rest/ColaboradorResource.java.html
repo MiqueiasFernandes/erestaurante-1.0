@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ColaboradorResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.web.rest</a> &gt; <span class="el_source">ColaboradorResource.java</span></div><h1>ColaboradorResource.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.web.rest;
+
+import com.google.common.collect.Iterables;
+import com.mikeias.erestaurante.domain.enumeration.CargoTipo;
+import com.mikeias.erestaurante.service.PrivilegioService;
+import com.mikeias.erestaurante.domain.Cargo;
+import com.mikeias.erestaurante.repository.CargoRepository;
+
+import com.codahale.metrics.annotation.Timed;
+import com.mikeias.erestaurante.domain.Colaborador;
+
+import com.mikeias.erestaurante.repository.ColaboradorRepository;
+import com.mikeias.erestaurante.service.UserService;
+import com.mikeias.erestaurante.web.rest.errors.BadRequestAlertException;
+import com.mikeias.erestaurante.web.rest.util.HeaderUtil;
+import com.mikeias.erestaurante.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
+import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * REST controller for managing Colaborador.
+ */
+@RestController
+@RequestMapping(&quot;/api&quot;)
+public class ColaboradorResource {
+
+<span class="fc" id="L43">    private final Logger log = LoggerFactory.getLogger(ColaboradorResource.class);</span>
+
+    private static final String ENTITY_NAME = &quot;colaborador&quot;;
+
+    private final ColaboradorRepository colaboradorRepository;
+
+    private final UserService userService;
+
+
+    //////////////////////////////////REQUER PRIVILEGIOS
+    private final CargoRepository cargoRepository;
+
+<span class="fc" id="L55">    public ColaboradorResource(ColaboradorRepository colaboradorRepository, UserService userService, CargoRepository cargoRepository) {</span>
+<span class="fc" id="L56">        this.colaboradorRepository = colaboradorRepository;</span>
+<span class="fc" id="L57">        this.userService = userService;</span>
+<span class="fc" id="L58">        this.cargoRepository = cargoRepository;</span>
+<span class="fc" id="L59">    }</span>
+//////////////////////////////////REQUER PRIVILEGIOS
+
+    /**
+     * POST  /colaboradors : Create a new colaborador.
+     *
+     * @param colaborador the colaborador to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new colaborador, or with status 400 (Bad Request) if the colaborador has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping(&quot;/colaboradors&quot;)
+    @Timed
+    public ResponseEntity&lt;Colaborador&gt; createColaborador(@Valid @RequestBody Colaborador colaborador) throws URISyntaxException {
+<span class="fc" id="L72">        log.debug(&quot;REST request to save Colaborador : {}&quot;, colaborador);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        if (!PrivilegioService.podeCriar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L76">            log.error(&quot;TENTATIVA DE CRIAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME + &quot; : {}&quot;, colaborador);</span>
+<span class="nc" id="L77">            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para criar esta entidade.&quot;)).body(null);</span>
+        }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        if (colaborador.getId() != null) {</span>
+<span class="fc" id="L81">            throw new BadRequestAlertException(&quot;A new colaborador cannot already have an ID&quot;, ENTITY_NAME, &quot;idexists&quot;);</span>
+        }
+<span class="nc" id="L83">        Colaborador result = colaboradorRepository.save(colaborador);</span>
+
+        ////ativar o usuario
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if (result != null) {</span>
+<span class="nc" id="L87">            this.userService.getUserWithAuthoritiesByLogin(</span>
+<span class="nc" id="L88">                colaborador.getUsuario().getLogin()</span>
+<span class="nc" id="L89">            ).ifPresent(user -&gt; {</span>
+<span class="nc" id="L90">                this.userService.activateRegistration(user.getActivationKey());</span>
+<span class="nc" id="L91">            });</span>
+        }
+
+<span class="nc" id="L94">        return ResponseEntity.created(new URI(&quot;/api/colaboradors/&quot; + result.getId()))</span>
+<span class="nc" id="L95">            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))</span>
+<span class="nc" id="L96">            .body(result);</span>
+    }
+
+    /**
+     * PUT  /colaboradors : Updates an existing colaborador.
+     *
+     * @param colaborador the colaborador to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated colaborador,
+     * or with status 400 (Bad Request) if the colaborador is not valid,
+     * or with status 500 (Internal Server Error) if the colaborador couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping(&quot;/colaboradors&quot;)
+    @Timed
+    public ResponseEntity&lt;Colaborador&gt; updateColaborador(@Valid @RequestBody Colaborador colaborador) throws URISyntaxException {
+<span class="fc" id="L111">        log.debug(&quot;REST request to update Colaborador : {}&quot;, colaborador);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if (!PrivilegioService.podeEditar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L115">            log.error(&quot;TENTATIVA DE EDITAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME + &quot; : {}&quot;, colaborador);</span>
+<span class="nc" id="L116">            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para editar esta entidade.&quot;)).body(null);</span>
+        }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (colaborador.getId() == null) {</span>
+<span class="nc" id="L120">            return createColaborador(colaborador);</span>
+        }
+<span class="fc" id="L122">        Colaborador result = colaboradorRepository.save(colaborador);</span>
+<span class="fc" id="L123">        return ResponseEntity.ok()</span>
+<span class="fc" id="L124">            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, colaborador.getId().toString()))</span>
+<span class="fc" id="L125">            .body(result);</span>
+    }
+
+    /**
+     * GET  /colaboradors : get all the colaboradors.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of colaboradors in body
+     */
+    @GetMapping(&quot;/colaboradors&quot;)
+    @Timed
+    public ResponseEntity&lt;List&lt;Colaborador&gt;&gt; getAllColaboradors(@ApiParam Pageable pageable) {
+<span class="nc" id="L137">        log.debug(&quot;REST request to get a page of Colaboradors&quot;);</span>
+
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L142">            Page&lt;Colaborador&gt; page = colaboradorRepository.findAll(pageable);</span>
+<span class="nc" id="L143">            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, &quot;/api/colaboradors&quot;);</span>
+<span class="nc" id="L144">            return new ResponseEntity&lt;&gt;(page.getContent(), headers, HttpStatus.OK);</span>
+
+        }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="nc" id="L148">        return ResponseEntity.badRequest()</span>
+<span class="nc" id="L149">            .headers(HeaderUtil</span>
+<span class="nc" id="L150">                .createFailureAlert(ENTITY_NAME,</span>
+                    &quot;privilegios insuficientes.&quot;,
+                    &quot;Este usuario não possui privilegios sufuentes &quot; +
+<span class="nc" id="L153">                        &quot;para ver/listar esta entidade.&quot;)).body(null);</span>
+    }
+
+    /**
+     * GET  /colaboradors/:id : get the &quot;id&quot; colaborador.
+     *
+     * @param id the id of the colaborador to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the colaborador, or with status 404 (Not Found)
+     */
+    @GetMapping(&quot;/colaboradors/{id}&quot;)
+    @Timed
+    public ResponseEntity&lt;Colaborador&gt; getColaborador(@PathVariable Long id) {
+<span class="fc" id="L165">        log.debug(&quot;REST request to get Colaborador : {}&quot;, id);</span>
+
+
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">        if (id &lt; 0) {</span>
+<span class="nc" id="L169">            log.debug(&quot;REST request to get Current colaborador : {}&quot;, id);</span>
+<span class="nc" id="L170">            return ResponseUtil.wrapOrNotFound(</span>
+<span class="nc" id="L171">                Optional.ofNullable(colaboradorRepository.findByUsuarioIsCurrentUser()));</span>
+        }
+
+
+<span class="fc" id="L175">        Colaborador colaborador = colaboradorRepository.findOneWithEagerRelationships(id);</span>
+
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L180">            colaborador = null;</span>
+<span class="nc" id="L181">            log.error(&quot;TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME + &quot; : {}&quot;, id);</span>
+        }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L184">        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(colaborador));</span>
+    }
+
+    /**
+     * DELETE  /colaboradors/:id : delete the &quot;id&quot; colaborador.
+     *
+     * @param id the id of the colaborador to delete
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @DeleteMapping(&quot;/colaboradors/{id}&quot;)
+    @Timed
+    public ResponseEntity&lt;Void&gt; deleteColaborador(@PathVariable Long id) {
+<span class="fc" id="L196">        log.debug(&quot;REST request to delete Colaborador : {}&quot;, id);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">        if (PrivilegioService.podeDeletar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="fc" id="L200">            colaboradorRepository.delete(id);</span>
+        } else {
+<span class="nc" id="L202">            log.error(&quot;TENTATIVA DE EXCUIR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME + &quot; : {}&quot;, id);</span>
+<span class="nc" id="L203">            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para deletar esta entidade.&quot;)).body(null);</span>
+        }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L206">        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();</span>
+    }
+
+
+    @GetMapping(&quot;/colaboradors/cargo/{cargo}&quot;)
+    @Timed
+    public ResponseEntity&lt;List&lt;Colaborador&gt;&gt; getColaboradorByCargo(@PathVariable String cargo) {
+<span class="nc" id="L213">        log.debug(&quot;REST request to get Colaborador by cargo: {}&quot;, cargo);</span>
+
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="nc bnc" id="L217" title="All 2 branches missed.">        if (PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L218">            List&lt;Colaborador&gt; colaboradores = colaboradorRepository.findAllWithEagerRelationships();</span>
+
+<span class="nc" id="L220">            colaboradores.removeIf(c -&gt; {</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">                for (Cargo a : c.getCargos())</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">                    if (a.getTipo().toString().equals(cargo))</span>
+<span class="nc" id="L223">                        return false;</span>
+<span class="nc" id="L224">                return true;</span>
+            });
+
+
+<span class="nc" id="L228">            return new ResponseEntity&lt;&gt;(colaboradores, HttpStatus.OK);</span>
+
+        }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="nc" id="L232">        return ResponseEntity.badRequest()</span>
+<span class="nc" id="L233">            .headers(HeaderUtil</span>
+<span class="nc" id="L234">                .createFailureAlert(ENTITY_NAME,</span>
+                    &quot;privilegios insuficientes.&quot;,
+                    &quot;Este usuario não possui privilegios sufuentes &quot; +
+<span class="nc" id="L237">                        &quot;para ver/listar esta entidade.&quot;)).body(null);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -74,9 +74,34 @@
                 [(ngModel)]="produto.html"  />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.observacao" for="field_observacao">Observacao</label>
-            <input type="text" class="form-control" name="observacao" id="field_observacao"
-                [(ngModel)]="produto.observacao"  />
+            <label class="form-control-label"  for="field_observacao">Local de Produção</label>
+            <!--<input type="text" class="form-control" name="observacao" id="field_observacao"-->
+                <!--[(ngModel)]="produto.observacao"  />-->
+
+
+            <div ngbDropdown class="nav-item dropdown pointer">
+
+                <div class="input-group">
+                    <div class="input-group-addon"> <span class="fa fa-print"></span></div>
+                    <input
+                        name="observacao" id="field_observacao"
+                        type="text"
+                        class="form-control form-control-lg filtro dropdown"
+                        placeholder="clique para selecionar a impressora"
+                        [(ngModel)]="produto.observacao"
+                        readonly
+                        ngbDropdownToggle
+                    >
+                </div>
+                <ul class="dropdown-menu" ngbDropdownMenu #drop>
+                    <li *ngFor="let impressora of impressoras">
+                        <a class="dropdown-item" (click)="produto.observacao = impressora">
+                            {{impressora}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="eRestauranteApp.produto.opcional" for="field_opcional">Opcional</label>

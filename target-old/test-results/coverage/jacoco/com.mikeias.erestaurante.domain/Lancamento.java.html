@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Lancamento.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.domain</a> &gt; <span class="el_source">Lancamento.java</span></div><h1>Lancamento.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.domain;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.util.Objects;
+
+import com.mikeias.erestaurante.domain.enumeration.Natureza;
+
+/**
+ * A Lancamento.
+ */
+@Entity
+@Table(name = &quot;lancamento&quot;)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+<span class="fc" id="L20">public class Lancamento implements Serializable {</span>
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;sequenceGenerator&quot;)
+    @SequenceGenerator(name = &quot;sequenceGenerator&quot;)
+    private Long id;
+
+    @Column(name = &quot;isentrada&quot;)
+    private Boolean isentrada;
+
+    @NotNull
+    @Column(name = &quot;data&quot;, nullable = false)
+    private ZonedDateTime data;
+
+    @NotNull
+    @Column(name = &quot;vencimento&quot;, nullable = false)
+    private ZonedDateTime vencimento;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = &quot;natureza&quot;)
+    private Natureza natureza;
+
+    @Column(name = &quot;valor&quot;)
+    private Double valor;
+
+    @Column(name = &quot;parcelas&quot;)
+    private Integer parcelas;
+
+    @Column(name = &quot;observacao&quot;)
+    private String observacao;
+
+    @ManyToOne
+    private Comanda comanda;
+
+    @ManyToOne
+    private Colaborador colaborador;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public Long getId() {
+<span class="fc" id="L61">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="fc" id="L65">        this.id = id;</span>
+<span class="fc" id="L66">    }</span>
+
+    public Boolean isIsentrada() {
+<span class="fc" id="L69">        return isentrada;</span>
+    }
+
+    public Lancamento isentrada(Boolean isentrada) {
+<span class="fc" id="L73">        this.isentrada = isentrada;</span>
+<span class="fc" id="L74">        return this;</span>
+    }
+
+    public void setIsentrada(Boolean isentrada) {
+<span class="fc" id="L78">        this.isentrada = isentrada;</span>
+<span class="fc" id="L79">    }</span>
+
+    public ZonedDateTime getData() {
+<span class="fc" id="L82">        return data;</span>
+    }
+
+    public Lancamento data(ZonedDateTime data) {
+<span class="fc" id="L86">        this.data = data;</span>
+<span class="fc" id="L87">        return this;</span>
+    }
+
+    public void setData(ZonedDateTime data) {
+<span class="fc" id="L91">        this.data = data;</span>
+<span class="fc" id="L92">    }</span>
+
+    public ZonedDateTime getVencimento() {
+<span class="fc" id="L95">        return vencimento;</span>
+    }
+
+    public Lancamento vencimento(ZonedDateTime vencimento) {
+<span class="fc" id="L99">        this.vencimento = vencimento;</span>
+<span class="fc" id="L100">        return this;</span>
+    }
+
+    public void setVencimento(ZonedDateTime vencimento) {
+<span class="fc" id="L104">        this.vencimento = vencimento;</span>
+<span class="fc" id="L105">    }</span>
+
+    public Natureza getNatureza() {
+<span class="fc" id="L108">        return natureza;</span>
+    }
+
+    public Lancamento natureza(Natureza natureza) {
+<span class="fc" id="L112">        this.natureza = natureza;</span>
+<span class="fc" id="L113">        return this;</span>
+    }
+
+    public void setNatureza(Natureza natureza) {
+<span class="fc" id="L117">        this.natureza = natureza;</span>
+<span class="fc" id="L118">    }</span>
+
+    public Double getValor() {
+<span class="fc" id="L121">        return valor;</span>
+    }
+
+    public Lancamento valor(Double valor) {
+<span class="fc" id="L125">        this.valor = valor;</span>
+<span class="fc" id="L126">        return this;</span>
+    }
+
+    public void setValor(Double valor) {
+<span class="fc" id="L130">        this.valor = valor;</span>
+<span class="fc" id="L131">    }</span>
+
+    public Integer getParcelas() {
+<span class="fc" id="L134">        return parcelas;</span>
+    }
+
+    public Lancamento parcelas(Integer parcelas) {
+<span class="fc" id="L138">        this.parcelas = parcelas;</span>
+<span class="fc" id="L139">        return this;</span>
+    }
+
+    public void setParcelas(Integer parcelas) {
+<span class="fc" id="L143">        this.parcelas = parcelas;</span>
+<span class="fc" id="L144">    }</span>
+
+    public String getObservacao() {
+<span class="fc" id="L147">        return observacao;</span>
+    }
+
+    public Lancamento observacao(String observacao) {
+<span class="fc" id="L151">        this.observacao = observacao;</span>
+<span class="fc" id="L152">        return this;</span>
+    }
+
+    public void setObservacao(String observacao) {
+<span class="fc" id="L156">        this.observacao = observacao;</span>
+<span class="fc" id="L157">    }</span>
+
+    public Comanda getComanda() {
+<span class="fc" id="L160">        return comanda;</span>
+    }
+
+    public Lancamento comanda(Comanda comanda) {
+<span class="nc" id="L164">        this.comanda = comanda;</span>
+<span class="nc" id="L165">        return this;</span>
+    }
+
+    public void setComanda(Comanda comanda) {
+<span class="nc" id="L169">        this.comanda = comanda;</span>
+<span class="nc" id="L170">    }</span>
+
+    public Colaborador getColaborador() {
+<span class="fc" id="L173">        return colaborador;</span>
+    }
+
+    public Lancamento colaborador(Colaborador colaborador) {
+<span class="nc" id="L177">        this.colaborador = colaborador;</span>
+<span class="nc" id="L178">        return this;</span>
+    }
+
+    public void setColaborador(Colaborador colaborador) {
+<span class="nc" id="L182">        this.colaborador = colaborador;</span>
+<span class="nc" id="L183">    }</span>
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    @Override
+    public boolean equals(Object o) {
+<span class="fc bfc" id="L188" title="All 2 branches covered.">        if (this == o) {</span>
+<span class="fc" id="L189">            return true;</span>
+        }
+<span class="fc bfc" id="L191" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L192">            return false;</span>
+        }
+<span class="fc" id="L194">        Lancamento lancamento = (Lancamento) o;</span>
+<span class="fc bfc" id="L195" title="All 4 branches covered.">        if (lancamento.getId() == null || getId() == null) {</span>
+<span class="fc" id="L196">            return false;</span>
+        }
+<span class="fc" id="L198">        return Objects.equals(getId(), lancamento.getId());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L203">        return Objects.hashCode(getId());</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L208">        return &quot;Lancamento{&quot; +</span>
+<span class="fc" id="L209">            &quot;id=&quot; + getId() +</span>
+<span class="fc" id="L210">            &quot;, isentrada='&quot; + isIsentrada() + &quot;'&quot; +</span>
+<span class="fc" id="L211">            &quot;, data='&quot; + getData() + &quot;'&quot; +</span>
+<span class="fc" id="L212">            &quot;, vencimento='&quot; + getVencimento() + &quot;'&quot; +</span>
+<span class="fc" id="L213">            &quot;, natureza='&quot; + getNatureza() + &quot;'&quot; +</span>
+<span class="fc" id="L214">            &quot;, valor='&quot; + getValor() + &quot;'&quot; +</span>
+<span class="fc" id="L215">            &quot;, parcelas='&quot; + getParcelas() + &quot;'&quot; +</span>
+<span class="fc" id="L216">            &quot;, observacao='&quot; + getObservacao() + &quot;'&quot; +</span>
+            &quot;}&quot;;
+    }
+
+    public Double getDesconto() {
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">        if (this.getObservacao().contains(&quot;,\&quot;desconto\&quot;:&quot;)){</span>
+<span class="nc" id="L222">           return Double.valueOf(this.getObservacao().replaceAll(&quot;.*desconto.{2}&quot;, &quot;&quot;).split(&quot;,&quot;)[0]);</span>
+        }
+<span class="fc" id="L224">        return 0.0;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,48 @@
+
+<ngb-alert class="float-right" *ngIf="!mesas">Não há mesas ainda!</ngb-alert>
+
+<div class="row" *ngIf="mesas">
+
+
+    <div class="card nopad" *ngFor="let mesa of mesas" (click)="routear(mesa)">
+        <div class="card-body nopad">
+            <div class="row centrado">
+                <div class="col-6">
+                    <span class="mesaimg" [style.background-color]="mesaColor[mesa.id]"></span>
+                </div>
+                <div class="col-6">
+                    <b>MESA {{mesa.local}}</b><br>
+                    {{mesa.codigo}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--<div class="card mesa" *ngFor="let mesa of mesas">-->
+
+
+        <!--<div class="card-body row">-->
+            <!--<div class="col-6">-->
+                <!--<span class="mesaimg" [style.background-color]="mesaColor[mesa.id]"></span>-->
+              <!--</div>-->
+            <!--<div class="col-6">-->
+                <!--<h2>-->
+                  <!--<b>  MESA {{mesa.local}} </b>-->
+                <!--</h2>-->
+                <!--<p>-->
+                    <!--{{mesa.codigo}}-->
+                <!--</p>-->
+
+                <!--<p  class="botao" >-->
+                    <!--<button class="btn btn-outline-success"  type="submit" [routerLink]="['/venda/bymesa/', mesa.id ]"  replaceUrl="true">-->
+                        <!--Gerenciar-->
+                    <!--</button>-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+    <!--</div>-->
+
+
+</div>

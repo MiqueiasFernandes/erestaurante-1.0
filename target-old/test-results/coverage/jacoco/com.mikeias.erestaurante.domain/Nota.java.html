@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Nota.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.domain</a> &gt; <span class="el_source">Nota.java</span></div><h1>Nota.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.domain;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * A Nota.
+ */
+@Entity
+@Table(name = &quot;nota&quot;)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+<span class="fc" id="L16">public class Nota implements Serializable {</span>
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;sequenceGenerator&quot;)
+    @SequenceGenerator(name = &quot;sequenceGenerator&quot;)
+    private Long id;
+
+    @Column(name = &quot;nf_ident&quot;)
+    private String nfIDENT;
+
+    @Column(name = &quot;qrcode&quot;)
+    private String qrcode;
+
+    @Column(name = &quot;codigo&quot;)
+    private String codigo;
+
+    @Column(name = &quot;identificador&quot;)
+    private String identificador;
+
+    @Column(name = &quot;versao&quot;)
+    private String versao;
+
+    @Column(name = &quot;nf_nota_info_identificacao&quot;)
+    private String nfNotaInfoIdentificacao;
+
+    @Column(name = &quot;nf_nota_info_emitente&quot;)
+    private String nfNotaInfoEmitente;
+
+    @Column(name = &quot;nf_nota_info_avulsa&quot;)
+    private String nfNotaInfoAvulsa;
+
+    @Column(name = &quot;nf_nota_info_destinatario&quot;)
+    private String nfNotaInfoDestinatario;
+
+    @Column(name = &quot;nf_nota_info_local&quot;)
+    private String nfNotaInfoLocal;
+
+    @Column(name = &quot;nf_pessoa_autorizada_download_n_fe&quot;)
+    private String nfPessoaAutorizadaDownloadNFe;
+
+    @Column(name = &quot;itens&quot;)
+    private String itens;
+
+    @Column(name = &quot;nf_nota_info_total&quot;)
+    private String nfNotaInfoTotal;
+
+    @Column(name = &quot;nf_nota_info_transporte&quot;)
+    private String nfNotaInfoTransporte;
+
+    @Column(name = &quot;nf_nota_info_cobranca&quot;)
+    private String nfNotaInfoCobranca;
+
+    @Column(name = &quot;nf_nota_info_pagamento&quot;)
+    private String nfNotaInfoPagamento;
+
+    @Column(name = &quot;nf_nota_info_informacoes_adicionais&quot;)
+    private String nfNotaInfoInformacoesAdicionais;
+
+    @Column(name = &quot;nf_nota_info_exportacao&quot;)
+    private String nfNotaInfoExportacao;
+
+    @Column(name = &quot;nf_nota_info_compra&quot;)
+    private String nfNotaInfoCompra;
+
+    @Column(name = &quot;nf_nota_info_cana&quot;)
+    private String nfNotaInfoCana;
+
+    @Lob
+    @Column(name = &quot;xml&quot;)
+    private String xml;
+
+    @Lob
+    @Column(name = &quot;danfe&quot;)
+    private String danfe;
+
+    @Lob
+    @Column(name = &quot;qrcode_image&quot;)
+    private byte[] qrcodeImage;
+
+    @Column(name = &quot;qrcode_image_content_type&quot;)
+    private String qrcodeImageContentType;
+
+    @ManyToOne
+    private Imposto imposto;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public Long getId() {
+<span class="fc" id="L105">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="fc" id="L109">        this.id = id;</span>
+<span class="fc" id="L110">    }</span>
+
+    public String getNfIDENT() {
+<span class="fc" id="L113">        return nfIDENT;</span>
+    }
+
+    public Nota nfIDENT(String nfIDENT) {
+<span class="fc" id="L117">        this.nfIDENT = nfIDENT;</span>
+<span class="fc" id="L118">        return this;</span>
+    }
+
+    public void setNfIDENT(String nfIDENT) {
+<span class="fc" id="L122">        this.nfIDENT = nfIDENT;</span>
+<span class="fc" id="L123">    }</span>
+
+    public String getQrcode() {
+<span class="fc" id="L126">        return qrcode;</span>
+    }
+
+    public Nota qrcode(String qrcode) {
+<span class="fc" id="L130">        this.qrcode = qrcode;</span>
+<span class="fc" id="L131">        return this;</span>
+    }
+
+    public void setQrcode(String qrcode) {
+<span class="fc" id="L135">        this.qrcode = qrcode;</span>
+<span class="fc" id="L136">    }</span>
+
+    public String getCodigo() {
+<span class="fc" id="L139">        return codigo;</span>
+    }
+
+    public Nota codigo(String codigo) {
+<span class="fc" id="L143">        this.codigo = codigo;</span>
+<span class="fc" id="L144">        return this;</span>
+    }
+
+    public void setCodigo(String codigo) {
+<span class="fc" id="L148">        this.codigo = codigo;</span>
+<span class="fc" id="L149">    }</span>
+
+    public String getIdentificador() {
+<span class="fc" id="L152">        return identificador;</span>
+    }
+
+    public Nota identificador(String identificador) {
+<span class="fc" id="L156">        this.identificador = identificador;</span>
+<span class="fc" id="L157">        return this;</span>
+    }
+
+    public void setIdentificador(String identificador) {
+<span class="fc" id="L161">        this.identificador = identificador;</span>
+<span class="fc" id="L162">    }</span>
+
+    public String getVersao() {
+<span class="fc" id="L165">        return versao;</span>
+    }
+
+    public Nota versao(String versao) {
+<span class="fc" id="L169">        this.versao = versao;</span>
+<span class="fc" id="L170">        return this;</span>
+    }
+
+    public void setVersao(String versao) {
+<span class="fc" id="L174">        this.versao = versao;</span>
+<span class="fc" id="L175">    }</span>
+
+    public String getNfNotaInfoIdentificacao() {
+<span class="fc" id="L178">        return nfNotaInfoIdentificacao;</span>
+    }
+
+    public Nota nfNotaInfoIdentificacao(String nfNotaInfoIdentificacao) {
+<span class="fc" id="L182">        this.nfNotaInfoIdentificacao = nfNotaInfoIdentificacao;</span>
+<span class="fc" id="L183">        return this;</span>
+    }
+
+    public void setNfNotaInfoIdentificacao(String nfNotaInfoIdentificacao) {
+<span class="fc" id="L187">        this.nfNotaInfoIdentificacao = nfNotaInfoIdentificacao;</span>
+<span class="fc" id="L188">    }</span>
+
+    public String getNfNotaInfoEmitente() {
+<span class="fc" id="L191">        return nfNotaInfoEmitente;</span>
+    }
+
+    public Nota nfNotaInfoEmitente(String nfNotaInfoEmitente) {
+<span class="fc" id="L195">        this.nfNotaInfoEmitente = nfNotaInfoEmitente;</span>
+<span class="fc" id="L196">        return this;</span>
+    }
+
+    public void setNfNotaInfoEmitente(String nfNotaInfoEmitente) {
+<span class="fc" id="L200">        this.nfNotaInfoEmitente = nfNotaInfoEmitente;</span>
+<span class="fc" id="L201">    }</span>
+
+    public String getNfNotaInfoAvulsa() {
+<span class="fc" id="L204">        return nfNotaInfoAvulsa;</span>
+    }
+
+    public Nota nfNotaInfoAvulsa(String nfNotaInfoAvulsa) {
+<span class="fc" id="L208">        this.nfNotaInfoAvulsa = nfNotaInfoAvulsa;</span>
+<span class="fc" id="L209">        return this;</span>
+    }
+
+    public void setNfNotaInfoAvulsa(String nfNotaInfoAvulsa) {
+<span class="fc" id="L213">        this.nfNotaInfoAvulsa = nfNotaInfoAvulsa;</span>
+<span class="fc" id="L214">    }</span>
+
+    public String getNfNotaInfoDestinatario() {
+<span class="fc" id="L217">        return nfNotaInfoDestinatario;</span>
+    }
+
+    public Nota nfNotaInfoDestinatario(String nfNotaInfoDestinatario) {
+<span class="fc" id="L221">        this.nfNotaInfoDestinatario = nfNotaInfoDestinatario;</span>
+<span class="fc" id="L222">        return this;</span>
+    }
+
+    public void setNfNotaInfoDestinatario(String nfNotaInfoDestinatario) {
+<span class="fc" id="L226">        this.nfNotaInfoDestinatario = nfNotaInfoDestinatario;</span>
+<span class="fc" id="L227">    }</span>
+
+    public String getNfNotaInfoLocal() {
+<span class="fc" id="L230">        return nfNotaInfoLocal;</span>
+    }
+
+    public Nota nfNotaInfoLocal(String nfNotaInfoLocal) {
+<span class="fc" id="L234">        this.nfNotaInfoLocal = nfNotaInfoLocal;</span>
+<span class="fc" id="L235">        return this;</span>
+    }
+
+    public void setNfNotaInfoLocal(String nfNotaInfoLocal) {
+<span class="fc" id="L239">        this.nfNotaInfoLocal = nfNotaInfoLocal;</span>
+<span class="fc" id="L240">    }</span>
+
+    public String getNfPessoaAutorizadaDownloadNFe() {
+<span class="fc" id="L243">        return nfPessoaAutorizadaDownloadNFe;</span>
+    }
+
+    public Nota nfPessoaAutorizadaDownloadNFe(String nfPessoaAutorizadaDownloadNFe) {
+<span class="fc" id="L247">        this.nfPessoaAutorizadaDownloadNFe = nfPessoaAutorizadaDownloadNFe;</span>
+<span class="fc" id="L248">        return this;</span>
+    }
+
+    public void setNfPessoaAutorizadaDownloadNFe(String nfPessoaAutorizadaDownloadNFe) {
+<span class="fc" id="L252">        this.nfPessoaAutorizadaDownloadNFe = nfPessoaAutorizadaDownloadNFe;</span>
+<span class="fc" id="L253">    }</span>
+
+    public String getItens() {
+<span class="fc" id="L256">        return itens;</span>
+    }
+
+    public Nota itens(String itens) {
+<span class="fc" id="L260">        this.itens = itens;</span>
+<span class="fc" id="L261">        return this;</span>
+    }
+
+    public void setItens(String itens) {
+<span class="fc" id="L265">        this.itens = itens;</span>
+<span class="fc" id="L266">    }</span>
+
+    public String getNfNotaInfoTotal() {
+<span class="fc" id="L269">        return nfNotaInfoTotal;</span>
+    }
+
+    public Nota nfNotaInfoTotal(String nfNotaInfoTotal) {
+<span class="fc" id="L273">        this.nfNotaInfoTotal = nfNotaInfoTotal;</span>
+<span class="fc" id="L274">        return this;</span>
+    }
+
+    public void setNfNotaInfoTotal(String nfNotaInfoTotal) {
+<span class="fc" id="L278">        this.nfNotaInfoTotal = nfNotaInfoTotal;</span>
+<span class="fc" id="L279">    }</span>
+
+    public String getNfNotaInfoTransporte() {
+<span class="fc" id="L282">        return nfNotaInfoTransporte;</span>
+    }
+
+    public Nota nfNotaInfoTransporte(String nfNotaInfoTransporte) {
+<span class="fc" id="L286">        this.nfNotaInfoTransporte = nfNotaInfoTransporte;</span>
+<span class="fc" id="L287">        return this;</span>
+    }
+
+    public void setNfNotaInfoTransporte(String nfNotaInfoTransporte) {
+<span class="fc" id="L291">        this.nfNotaInfoTransporte = nfNotaInfoTransporte;</span>
+<span class="fc" id="L292">    }</span>
+
+    public String getNfNotaInfoCobranca() {
+<span class="fc" id="L295">        return nfNotaInfoCobranca;</span>
+    }
+
+    public Nota nfNotaInfoCobranca(String nfNotaInfoCobranca) {
+<span class="fc" id="L299">        this.nfNotaInfoCobranca = nfNotaInfoCobranca;</span>
+<span class="fc" id="L300">        return this;</span>
+    }
+
+    public void setNfNotaInfoCobranca(String nfNotaInfoCobranca) {
+<span class="fc" id="L304">        this.nfNotaInfoCobranca = nfNotaInfoCobranca;</span>
+<span class="fc" id="L305">    }</span>
+
+    public String getNfNotaInfoPagamento() {
+<span class="fc" id="L308">        return nfNotaInfoPagamento;</span>
+    }
+
+    public Nota nfNotaInfoPagamento(String nfNotaInfoPagamento) {
+<span class="fc" id="L312">        this.nfNotaInfoPagamento = nfNotaInfoPagamento;</span>
+<span class="fc" id="L313">        return this;</span>
+    }
+
+    public void setNfNotaInfoPagamento(String nfNotaInfoPagamento) {
+<span class="fc" id="L317">        this.nfNotaInfoPagamento = nfNotaInfoPagamento;</span>
+<span class="fc" id="L318">    }</span>
+
+    public String getNfNotaInfoInformacoesAdicionais() {
+<span class="fc" id="L321">        return nfNotaInfoInformacoesAdicionais;</span>
+    }
+
+    public Nota nfNotaInfoInformacoesAdicionais(String nfNotaInfoInformacoesAdicionais) {
+<span class="fc" id="L325">        this.nfNotaInfoInformacoesAdicionais = nfNotaInfoInformacoesAdicionais;</span>
+<span class="fc" id="L326">        return this;</span>
+    }
+
+    public void setNfNotaInfoInformacoesAdicionais(String nfNotaInfoInformacoesAdicionais) {
+<span class="fc" id="L330">        this.nfNotaInfoInformacoesAdicionais = nfNotaInfoInformacoesAdicionais;</span>
+<span class="fc" id="L331">    }</span>
+
+    public String getNfNotaInfoExportacao() {
+<span class="fc" id="L334">        return nfNotaInfoExportacao;</span>
+    }
+
+    public Nota nfNotaInfoExportacao(String nfNotaInfoExportacao) {
+<span class="fc" id="L338">        this.nfNotaInfoExportacao = nfNotaInfoExportacao;</span>
+<span class="fc" id="L339">        return this;</span>
+    }
+
+    public void setNfNotaInfoExportacao(String nfNotaInfoExportacao) {
+<span class="fc" id="L343">        this.nfNotaInfoExportacao = nfNotaInfoExportacao;</span>
+<span class="fc" id="L344">    }</span>
+
+    public String getNfNotaInfoCompra() {
+<span class="fc" id="L347">        return nfNotaInfoCompra;</span>
+    }
+
+    public Nota nfNotaInfoCompra(String nfNotaInfoCompra) {
+<span class="fc" id="L351">        this.nfNotaInfoCompra = nfNotaInfoCompra;</span>
+<span class="fc" id="L352">        return this;</span>
+    }
+
+    public void setNfNotaInfoCompra(String nfNotaInfoCompra) {
+<span class="fc" id="L356">        this.nfNotaInfoCompra = nfNotaInfoCompra;</span>
+<span class="fc" id="L357">    }</span>
+
+    public String getNfNotaInfoCana() {
+<span class="fc" id="L360">        return nfNotaInfoCana;</span>
+    }
+
+    public Nota nfNotaInfoCana(String nfNotaInfoCana) {
+<span class="fc" id="L364">        this.nfNotaInfoCana = nfNotaInfoCana;</span>
+<span class="fc" id="L365">        return this;</span>
+    }
+
+    public void setNfNotaInfoCana(String nfNotaInfoCana) {
+<span class="fc" id="L369">        this.nfNotaInfoCana = nfNotaInfoCana;</span>
+<span class="fc" id="L370">    }</span>
+
+    public String getXml() {
+<span class="fc" id="L373">        return xml;</span>
+    }
+
+    public Nota xml(String xml) {
+<span class="fc" id="L377">        this.xml = xml;</span>
+<span class="fc" id="L378">        return this;</span>
+    }
+
+    public void setXml(String xml) {
+<span class="fc" id="L382">        this.xml = xml;</span>
+<span class="fc" id="L383">    }</span>
+
+    public String getDanfe() {
+<span class="fc" id="L386">        return danfe;</span>
+    }
+
+    public Nota danfe(String danfe) {
+<span class="fc" id="L390">        this.danfe = danfe;</span>
+<span class="fc" id="L391">        return this;</span>
+    }
+
+    public void setDanfe(String danfe) {
+<span class="fc" id="L395">        this.danfe = danfe;</span>
+<span class="fc" id="L396">    }</span>
+
+    public byte[] getQrcodeImage() {
+<span class="fc" id="L399">        return qrcodeImage;</span>
+    }
+
+    public Nota qrcodeImage(byte[] qrcodeImage) {
+<span class="fc" id="L403">        this.qrcodeImage = qrcodeImage;</span>
+<span class="fc" id="L404">        return this;</span>
+    }
+
+    public void setQrcodeImage(byte[] qrcodeImage) {
+<span class="fc" id="L408">        this.qrcodeImage = qrcodeImage;</span>
+<span class="fc" id="L409">    }</span>
+
+    public String getQrcodeImageContentType() {
+<span class="fc" id="L412">        return qrcodeImageContentType;</span>
+    }
+
+    public Nota qrcodeImageContentType(String qrcodeImageContentType) {
+<span class="fc" id="L416">        this.qrcodeImageContentType = qrcodeImageContentType;</span>
+<span class="fc" id="L417">        return this;</span>
+    }
+
+    public void setQrcodeImageContentType(String qrcodeImageContentType) {
+<span class="fc" id="L421">        this.qrcodeImageContentType = qrcodeImageContentType;</span>
+<span class="fc" id="L422">    }</span>
+
+    public Imposto getImposto() {
+<span class="fc" id="L425">        return imposto;</span>
+    }
+
+    public Nota imposto(Imposto imposto) {
+<span class="nc" id="L429">        this.imposto = imposto;</span>
+<span class="nc" id="L430">        return this;</span>
+    }
+
+    public void setImposto(Imposto imposto) {
+<span class="nc" id="L434">        this.imposto = imposto;</span>
+<span class="nc" id="L435">    }</span>
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    @Override
+    public boolean equals(Object o) {
+<span class="fc bfc" id="L440" title="All 2 branches covered.">        if (this == o) {</span>
+<span class="fc" id="L441">            return true;</span>
+        }
+<span class="fc bfc" id="L443" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L444">            return false;</span>
+        }
+<span class="fc" id="L446">        Nota nota = (Nota) o;</span>
+<span class="fc bfc" id="L447" title="All 4 branches covered.">        if (nota.getId() == null || getId() == null) {</span>
+<span class="fc" id="L448">            return false;</span>
+        }
+<span class="fc" id="L450">        return Objects.equals(getId(), nota.getId());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L455">        return Objects.hashCode(getId());</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L460">        return &quot;Nota{&quot; +</span>
+<span class="fc" id="L461">            &quot;id=&quot; + getId() +</span>
+<span class="fc" id="L462">            &quot;, nfIDENT='&quot; + getNfIDENT() + &quot;'&quot; +</span>
+<span class="fc" id="L463">            &quot;, qrcode='&quot; + getQrcode() + &quot;'&quot; +</span>
+<span class="fc" id="L464">            &quot;, codigo='&quot; + getCodigo() + &quot;'&quot; +</span>
+<span class="fc" id="L465">            &quot;, identificador='&quot; + getIdentificador() + &quot;'&quot; +</span>
+<span class="fc" id="L466">            &quot;, versao='&quot; + getVersao() + &quot;'&quot; +</span>
+<span class="fc" id="L467">            &quot;, nfNotaInfoIdentificacao='&quot; + getNfNotaInfoIdentificacao() + &quot;'&quot; +</span>
+<span class="fc" id="L468">            &quot;, nfNotaInfoEmitente='&quot; + getNfNotaInfoEmitente() + &quot;'&quot; +</span>
+<span class="fc" id="L469">            &quot;, nfNotaInfoAvulsa='&quot; + getNfNotaInfoAvulsa() + &quot;'&quot; +</span>
+<span class="fc" id="L470">            &quot;, nfNotaInfoDestinatario='&quot; + getNfNotaInfoDestinatario() + &quot;'&quot; +</span>
+<span class="fc" id="L471">            &quot;, nfNotaInfoLocal='&quot; + getNfNotaInfoLocal() + &quot;'&quot; +</span>
+<span class="fc" id="L472">            &quot;, nfPessoaAutorizadaDownloadNFe='&quot; + getNfPessoaAutorizadaDownloadNFe() + &quot;'&quot; +</span>
+<span class="fc" id="L473">            &quot;, itens='&quot; + getItens() + &quot;'&quot; +</span>
+<span class="fc" id="L474">            &quot;, nfNotaInfoTotal='&quot; + getNfNotaInfoTotal() + &quot;'&quot; +</span>
+<span class="fc" id="L475">            &quot;, nfNotaInfoTransporte='&quot; + getNfNotaInfoTransporte() + &quot;'&quot; +</span>
+<span class="fc" id="L476">            &quot;, nfNotaInfoCobranca='&quot; + getNfNotaInfoCobranca() + &quot;'&quot; +</span>
+<span class="fc" id="L477">            &quot;, nfNotaInfoPagamento='&quot; + getNfNotaInfoPagamento() + &quot;'&quot; +</span>
+<span class="fc" id="L478">            &quot;, nfNotaInfoInformacoesAdicionais='&quot; + getNfNotaInfoInformacoesAdicionais() + &quot;'&quot; +</span>
+<span class="fc" id="L479">            &quot;, nfNotaInfoExportacao='&quot; + getNfNotaInfoExportacao() + &quot;'&quot; +</span>
+<span class="fc" id="L480">            &quot;, nfNotaInfoCompra='&quot; + getNfNotaInfoCompra() + &quot;'&quot; +</span>
+<span class="fc" id="L481">            &quot;, nfNotaInfoCana='&quot; + getNfNotaInfoCana() + &quot;'&quot; +</span>
+<span class="fc" id="L482">            &quot;, xml='&quot; + getXml() + &quot;'&quot; +</span>
+<span class="fc" id="L483">            &quot;, danfe='&quot; + getDanfe() + &quot;'&quot; +</span>
+<span class="fc" id="L484">            &quot;, qrcodeImage='&quot; + getQrcodeImage() + &quot;'&quot; +</span>
+            &quot;, qrcodeImageContentType='&quot; + qrcodeImageContentType + &quot;'&quot; +
+            &quot;}&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

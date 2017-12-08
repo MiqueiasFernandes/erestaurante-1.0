@@ -11,6 +11,7 @@ import { ProdutoPopupService } from './produto-popup.service';
 import { ProdutoService } from './produto.service';
 import { Imposto, ImpostoService } from '../imposto';
 import { ResponseWrapper } from '../../shared';
+import {ImpressoraService} from "../impressora/impressora.service";
 
 @Component({
     selector: 'jhi-produto-dialog',
@@ -24,6 +25,7 @@ export class ProdutoDialogComponent implements OnInit {
     temp = '';
     impostos: Imposto[];
     chipFocus = false;
+    impressoras :string[] = [];
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -32,7 +34,8 @@ export class ProdutoDialogComponent implements OnInit {
         private produtoService: ProdutoService,
         private impostoService: ImpostoService,
         private elementRef: ElementRef,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private impressoraService: ImpressoraService
     ) {
     }
 
@@ -47,6 +50,10 @@ export class ProdutoDialogComponent implements OnInit {
         if (this.produto.descricao.startsWith(',')) {
             this.produto.descricao = this.produto.descricao.substring(1);
         }
+
+        this.impressoraService.queryLocaisDeImpressao().subscribe(
+            locais => this.impressoras = locais.filter(s => s !== 'nota' && s !== 'relatorio')
+        );
     }
 
     byteSize(field) {

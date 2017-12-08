@@ -1,15 +1,12 @@
 package com.mikeias.erestaurante.web.rest;
 
-import com.mikeias.erestaurante.repository.ComandaRepository;
-import com.mikeias.erestaurante.repository.LancamentoRepository;
+import com.mikeias.erestaurante.repository.*;
 import com.mikeias.erestaurante.service.PrivilegioService;
 import com.mikeias.erestaurante.domain.Cargo;
-import com.mikeias.erestaurante.repository.CargoRepository;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mikeias.erestaurante.domain.Venda;
 import com.mikeias.erestaurante.web.rest.util.DoubleUtil;
-import com.mikeias.erestaurante.repository.VendaRepository;
 import com.mikeias.erestaurante.web.rest.errors.BadRequestAlertException;
 import com.mikeias.erestaurante.web.rest.util.HeaderUtil;
 import com.mikeias.erestaurante.web.rest.util.PaginationUtil;
@@ -46,6 +43,7 @@ public class VendaResource {
     private final VendaRepository vendaRepository;
     private final LancamentoRepository lancamentoRepository;
     private final ComandaRepository comandaRepository;
+    private final ProdutoRepository produtoRepository;
 
 
 //////////////////////////////////REQUER PRIVILEGIOS
@@ -55,11 +53,13 @@ public class VendaResource {
                                       VendaRepository vendaRepository,
                                       CargoRepository cargoRepository,
                                       LancamentoRepository lancamentoRepository,
-                                      ComandaRepository comandaRepository) {
+                                      ComandaRepository comandaRepository,
+                                      ProdutoRepository produtoRepository) {
                                   this.vendaRepository = vendaRepository;
                                   this.cargoRepository = cargoRepository;
                                       this.lancamentoRepository = lancamentoRepository;
                                       this.comandaRepository = comandaRepository;
+                                      this.produtoRepository =  produtoRepository;
                                   }
 //////////////////////////////////REQUER PRIVILEGIOS
 
@@ -118,7 +118,7 @@ public class VendaResource {
         }
         Venda result = vendaRepository.save(DoubleUtil.handleVenda(venda));
 
-        ComandaResource.verificarComanda(result.getComanda(), comandaRepository, vendaRepository, lancamentoRepository, log);
+        ComandaResource.verificarComanda(result.getComanda(), comandaRepository, vendaRepository, lancamentoRepository, produtoRepository, log);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, venda.getId().toString()))
             .body(result);

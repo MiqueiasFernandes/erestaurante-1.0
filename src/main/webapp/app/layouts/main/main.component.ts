@@ -5,6 +5,9 @@ import { JhiLanguageHelper } from '../../shared';
 import { Principal } from '../../shared/auth/principal.service';
 import { AutologinService } from '../../shared/login/autologin.service';
 import { JhiEventManager } from 'ng-jhipster';
+import {Endereco} from "../../entities/endereco/endereco.model";
+import {Restaurante} from "../../entities/restaurante/restaurante.model";
+import {RestauranteService} from "../../entities/restaurante/restaurante.service";
 
 @Component({
     selector: 'jhi-main',
@@ -12,11 +15,14 @@ import { JhiEventManager } from 'ng-jhipster';
 })
 export class JhiMainComponent implements OnInit {
 
+
+
+
     constructor(
 private loginService :AutologinService,
 private principal :Principal,private eventManager: JhiEventManager,
         private jhiLanguageHelper: JhiLanguageHelper,
-        private router: Router
+        private router: Router,
     ) {}
 
     private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
@@ -47,5 +53,7 @@ private principal :Principal,private eventManager: JhiEventManager,
             this.loginService.autoLogin();
         });
 
-    }
+
+
+                }
 }

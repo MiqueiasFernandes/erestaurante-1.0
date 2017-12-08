@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Cliente.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.domain</a> &gt; <span class="el_source">Cliente.java</span></div><h1>Cliente.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.domain;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * A Cliente.
+ */
+@Entity
+@Table(name = &quot;cliente&quot;)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+<span class="fc" id="L16">public class Cliente implements Serializable {</span>
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;sequenceGenerator&quot;)
+    @SequenceGenerator(name = &quot;sequenceGenerator&quot;)
+    private Long id;
+
+    @Column(name = &quot;nome&quot;)
+    private String nome;
+
+    @Column(name = &quot;cpf&quot;)
+    private String cpf;
+
+    @Column(name = &quot;cnpj&quot;)
+    private String cnpj;
+
+    @Column(name = &quot;telefone&quot;)
+    private String telefone;
+
+    @Column(name = &quot;email&quot;)
+    private String email;
+
+    @Column(name = &quot;observacoes&quot;)
+    private String observacoes;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Endereco endereco;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public Long getId() {
+<span class="fc" id="L49">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="fc" id="L53">        this.id = id;</span>
+<span class="fc" id="L54">    }</span>
+
+    public String getNome() {
+<span class="fc" id="L57">        return nome;</span>
+    }
+
+    public Cliente nome(String nome) {
+<span class="fc" id="L61">        this.nome = nome;</span>
+<span class="fc" id="L62">        return this;</span>
+    }
+
+    public void setNome(String nome) {
+<span class="fc" id="L66">        this.nome = nome;</span>
+<span class="fc" id="L67">    }</span>
+
+    public String getCpf() {
+<span class="fc" id="L70">        return cpf;</span>
+    }
+
+    public Cliente cpf(String cpf) {
+<span class="fc" id="L74">        this.cpf = cpf;</span>
+<span class="fc" id="L75">        return this;</span>
+    }
+
+    public void setCpf(String cpf) {
+<span class="fc" id="L79">        this.cpf = cpf;</span>
+<span class="fc" id="L80">    }</span>
+
+    public String getCnpj() {
+<span class="fc" id="L83">        return cnpj;</span>
+    }
+
+    public Cliente cnpj(String cnpj) {
+<span class="fc" id="L87">        this.cnpj = cnpj;</span>
+<span class="fc" id="L88">        return this;</span>
+    }
+
+    public void setCnpj(String cnpj) {
+<span class="fc" id="L92">        this.cnpj = cnpj;</span>
+<span class="fc" id="L93">    }</span>
+
+    public String getTelefone() {
+<span class="fc" id="L96">        return telefone;</span>
+    }
+
+    public Cliente telefone(String telefone) {
+<span class="fc" id="L100">        this.telefone = telefone;</span>
+<span class="fc" id="L101">        return this;</span>
+    }
+
+    public void setTelefone(String telefone) {
+<span class="fc" id="L105">        this.telefone = telefone;</span>
+<span class="fc" id="L106">    }</span>
+
+    public String getEmail() {
+<span class="fc" id="L109">        return email;</span>
+    }
+
+    public Cliente email(String email) {
+<span class="fc" id="L113">        this.email = email;</span>
+<span class="fc" id="L114">        return this;</span>
+    }
+
+    public void setEmail(String email) {
+<span class="fc" id="L118">        this.email = email;</span>
+<span class="fc" id="L119">    }</span>
+
+    public String getObservacoes() {
+<span class="fc" id="L122">        return observacoes;</span>
+    }
+
+    public Cliente observacoes(String observacoes) {
+<span class="fc" id="L126">        this.observacoes = observacoes;</span>
+<span class="fc" id="L127">        return this;</span>
+    }
+
+    public void setObservacoes(String observacoes) {
+<span class="fc" id="L131">        this.observacoes = observacoes;</span>
+<span class="fc" id="L132">    }</span>
+
+    public Endereco getEndereco() {
+<span class="fc" id="L135">        return endereco;</span>
+    }
+
+    public Cliente endereco(Endereco endereco) {
+<span class="nc" id="L139">        this.endereco = endereco;</span>
+<span class="nc" id="L140">        return this;</span>
+    }
+
+    public void setEndereco(Endereco endereco) {
+<span class="nc" id="L144">        this.endereco = endereco;</span>
+<span class="nc" id="L145">    }</span>
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    @Override
+    public boolean equals(Object o) {
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        if (this == o) {</span>
+<span class="fc" id="L151">            return true;</span>
+        }
+<span class="fc bfc" id="L153" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L154">            return false;</span>
+        }
+<span class="fc" id="L156">        Cliente cliente = (Cliente) o;</span>
+<span class="fc bfc" id="L157" title="All 4 branches covered.">        if (cliente.getId() == null || getId() == null) {</span>
+<span class="fc" id="L158">            return false;</span>
+        }
+<span class="fc" id="L160">        return Objects.equals(getId(), cliente.getId());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L165">        return Objects.hashCode(getId());</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L170">        return &quot;Cliente{&quot; +</span>
+<span class="fc" id="L171">            &quot;id=&quot; + getId() +</span>
+<span class="fc" id="L172">            &quot;, nome='&quot; + getNome() + &quot;'&quot; +</span>
+<span class="fc" id="L173">            &quot;, cpf='&quot; + getCpf() + &quot;'&quot; +</span>
+<span class="fc" id="L174">            &quot;, cnpj='&quot; + getCnpj() + &quot;'&quot; +</span>
+<span class="fc" id="L175">            &quot;, telefone='&quot; + getTelefone() + &quot;'&quot; +</span>
+<span class="fc" id="L176">            &quot;, email='&quot; + getEmail() + &quot;'&quot; +</span>
+<span class="fc" id="L177">            &quot;, observacoes='&quot; + getObservacoes() + &quot;'&quot; +</span>
+            &quot;}&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -56,7 +56,7 @@ server:
 
 info:
     project:
-        version: 1.0 #project.version#
+        version: 1.0
 
 # ===================================================================
 # JHipster specific properties
@@ -83,7 +83,7 @@ jhipster:
         default-include-pattern: /api/.*
         title: ERestaurante API
         description: ERestaurante API documentation
-        version: 0.0.1
+        version: 1.0
         terms-of-service-url:
         contact-name:
         contact-url:

@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Comanda.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.domain</a> &gt; <span class="el_source">Comanda.java</span></div><h1>Comanda.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.domain;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mikeias.erestaurante.domain.enumeration.VendaStatus;
+import com.mikeias.erestaurante.repository.VendaRepository;
+import com.mikeias.erestaurante.web.rest.util.DoubleUtil;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Objects;
+
+import com.mikeias.erestaurante.domain.enumeration.Status;
+
+/**
+ * A Comanda.
+ */
+@Entity
+@Table(name = &quot;comanda&quot;)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+<span class="fc" id="L25">public class Comanda implements Serializable {</span>
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;sequenceGenerator&quot;)
+    @SequenceGenerator(name = &quot;sequenceGenerator&quot;)
+    private Long id;
+
+    @Column(name = &quot;codigo&quot;)
+    private String codigo;
+
+    @Column(name = &quot;total&quot;)
+    private Double total;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = &quot;status&quot;, nullable = false)
+    private Status status;
+
+    @Column(name = &quot;gorjeta&quot;)
+    private Double gorjeta;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Nota nota;
+
+<span class="fc" id="L52">    @OneToMany(mappedBy = &quot;comanda&quot;)</span>
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set&lt;Lancamento&gt; lancamentos = new HashSet&lt;&gt;();
+
+    @ManyToOne(optional = false)
+    @NotNull
+    private Cliente pagador;
+
+<span class="fc" id="L61">    @ManyToMany</span>
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @NotNull
+    @JoinTable(name = &quot;comanda_mesas&quot;,
+               joinColumns = @JoinColumn(name=&quot;comandas_id&quot;, referencedColumnName=&quot;id&quot;),
+               inverseJoinColumns = @JoinColumn(name=&quot;mesas_id&quot;, referencedColumnName=&quot;id&quot;))
+    private Set&lt;Mesa&gt; mesas = new HashSet&lt;&gt;();
+
+<span class="fc" id="L69">    @ManyToMany</span>
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @NotNull
+    @JoinTable(name = &quot;comanda_colaboradores&quot;,
+               joinColumns = @JoinColumn(name=&quot;comandas_id&quot;, referencedColumnName=&quot;id&quot;),
+               inverseJoinColumns = @JoinColumn(name=&quot;colaboradores_id&quot;, referencedColumnName=&quot;id&quot;))
+    private Set&lt;Colaborador&gt; colaboradores = new HashSet&lt;&gt;();
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public Long getId() {
+<span class="fc" id="L79">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="fc" id="L83">        this.id = id;</span>
+<span class="fc" id="L84">    }</span>
+
+    public String getCodigo() {
+<span class="fc" id="L87">        return codigo;</span>
+    }
+
+    public Comanda codigo(String codigo) {
+<span class="fc" id="L91">        this.codigo = codigo;</span>
+<span class="fc" id="L92">        return this;</span>
+    }
+
+    public void setCodigo(String codigo) {
+<span class="fc" id="L96">        this.codigo = codigo;</span>
+<span class="fc" id="L97">    }</span>
+
+    public Double getTotal() {
+<span class="fc" id="L100">        return total;</span>
+    }
+
+    public Comanda total(Double total) {
+<span class="fc" id="L104">        this.total = total;</span>
+<span class="fc" id="L105">        return this;</span>
+    }
+
+    public void setTotal(Double total) {
+<span class="fc" id="L109">        this.total = total;</span>
+<span class="fc" id="L110">    }</span>
+
+    public Status getStatus() {
+<span class="fc" id="L113">        return status;</span>
+    }
+
+    public Comanda status(Status status) {
+<span class="fc" id="L117">        this.status = status;</span>
+<span class="fc" id="L118">        return this;</span>
+    }
+
+    public void setStatus(Status status) {
+<span class="fc" id="L122">        this.status = status;</span>
+<span class="fc" id="L123">    }</span>
+
+    public Double getGorjeta() {
+<span class="fc" id="L126">        return gorjeta;</span>
+    }
+
+    public Comanda gorjeta(Double gorjeta) {
+<span class="fc" id="L130">        this.gorjeta = gorjeta;</span>
+<span class="fc" id="L131">        return this;</span>
+    }
+
+    public void setGorjeta(Double gorjeta) {
+<span class="fc" id="L135">        this.gorjeta = gorjeta;</span>
+<span class="fc" id="L136">    }</span>
+
+    public Nota getNota() {
+<span class="fc" id="L139">        return nota;</span>
+    }
+
+    public Comanda nota(Nota nota) {
+<span class="nc" id="L143">        this.nota = nota;</span>
+<span class="nc" id="L144">        return this;</span>
+    }
+
+    public void setNota(Nota nota) {
+<span class="nc" id="L148">        this.nota = nota;</span>
+<span class="nc" id="L149">    }</span>
+
+    public Set&lt;Lancamento&gt; getLancamentos() {
+<span class="nc" id="L152">        return lancamentos;</span>
+    }
+
+    public Comanda lancamentos(Set&lt;Lancamento&gt; lancamentos) {
+<span class="nc" id="L156">        this.lancamentos = lancamentos;</span>
+<span class="nc" id="L157">        return this;</span>
+    }
+
+    public Comanda addLancamento(Lancamento lancamento) {
+<span class="nc" id="L161">        this.lancamentos.add(lancamento);</span>
+<span class="nc" id="L162">        lancamento.setComanda(this);</span>
+<span class="nc" id="L163">        return this;</span>
+    }
+
+    public Comanda removeLancamento(Lancamento lancamento) {
+<span class="nc" id="L167">        this.lancamentos.remove(lancamento);</span>
+<span class="nc" id="L168">        lancamento.setComanda(null);</span>
+<span class="nc" id="L169">        return this;</span>
+    }
+
+    public void setLancamentos(Set&lt;Lancamento&gt; lancamentos) {
+<span class="nc" id="L173">        this.lancamentos = lancamentos;</span>
+<span class="nc" id="L174">    }</span>
+
+    public Cliente getPagador() {
+<span class="fc" id="L177">        return pagador;</span>
+    }
+
+    public Comanda pagador(Cliente cliente) {
+<span class="nc" id="L181">        this.pagador = cliente;</span>
+<span class="nc" id="L182">        return this;</span>
+    }
+
+    public void setPagador(Cliente cliente) {
+<span class="fc" id="L186">        this.pagador = cliente;</span>
+<span class="fc" id="L187">    }</span>
+
+    public Set&lt;Mesa&gt; getMesas() {
+<span class="fc" id="L190">        return mesas;</span>
+    }
+
+    public Comanda mesas(Set&lt;Mesa&gt; mesas) {
+<span class="nc" id="L194">        this.mesas = mesas;</span>
+<span class="nc" id="L195">        return this;</span>
+    }
+
+    public Comanda addMesas(Mesa mesa) {
+<span class="nc" id="L199">        this.mesas.add(mesa);</span>
+<span class="nc" id="L200">        return this;</span>
+    }
+
+    public Comanda removeMesas(Mesa mesa) {
+<span class="nc" id="L204">        this.mesas.remove(mesa);</span>
+<span class="nc" id="L205">        return this;</span>
+    }
+
+    public void setMesas(Set&lt;Mesa&gt; mesas) {
+<span class="fc" id="L209">        this.mesas = mesas;</span>
+<span class="fc" id="L210">    }</span>
+
+    public Set&lt;Colaborador&gt; getColaboradores() {
+<span class="fc" id="L213">        return colaboradores;</span>
+    }
+
+    public Comanda colaboradores(Set&lt;Colaborador&gt; colaboradors) {
+<span class="nc" id="L217">        this.colaboradores = colaboradors;</span>
+<span class="nc" id="L218">        return this;</span>
+    }
+
+    public Comanda addColaboradores(Colaborador colaborador) {
+<span class="nc" id="L222">        this.colaboradores.add(colaborador);</span>
+<span class="nc" id="L223">        return this;</span>
+    }
+
+    public Comanda removeColaboradores(Colaborador colaborador) {
+<span class="nc" id="L227">        this.colaboradores.remove(colaborador);</span>
+<span class="nc" id="L228">        return this;</span>
+    }
+
+    public void setColaboradores(Set&lt;Colaborador&gt; colaboradors) {
+<span class="fc" id="L232">        this.colaboradores = colaboradors;</span>
+<span class="fc" id="L233">    }</span>
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    @Override
+    public boolean equals(Object o) {
+<span class="fc bfc" id="L238" title="All 2 branches covered.">        if (this == o) {</span>
+<span class="fc" id="L239">            return true;</span>
+        }
+<span class="fc bfc" id="L241" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L242">            return false;</span>
+        }
+<span class="fc" id="L244">        Comanda comanda = (Comanda) o;</span>
+<span class="fc bfc" id="L245" title="All 4 branches covered.">        if (comanda.getId() == null || getId() == null) {</span>
+<span class="fc" id="L246">            return false;</span>
+        }
+<span class="fc" id="L248">        return Objects.equals(getId(), comanda.getId());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L253">        return Objects.hashCode(getId());</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L258">        return &quot;Comanda{&quot; +</span>
+<span class="fc" id="L259">            &quot;id=&quot; + getId() +</span>
+<span class="fc" id="L260">            &quot;, codigo='&quot; + getCodigo() + &quot;'&quot; +</span>
+<span class="fc" id="L261">            &quot;, total='&quot; + getTotal() + &quot;'&quot; +</span>
+<span class="fc" id="L262">            &quot;, status='&quot; + getStatus() + &quot;'&quot; +</span>
+<span class="fc" id="L263">            &quot;, gorjeta='&quot; + getGorjeta() + &quot;'&quot; +</span>
+            &quot;}&quot;;
+    }
+
+    public Comanda getComandaCalculada(VendaRepository vendaRepository) {
+<span class="fc" id="L268">        Comanda comanda = DoubleUtil.handleComanda(this);</span>
+<span class="fc" id="L269">        comanda.setTotal(0.0);</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">        for (Venda venda : vendaRepository.findAllByComandaId(comanda.getId())){</span>
+<span class="pc bpc" id="L271" title="5 of 6 branches missed.">            if ((venda.getStatus() == VendaStatus.AUTORIZADO) || (venda.getStatus() == VendaStatus.PRODUZINDO) || (venda.getStatus() == VendaStatus.ENTREGUE)) {</span>
+<span class="fc" id="L272">                comanda.setTotal(</span>
+<span class="fc" id="L273">                    comanda.getTotal() +</span>
+<span class="fc" id="L274">                        (venda.getProduto().getPreco() * venda.getQuantidade())</span>
+<span class="fc" id="L275">                        + venda.getValorizacao()</span>
+<span class="fc" id="L276">                        - venda.getDesconto()</span>
+                );
+            }
+<span class="fc" id="L279">        }</span>
+<span class="fc" id="L280">        return comanda;</span>
+    }
+
+    public void calculaComanda(VendaRepository vendaRepository) {
+<span class="fc" id="L284">        setTotal(getComandaCalculada(vendaRepository).getTotal());</span>
+<span class="fc" id="L285">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

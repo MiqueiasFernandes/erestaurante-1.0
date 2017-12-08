@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CargoResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.web.rest</a> &gt; <span class="el_source">CargoResource.java</span></div><h1>CargoResource.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.web.rest;
+
+import com.mikeias.erestaurante.service.PrivilegioService;
+
+import com.codahale.metrics.annotation.Timed;
+import com.mikeias.erestaurante.domain.Cargo;
+
+import com.mikeias.erestaurante.repository.CargoRepository;
+import com.mikeias.erestaurante.web.rest.util.DoubleUtil;
+import com.mikeias.erestaurante.web.rest.errors.BadRequestAlertException;
+import com.mikeias.erestaurante.web.rest.util.HeaderUtil;
+import com.mikeias.erestaurante.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
+import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * REST controller for managing Cargo.
+ */
+@RestController
+@RequestMapping(&quot;/api&quot;)
+public class CargoResource {
+
+<span class="fc" id="L37">    private final Logger log = LoggerFactory.getLogger(CargoResource.class);</span>
+
+    private static final String ENTITY_NAME = &quot;cargo&quot;;
+
+    private final CargoRepository cargoRepository;
+
+<span class="fc" id="L43">    public CargoResource(CargoRepository cargoRepository) {</span>
+<span class="fc" id="L44">        this.cargoRepository = cargoRepository;</span>
+<span class="fc" id="L45">    }</span>
+
+    /**
+     * POST  /cargos : Create a new cargo.
+     *
+     * @param cargo the cargo to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new cargo, or with status 400 (Bad Request) if the cargo has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping(&quot;/cargos&quot;)
+    @Timed
+    public ResponseEntity&lt;Cargo&gt; createCargo(@RequestBody Cargo cargo) throws URISyntaxException {
+<span class="fc" id="L57">        log.debug(&quot;REST request to save Cargo : {}&quot;, cargo);</span>
+<span class="fc" id="L58">        cargo = DoubleUtil.handleCargo(cargo);</span>
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">                                  if (!PrivilegioService.podeCriar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L61">                                  log.error(&quot;TENTATIVA DE CRIAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME  + &quot; : {}&quot;, cargo);</span>
+<span class="nc" id="L62">                                  return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para criar esta entidade.&quot;)).body(null);</span>
+                                  }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        if (cargo.getId() != null) {</span>
+<span class="fc" id="L66">            throw new BadRequestAlertException(&quot;A new cargo cannot already have an ID&quot;, ENTITY_NAME, &quot;idexists&quot;);</span>
+        }
+<span class="fc" id="L68">        Cargo result = cargoRepository.save(cargo);</span>
+<span class="fc" id="L69">        return ResponseEntity.created(new URI(&quot;/api/cargos/&quot; + result.getId()))</span>
+<span class="fc" id="L70">            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))</span>
+<span class="fc" id="L71">            .body(result);</span>
+    }
+
+    /**
+     * PUT  /cargos : Updates an existing cargo.
+     *
+     * @param cargo the cargo to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated cargo,
+     * or with status 400 (Bad Request) if the cargo is not valid,
+     * or with status 500 (Internal Server Error) if the cargo couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping(&quot;/cargos&quot;)
+    @Timed
+    public ResponseEntity&lt;Cargo&gt; updateCargo(@RequestBody Cargo cargo) throws URISyntaxException {
+<span class="fc" id="L86">        log.debug(&quot;REST request to update Cargo : {}&quot;, cargo);</span>
+<span class="fc" id="L87">        cargo = DoubleUtil.handleCargo(cargo);</span>
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">                                  if (!PrivilegioService.podeEditar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L90">                                  log.error(&quot;TENTATIVA DE EDITAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME  + &quot; : {}&quot;, cargo);</span>
+<span class="nc" id="L91">                                  return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para editar esta entidade.&quot;)).body(null);</span>
+                                  }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        if (cargo.getId() == null) {</span>
+<span class="fc" id="L95">            return createCargo(cargo);</span>
+        }
+<span class="fc" id="L97">        Cargo result = cargoRepository.save(cargo);</span>
+<span class="fc" id="L98">        return ResponseEntity.ok()</span>
+<span class="fc" id="L99">            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, cargo.getId().toString()))</span>
+<span class="fc" id="L100">            .body(result);</span>
+    }
+
+    /**
+     * GET  /cargos : get all the cargos.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of cargos in body
+     */
+    @GetMapping(&quot;/cargos&quot;)
+    @Timed
+    public ResponseEntity&lt;List&lt;Cargo&gt;&gt; getAllCargos(@ApiParam Pageable pageable) {
+<span class="fc" id="L112">        log.debug(&quot;REST request to get a page of Cargos&quot;);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">                                  if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L116">                                  log.error(&quot;TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME);</span>
+<span class="nc" id="L117">                                  return  null;</span>
+                                  }
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L121">        Page&lt;Cargo&gt; page = cargoRepository.findAll(pageable);</span>
+<span class="fc" id="L122">        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, &quot;/api/cargos&quot;);</span>
+<span class="fc" id="L123">        return new ResponseEntity&lt;&gt;(page.getContent(), headers, HttpStatus.OK);</span>
+    }
+
+    /**
+     * GET  /cargos/:id : get the &quot;id&quot; cargo.
+     *
+     * @param id the id of the cargo to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the cargo, or with status 404 (Not Found)
+     */
+    @GetMapping(&quot;/cargos/{id}&quot;)
+    @Timed
+    public ResponseEntity&lt;Cargo&gt; getCargo(@PathVariable Long id) {
+<span class="fc" id="L135">        log.debug(&quot;REST request to get Cargo : {}&quot;, id);</span>
+<span class="fc" id="L136">        Cargo cargo = cargoRepository.findOne(id);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">                                  if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L140">                                  cargo = null;</span>
+<span class="nc" id="L141">                                  log.error(&quot;TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME + &quot; : {}&quot;, id);</span>
+                                  }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L144">        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(cargo));</span>
+    }
+
+    /**
+     * DELETE  /cargos/:id : delete the &quot;id&quot; cargo.
+     *
+     * @param id the id of the cargo to delete
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @DeleteMapping(&quot;/cargos/{id}&quot;)
+    @Timed
+    public ResponseEntity&lt;Void&gt; deleteCargo(@PathVariable Long id) {
+<span class="fc" id="L156">        log.debug(&quot;REST request to delete Cargo : {}&quot;, id);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">                                  if (PrivilegioService.podeDeletar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="fc" id="L160">                                  cargoRepository.delete(id);</span>
+                                  } else {
+<span class="nc" id="L162">                                  log.error(&quot;TENTATIVA DE EXCUIR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME + &quot; : {}&quot;, id);</span>
+<span class="nc" id="L163">                                  return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para deletar esta entidade.&quot;)).body(null);</span>
+                                  }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L166">        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

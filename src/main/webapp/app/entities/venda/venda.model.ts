@@ -83,8 +83,8 @@ export class Venda implements BaseEntity {
         ];
     }
 
-    public isEntregue() {
-        return this.status.valueOf() > 2;
+    public isEntregue() :boolean{
+        return Venda.getTipo(this.status) > 2;
     }
 
     static getStatusToString(status) :string{

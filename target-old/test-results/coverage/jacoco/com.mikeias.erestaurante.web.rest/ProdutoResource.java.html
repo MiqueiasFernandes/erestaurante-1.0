@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProdutoResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.web.rest</a> &gt; <span class="el_source">ProdutoResource.java</span></div><h1>ProdutoResource.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.web.rest;
+
+import com.mikeias.erestaurante.service.PrivilegioService;
+import com.mikeias.erestaurante.domain.Cargo;
+import com.mikeias.erestaurante.repository.CargoRepository;
+
+import com.codahale.metrics.annotation.Timed;
+import com.mikeias.erestaurante.domain.Produto;
+import com.mikeias.erestaurante.web.rest.util.DoubleUtil;
+import com.mikeias.erestaurante.repository.ProdutoRepository;
+import com.mikeias.erestaurante.web.rest.errors.BadRequestAlertException;
+import com.mikeias.erestaurante.web.rest.util.HeaderUtil;
+import com.mikeias.erestaurante.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
+import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * REST controller for managing Produto.
+ */
+@RestController
+@RequestMapping(&quot;/api&quot;)
+public class ProdutoResource {
+
+<span class="fc" id="L39">    private final Logger log = LoggerFactory.getLogger(ProdutoResource.class);</span>
+
+    private static final String ENTITY_NAME = &quot;produto&quot;;
+
+    private final ProdutoRepository produtoRepository;
+
+
+    //////////////////////////////////REQUER PRIVILEGIOS
+    private final CargoRepository cargoRepository;
+
+<span class="fc" id="L49">    public ProdutoResource(ProdutoRepository produtoRepository, CargoRepository cargoRepository) {</span>
+<span class="fc" id="L50">        this.produtoRepository = produtoRepository;</span>
+<span class="fc" id="L51">        this.cargoRepository = cargoRepository;</span>
+<span class="fc" id="L52">    }</span>
+//////////////////////////////////REQUER PRIVILEGIOS
+
+    /**
+     * POST  /produtos : Create a new produto.
+     *
+     * @param produto the produto to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new produto, or with status 400 (Bad Request) if the produto has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping(&quot;/produtos&quot;)
+    @Timed
+    public ResponseEntity&lt;Produto&gt; createProduto(@RequestBody Produto produto) throws URISyntaxException {
+<span class="fc" id="L65">        log.debug(&quot;REST request to save Produto : {}&quot;, produto);</span>
+
+<span class="fc" id="L67">        produto = DoubleUtil.handleProduto(produto);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        if (!PrivilegioService.podeCriar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L71">            log.error(&quot;TENTATIVA DE CRIAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME  + &quot; : {}&quot;, produto);</span>
+<span class="nc" id="L72">            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para criar esta entidade.&quot;)).body(null);</span>
+        }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (produto.getId() != null) {</span>
+<span class="fc" id="L76">            throw new BadRequestAlertException(&quot;A new produto cannot already have an ID&quot;, ENTITY_NAME, &quot;idexists&quot;);</span>
+        }
+<span class="fc" id="L78">        Produto result = produtoRepository.save(produto);</span>
+<span class="fc" id="L79">        return ResponseEntity.created(new URI(&quot;/api/produtos/&quot; + result.getId()))</span>
+<span class="fc" id="L80">            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))</span>
+<span class="fc" id="L81">            .body(result);</span>
+    }
+
+    /**
+     * PUT  /produtos : Updates an existing produto.
+     *
+     * @param produto the produto to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated produto,
+     * or with status 400 (Bad Request) if the produto is not valid,
+     * or with status 500 (Internal Server Error) if the produto couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping(&quot;/produtos&quot;)
+    @Timed
+    public ResponseEntity&lt;Produto&gt; updateProduto(@RequestBody Produto produto) throws URISyntaxException {
+<span class="fc" id="L96">        log.debug(&quot;REST request to update Produto : {}&quot;, produto);</span>
+<span class="fc" id="L97">        produto = DoubleUtil.handleProduto(produto);</span>
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (!PrivilegioService.podeEditar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L100">            log.error(&quot;TENTATIVA DE EDITAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME  + &quot; : {}&quot;, produto);</span>
+<span class="nc" id="L101">            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para editar esta entidade.&quot;)).body(null);</span>
+        }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (produto.getId() == null) {</span>
+<span class="fc" id="L105">            return createProduto(produto);</span>
+        }
+<span class="fc" id="L107">        Produto result = produtoRepository.save(produto);</span>
+<span class="fc" id="L108">        return ResponseEntity.ok()</span>
+<span class="fc" id="L109">            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, produto.getId().toString()))</span>
+<span class="fc" id="L110">            .body(result);</span>
+    }
+
+    /**
+     * GET  /produtos : get all the produtos.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of produtos in body
+     */
+    @GetMapping(&quot;/produtos&quot;)
+    @Timed
+    public ResponseEntity&lt;List&lt;Produto&gt;&gt; getAllProdutos(@ApiParam Pageable pageable) {
+<span class="fc" id="L122">        log.debug(&quot;REST request to get a page of Produtos&quot;);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L126">            log.error(&quot;TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME);</span>
+<span class="nc" id="L127">            return  null;</span>
+        }
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L131">        Page&lt;Produto&gt; page = produtoRepository.findAll(pageable);</span>
+<span class="fc" id="L132">        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, &quot;/api/produtos&quot;);</span>
+<span class="fc" id="L133">        return new ResponseEntity&lt;&gt;(page.getContent(), headers, HttpStatus.OK);</span>
+    }
+
+    /**
+     * GET  /produtos/:id : get the &quot;id&quot; produto.
+     *
+     * @param id the id of the produto to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the produto, or with status 404 (Not Found)
+     */
+    @GetMapping(&quot;/produtos/{id}&quot;)
+    @Timed
+    public ResponseEntity&lt;Produto&gt; getProduto(@PathVariable Long id) {
+<span class="fc" id="L145">        log.debug(&quot;REST request to get Produto : {}&quot;, id);</span>
+<span class="fc" id="L146">        Produto produto = produtoRepository.findOne(id);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">        if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L150">            produto = null;</span>
+<span class="nc" id="L151">            log.error(&quot;TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME + &quot; : {}&quot;, id);</span>
+        }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L154">        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(produto));</span>
+    }
+
+    @GetMapping(&quot;/produtos/pesquisa/{tipo}/{pesquisa}&quot;)
+    @Timed
+    public ResponseEntity&lt;List&lt;Produto&gt;&gt; getProdutoPesquisa(@PathVariable String tipo, @PathVariable String pesquisa) {
+<span class="nc" id="L160">        log.debug(&quot;REST request to get Produto for pesquisa: {} - {}&quot;, tipo, pesquisa);</span>
+
+<span class="nc" id="L162">        String[] modos = {</span>
+            &quot;Bebidas&quot;,
+            &quot;Restaurante&quot;,
+            &quot;Sobremesas&quot;,
+            &quot;categoria&quot;,
+            &quot;nome&quot;,
+            &quot;preco&quot;,
+            &quot;estoque&quot;,
+            &quot;codigo&quot;,
+            &quot;unidade&quot;};
+
+<span class="nc" id="L173">        String data1 = tipo;</span>
+<span class="nc" id="L174">        String data2 = pesquisa;</span>
+
+<span class="nc" id="L176">        List&lt;Produto&gt; produtos = produtoRepository.findAll();</span>
+
+<span class="nc" id="L178">        ArrayList&lt;Produto&gt; list= new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L180" title="All 6 branches missed.">        if (data1 == null || data1.isEmpty() || data1.equalsIgnoreCase(&quot;Todos&quot;)) {</span>
+<span class="nc" id="L181">            list.addAll(produtos);</span>
+<span class="nc" id="L182">        } else if (</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">            data1.equalsIgnoreCase(modos[0]) ||</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">                data1.equalsIgnoreCase(modos[1]) ||</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">                data1.equalsIgnoreCase(modos[2])</span>
+            ) {
+<span class="nc" id="L187">            getOfCategoria(produtos, list, data1);</span>
+<span class="nc bnc" id="L188" title="All 4 branches missed.">        } else  if (data2 != null &amp;&amp; !data2.isEmpty()) {</span>
+
+
+<span class="nc" id="L191">            String keyword = data2.toLowerCase();</span>
+
+
+<span class="nc bnc" id="L194" title="All 2 branches missed.">            if (data1.contains(modos[3])){//categoria</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">                for (Produto p : produtos){</span>
+                    try{
+<span class="nc bnc" id="L197" title="All 2 branches missed.">                        if(p.getDescricao().toLowerCase().contains(keyword)){</span>
+<span class="nc" id="L198">                            list.add(p);</span>
+                        }
+<span class="nc" id="L200">                    } catch (Exception ex) {</span>
+
+<span class="nc" id="L202">                    }</span>
+<span class="nc" id="L203">                }</span>
+            }
+
+<span class="nc bnc" id="L206" title="All 2 branches missed.">            if (data1.contains(modos[4])){ ////nome</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">                for (Produto p : produtos){</span>
+                    try{
+<span class="nc bnc" id="L209" title="All 2 branches missed.">                        if(p.getNome().toLowerCase().contains(keyword)){</span>
+<span class="nc" id="L210">                            list.add(p);</span>
+                        }
+<span class="nc" id="L212">                    } catch (Exception ex) {</span>
+
+<span class="nc" id="L214">                    }</span>
+<span class="nc" id="L215">                }</span>
+            }
+
+<span class="nc bnc" id="L218" title="All 2 branches missed.">            if (data1.contains(modos[5])){ ///preco</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">                for (Produto p : produtos) {</span>
+                    try{
+<span class="nc bnc" id="L221" title="All 2 branches missed.">                        if (keyword.contains(p.getPreco().toString())) {</span>
+<span class="nc" id="L222">                            list.add(p);</span>
+                        }
+<span class="nc" id="L224">                    } catch (Exception ex) {</span>
+
+<span class="nc" id="L226">                    }</span>
+<span class="nc" id="L227">                }</span>
+            }
+<span class="nc bnc" id="L229" title="All 2 branches missed.">            if (data1.contains(modos[6])) { ////estoque</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">                for (Produto p : produtos) {</span>
+                    try{
+<span class="nc bnc" id="L232" title="All 2 branches missed.">                        if (keyword.contains(p.getEstoque().toString())) {</span>
+<span class="nc" id="L233">                            list.add(p);</span>
+                        }
+<span class="nc" id="L235">                    } catch (Exception ex) {</span>
+
+<span class="nc" id="L237">                    }</span>
+<span class="nc" id="L238">                }</span>
+            }
+<span class="nc bnc" id="L240" title="All 2 branches missed.">            if (data1.contains(modos[7])){/////codigo</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">                for (Produto p : produtos){</span>
+                    try{
+<span class="nc bnc" id="L243" title="All 2 branches missed.">                        if(keyword.contains(p.getCodigo().toLowerCase())){</span>
+<span class="nc" id="L244">                            list.add(p);</span>
+                        }
+<span class="nc" id="L246">                    } catch (Exception ex) {</span>
+
+<span class="nc" id="L248">                    }</span>
+<span class="nc" id="L249">                }</span>
+            }
+<span class="nc bnc" id="L251" title="All 2 branches missed.">            if (data1.contains(modos[8])){////unidade</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">                for (Produto p : produtos){</span>
+                    try{
+<span class="nc bnc" id="L254" title="All 2 branches missed.">                        if(keyword.contains(p.getUnidade().toString().toLowerCase())){</span>
+<span class="nc" id="L255">                            list.add(p);</span>
+                        }
+<span class="nc" id="L257">                    } catch (Exception ex) {</span>
+
+<span class="nc" id="L259">                    }</span>
+<span class="nc" id="L260">                }</span>
+            }
+<span class="nc" id="L262">        } else {</span>
+<span class="nc" id="L263">            list.addAll(produtos);</span>
+        }
+
+<span class="nc" id="L266">        ArrayList&lt;Produto&gt; p3 = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L268" title="All 2 branches missed.">        for (Produto p : list) {</span>
+<span class="nc" id="L269">            boolean tem= false;</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">            for (Produto q : p3) {</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">                if (q.getId().equals(p.getId())) {</span>
+<span class="nc" id="L272">                    tem = true;</span>
+<span class="nc" id="L273">                    break;</span>
+                }
+<span class="nc" id="L275">            }</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">            if (!tem) {</span>
+<span class="nc" id="L277">                p3.add(p);</span>
+            }
+<span class="nc" id="L279">        }</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="nc bnc" id="L282" title="All 2 branches missed.">        if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L283">            log.error(&quot;TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME);</span>
+<span class="nc" id="L284">            return  null;</span>
+        }
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="nc" id="L288">        return new ResponseEntity&lt;&gt;(list, HttpStatus.OK);</span>
+    }
+
+
+
+
+    void getOfCategoria(List&lt;Produto&gt; produtos, ArrayList&lt;Produto&gt; produtos1, String catedoria) {
+
+
+<span class="nc bnc" id="L297" title="All 2 branches missed.">        for (Produto p: produtos) {</span>
+
+            try {
+<span class="nc" id="L300">                String desc = p.getDescricao();</span>
+<span class="nc bnc" id="L301" title="All 4 branches missed.">                if (desc != null &amp;&amp; !desc.isEmpty()) {</span>
+<span class="nc" id="L302">                    System.err.println(desc);</span>
+
+<span class="nc" id="L304">                    String res = desc.replaceAll(&quot;.*\&quot;categoria\&quot;:\\[&quot;, &quot;&quot;).replaceAll(&quot;\\].*&quot;, &quot;&quot;);</span>
+<span class="nc bnc" id="L305" title="All 4 branches missed.">                    if (res != null &amp;&amp; !res.isEmpty()) {</span>
+
+<span class="nc" id="L307">                        System.err.println(res);</span>
+
+<span class="nc bnc" id="L309" title="All 2 branches missed.">                        if (res.toLowerCase().contains(catedoria.toLowerCase())) {</span>
+<span class="nc" id="L310">                            produtos1.add(p);</span>
+                        }
+                    }
+                }
+<span class="nc" id="L314">            } catch (Exception ex) {</span>
+
+<span class="nc" id="L316">            }</span>
+
+<span class="nc" id="L318">        }</span>
+
+
+<span class="nc" id="L321">    }</span>
+
+
+
+    /**
+     * DELETE  /produtos/:id : delete the &quot;id&quot; produto.
+     *
+     * @param id the id of the produto to delete
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @DeleteMapping(&quot;/produtos/{id}&quot;)
+    @Timed
+    public ResponseEntity&lt;Void&gt; deleteProduto(@PathVariable Long id) {
+<span class="fc" id="L334">        log.debug(&quot;REST request to delete Produto : {}&quot;, id);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L337" title="1 of 2 branches missed.">        if (PrivilegioService.podeDeletar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="fc" id="L338">            produtoRepository.delete(id);</span>
+        } else {
+<span class="nc" id="L340">            log.error(&quot;TENTATIVA DE EXCUIR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME + &quot; : {}&quot;, id);</span>
+<span class="nc" id="L341">            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para deletar esta entidade.&quot;)).body(null);</span>
+        }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L344">        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

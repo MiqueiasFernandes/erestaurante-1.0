@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/entities/venda/venda.model.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">app/entities/venda/</a> venda.model.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">35.71% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>20/56</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/29</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">22.22% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">34.55% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>19/55</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { BaseEntity } from './../../shared';
+&nbsp;
+import {isNullOrUndefined, isNumber} from "util";
+&nbsp;
+export const enum VendaStatus {
+    'PEDIDO',
+    'AUTORIZADO',
+    'PRODUZINDO',
+    'ENTREGUE',
+    'CANCELADO'
+}
+&nbsp;
+export class Venda implements BaseEntity {
+    constructor(
+        public id?: number,
+        public data?: any,
+        public quantidade?: number,
+        public desconto?: number,
+        public valorizacao?: number,
+        public status?: VendaStatus,
+        public produto?: BaseEntity,
+        public comanda?: BaseEntity,
+    ) {
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    public  static tipoEquals(c1, c2)</span> :boolean{
+<span class="cstat-no" title="statement not covered" >        return this.getTipo(c1) === this.getTipo(c2);</span>
+    }
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    public static getTipo(t)</span> :number{
+<span class="cstat-no" title="statement not covered" >        if (isNumber(t))</span>
+<span class="cstat-no" title="statement not covered" >            return t;</span>
+<span class="cstat-no" title="statement not covered" >        if (VendaStatus.PEDIDO === t)</span>
+<span class="cstat-no" title="statement not covered" >            return 0;</span>
+<span class="cstat-no" title="statement not covered" >        if (VendaStatus.AUTORIZADO === t)</span>
+<span class="cstat-no" title="statement not covered" >            return 1;</span>
+<span class="cstat-no" title="statement not covered" >        if (VendaStatus.PRODUZINDO === t)</span>
+<span class="cstat-no" title="statement not covered" >            return 2;</span>
+<span class="cstat-no" title="statement not covered" >        if (VendaStatus.ENTREGUE === t)</span>
+<span class="cstat-no" title="statement not covered" >            return 3;</span>
+<span class="cstat-no" title="statement not covered" >        if (VendaStatus.CANCELADO === t)</span>
+<span class="cstat-no" title="statement not covered" >            return 4;</span>
+<span class="cstat-no" title="statement not covered" >        if ("PEDIDO".startsWith(t))</span>
+<span class="cstat-no" title="statement not covered" >            return 0;</span>
+<span class="cstat-no" title="statement not covered" >        if ("AUTORIZADO".startsWith(t))</span>
+<span class="cstat-no" title="statement not covered" >            return 1;</span>
+<span class="cstat-no" title="statement not covered" >        if ("PRODUZINDO".startsWith(t))</span>
+<span class="cstat-no" title="statement not covered" >            return 2;</span>
+<span class="cstat-no" title="statement not covered" >        if ("ENTREGUE".startsWith(t))</span>
+<span class="cstat-no" title="statement not covered" >            return 3;</span>
+<span class="cstat-no" title="statement not covered" >        if ("CANCELADO".startsWith(t))</span>
+<span class="cstat-no" title="statement not covered" >            return 4;</span>
+<span class="cstat-no" title="statement not covered" >        if (!isNullOrUndefined(t.status)) {</span>
+<span class="cstat-no" title="statement not covered" >            return this.getTipo(t.status);</span>
+        }
+<span class="cstat-no" title="statement not covered" >        return -1;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    static getAllToString() {</span>
+<span class="cstat-no" title="statement not covered" >        return [</span>
+            Venda.getStatusToString(0),
+            Venda.getStatusToString(1),
+            Venda.getStatusToString(2),
+            Venda.getStatusToString(3),
+            Venda.getStatusToString(4)
+        ];
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    static getAprovadosToString() {</span>
+<span class="cstat-no" title="statement not covered" >        return [</span>
+            Venda.getStatusToString(1),
+            Venda.getStatusToString(2),
+            Venda.getStatusToString(3)
+        ];
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    static getPendentesToString() {</span>
+<span class="cstat-no" title="statement not covered" >        return [</span>
+            Venda.getStatusToString(1),
+            Venda.getStatusToString(2),
+            Venda.getStatusToString(0)
+        ];
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    public isEntregue() :boolean{</span>
+<span class="cstat-no" title="statement not covered" >        return Venda.getTipo(this.status) &gt; 2;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    static getStatusToString(status)</span> :string{
+<span class="cstat-no" title="statement not covered" >        switch (Venda.getTipo(status)) {</span>
+            case 0: <span class="cstat-no" title="statement not covered" >return 'PEDIDO';</span>
+            case 1: <span class="cstat-no" title="statement not covered" >return  'AUTORIZADO';</span>
+            case 2: <span class="cstat-no" title="statement not covered" >return 'PRODUZINDO';</span>
+            case 3: <span class="cstat-no" title="statement not covered" >return 'ENTREGUE';</span>
+            case 4: <span class="cstat-no" title="statement not covered" >return 'CANCELADO';</span>
+        }
+    }
+&nbsp;
+&nbsp;
+}
+&nbsp;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Dec 08 2017 00:30:32 GMT-0200 (-02)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

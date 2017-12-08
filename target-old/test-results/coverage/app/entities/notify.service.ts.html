@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/entities/notify.service.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">app/entities/</a> notify.service.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">34.55% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>19/55</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">7.14% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">34% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>17/50</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Injectable } from '@angular/core';
+&nbsp;
+import * as SockJS from 'sockjs-client';
+import * as Stomp from 'webstomp-client';
+import {WindowRef} from "../shared/tracker/window.service";
+import {AuthServerProvider} from "../shared/auth/auth-jwt.service";
+import {Observer} from "rxjs/Observer";
+import {Observable} from "rxjs/Observable";
+import {isNullOrUndefined} from "util";
+&nbsp;
+@Injectable()
+export class NotifyService {
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    stompClient = null;</span>
+    connection: Promise&lt;any&gt;;
+    connectedPromise: any;
+<span class="cstat-no" title="statement not covered" >    subscriber = null;</span>
+    listenerObserver: Observer&lt;any&gt;;
+    listener: Observable&lt;any&gt;;
+&nbsp;
+<span class="fstat-no" title="function not covered" >  constructor(</span>
+      private <span class="cstat-no" title="statement not covered" >$window: WindowRef,</span>
+      private <span class="cstat-no" title="statement not covered" >authServerProvider: AuthServerProvider,</span>
+  ) {
+<span class="cstat-no" title="statement not covered" >      this.connection = this.createConnection();</span>
+<span class="cstat-no" title="statement not covered" >      this.listener = this.createListener();</span>
+  }
+&nbsp;
+&nbsp;
+  ////use para abrir a conexão
+<span class="fstat-no" title="function not covered" >    connect() {</span>
+<span class="cstat-no" title="statement not covered" >        if (this.connectedPromise === null) {</span>
+<span class="cstat-no" title="statement not covered" >            this.connection = this.createConnection();</span>
+        }
+        // building absolute path so that websocket doesn't fail when deploying with a context path
+<span class="cstat-no" title="statement not covered" >        const loc = this.$window.nativeWindow.location;</span>
+<span class="cstat-no" title="statement not covered" >        let url;</span>
+<span class="cstat-no" title="statement not covered" >        url = '//' + loc.host + loc.pathname + 'websocket/events';</span>
+<span class="cstat-no" title="statement not covered" >        const authToken = this.authServerProvider.getToken().access_token;</span>
+<span class="cstat-no" title="statement not covered" >        if (authToken) {</span>
+<span class="cstat-no" title="statement not covered" >            url += '?access_token=' + authToken;</span>
+        }
+<span class="cstat-no" title="statement not covered" >        const socket = new SockJS(url);</span>
+<span class="cstat-no" title="statement not covered" >        this.stompClient = Stomp.over(socket);</span>
+<span class="cstat-no" title="statement not covered" >        const headers = {};</span>
+<span class="cstat-no" title="statement not covered" >        this.stompClient.connect(headers, <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >            if (!isNullOrUndefined(this.connectedPromise)) {</span>
+<span class="cstat-no" title="statement not covered" >                this.connectedPromise('success');</span>
+            }
+<span class="cstat-no" title="statement not covered" >            this.connectedPromise = null;</span>
+        });
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >    private createConnection(): Promise&lt;any&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        return new Promise(<span class="fstat-no" title="function not covered" >(resolve, reject)</span> =&gt; <span class="cstat-no" title="statement not covered" >this.connectedPromise = resolve)</span>;</span>
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >    private createListener(): Observable&lt;any&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        return new Observable(<span class="fstat-no" title="function not covered" >(observer)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            this.listenerObserver = observer;</span>
+        });
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    disconnect() {</span>
+<span class="cstat-no" title="statement not covered" >        if (this.stompClient !== null) {</span>
+<span class="cstat-no" title="statement not covered" >            this.stompClient.disconnect();</span>
+<span class="cstat-no" title="statement not covered" >            this.stompClient = null;</span>
+        }
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    subscribe() {</span>
+<span class="cstat-no" title="statement not covered" >        this.connection.then(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >            this.subscriber = this.stompClient.subscribe('/topic/events', <span class="fstat-no" title="function not covered" >(data)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >                this.listenerObserver.next(JSON.parse(data.body));</span>
+            });
+        });
+    }
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    sendMessage(entidade: string, message: string, id: number)</span> {
+<span class="cstat-no" title="statement not covered" >        if (this.stompClient !== null &amp;&amp; this.stompClient.connected) {</span>
+<span class="cstat-no" title="statement not covered" >            this.stompClient.send(</span>
+                '/topic/entity', // destination
+                // 'oi venda',
+                JSON.stringify({
+                    'entidade': entidade,
+                    'id': id,
+                    'message': message
+                }), // body
+                {} // header
+            );
+        }
+    }
+&nbsp;
+    ///use para receber as mensagens
+<span class="fstat-no" title="function not covered" >    receive() {</span>
+<span class="cstat-no" title="statement not covered" >        return this.listener;</span>
+    }
+}
+&nbsp;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Dec 08 2017 00:30:32 GMT-0200 (-02)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

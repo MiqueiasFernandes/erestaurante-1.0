@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Endereco.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.domain</a> &gt; <span class="el_source">Endereco.java</span></div><h1>Endereco.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.domain;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * A Endereco.
+ */
+@Entity
+@Table(name = &quot;endereco&quot;)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+<span class="fc" id="L16">public class Endereco implements Serializable {</span>
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;sequenceGenerator&quot;)
+    @SequenceGenerator(name = &quot;sequenceGenerator&quot;)
+    private Long id;
+
+    @Column(name = &quot;pais&quot;)
+    private String pais;
+
+    @Column(name = &quot;estado&quot;)
+    private String estado;
+
+    @Column(name = &quot;cidade&quot;)
+    private String cidade;
+
+    @Column(name = &quot;bairro&quot;)
+    private String bairro;
+
+    @Column(name = &quot;logradouro&quot;)
+    private String logradouro;
+
+    @Column(name = &quot;jhi_local&quot;)
+    private String local;
+
+    @Column(name = &quot;cep&quot;)
+    private String cep;
+
+    @Column(name = &quot;numero&quot;)
+    private Integer numero;
+
+    @Column(name = &quot;complemento&quot;)
+    private String complemento;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public Long getId() {
+<span class="fc" id="L54">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="fc" id="L58">        this.id = id;</span>
+<span class="fc" id="L59">    }</span>
+
+    public String getPais() {
+<span class="fc" id="L62">        return pais;</span>
+    }
+
+    public Endereco pais(String pais) {
+<span class="fc" id="L66">        this.pais = pais;</span>
+<span class="fc" id="L67">        return this;</span>
+    }
+
+    public void setPais(String pais) {
+<span class="fc" id="L71">        this.pais = pais;</span>
+<span class="fc" id="L72">    }</span>
+
+    public String getEstado() {
+<span class="fc" id="L75">        return estado;</span>
+    }
+
+    public Endereco estado(String estado) {
+<span class="fc" id="L79">        this.estado = estado;</span>
+<span class="fc" id="L80">        return this;</span>
+    }
+
+    public void setEstado(String estado) {
+<span class="fc" id="L84">        this.estado = estado;</span>
+<span class="fc" id="L85">    }</span>
+
+    public String getCidade() {
+<span class="fc" id="L88">        return cidade;</span>
+    }
+
+    public Endereco cidade(String cidade) {
+<span class="fc" id="L92">        this.cidade = cidade;</span>
+<span class="fc" id="L93">        return this;</span>
+    }
+
+    public void setCidade(String cidade) {
+<span class="fc" id="L97">        this.cidade = cidade;</span>
+<span class="fc" id="L98">    }</span>
+
+    public String getBairro() {
+<span class="fc" id="L101">        return bairro;</span>
+    }
+
+    public Endereco bairro(String bairro) {
+<span class="fc" id="L105">        this.bairro = bairro;</span>
+<span class="fc" id="L106">        return this;</span>
+    }
+
+    public void setBairro(String bairro) {
+<span class="fc" id="L110">        this.bairro = bairro;</span>
+<span class="fc" id="L111">    }</span>
+
+    public String getLogradouro() {
+<span class="fc" id="L114">        return logradouro;</span>
+    }
+
+    public Endereco logradouro(String logradouro) {
+<span class="fc" id="L118">        this.logradouro = logradouro;</span>
+<span class="fc" id="L119">        return this;</span>
+    }
+
+    public void setLogradouro(String logradouro) {
+<span class="fc" id="L123">        this.logradouro = logradouro;</span>
+<span class="fc" id="L124">    }</span>
+
+    public String getLocal() {
+<span class="fc" id="L127">        return local;</span>
+    }
+
+    public Endereco local(String local) {
+<span class="fc" id="L131">        this.local = local;</span>
+<span class="fc" id="L132">        return this;</span>
+    }
+
+    public void setLocal(String local) {
+<span class="fc" id="L136">        this.local = local;</span>
+<span class="fc" id="L137">    }</span>
+
+    public String getCep() {
+<span class="fc" id="L140">        return cep;</span>
+    }
+
+    public Endereco cep(String cep) {
+<span class="fc" id="L144">        this.cep = cep;</span>
+<span class="fc" id="L145">        return this;</span>
+    }
+
+    public void setCep(String cep) {
+<span class="fc" id="L149">        this.cep = cep;</span>
+<span class="fc" id="L150">    }</span>
+
+    public Integer getNumero() {
+<span class="fc" id="L153">        return numero;</span>
+    }
+
+    public Endereco numero(Integer numero) {
+<span class="fc" id="L157">        this.numero = numero;</span>
+<span class="fc" id="L158">        return this;</span>
+    }
+
+    public void setNumero(Integer numero) {
+<span class="fc" id="L162">        this.numero = numero;</span>
+<span class="fc" id="L163">    }</span>
+
+    public String getComplemento() {
+<span class="fc" id="L166">        return complemento;</span>
+    }
+
+    public Endereco complemento(String complemento) {
+<span class="fc" id="L170">        this.complemento = complemento;</span>
+<span class="fc" id="L171">        return this;</span>
+    }
+
+    public void setComplemento(String complemento) {
+<span class="fc" id="L175">        this.complemento = complemento;</span>
+<span class="fc" id="L176">    }</span>
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    @Override
+    public boolean equals(Object o) {
+<span class="fc bfc" id="L181" title="All 2 branches covered.">        if (this == o) {</span>
+<span class="fc" id="L182">            return true;</span>
+        }
+<span class="fc bfc" id="L184" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L185">            return false;</span>
+        }
+<span class="fc" id="L187">        Endereco endereco = (Endereco) o;</span>
+<span class="fc bfc" id="L188" title="All 4 branches covered.">        if (endereco.getId() == null || getId() == null) {</span>
+<span class="fc" id="L189">            return false;</span>
+        }
+<span class="fc" id="L191">        return Objects.equals(getId(), endereco.getId());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L196">        return Objects.hashCode(getId());</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L201">        return &quot;Endereco{&quot; +</span>
+<span class="fc" id="L202">            &quot;id=&quot; + getId() +</span>
+<span class="fc" id="L203">            &quot;, pais='&quot; + getPais() + &quot;'&quot; +</span>
+<span class="fc" id="L204">            &quot;, estado='&quot; + getEstado() + &quot;'&quot; +</span>
+<span class="fc" id="L205">            &quot;, cidade='&quot; + getCidade() + &quot;'&quot; +</span>
+<span class="fc" id="L206">            &quot;, bairro='&quot; + getBairro() + &quot;'&quot; +</span>
+<span class="fc" id="L207">            &quot;, logradouro='&quot; + getLogradouro() + &quot;'&quot; +</span>
+<span class="fc" id="L208">            &quot;, local='&quot; + getLocal() + &quot;'&quot; +</span>
+<span class="fc" id="L209">            &quot;, cep='&quot; + getCep() + &quot;'&quot; +</span>
+<span class="fc" id="L210">            &quot;, numero='&quot; + getNumero() + &quot;'&quot; +</span>
+<span class="fc" id="L211">            &quot;, complemento='&quot; + getComplemento() + &quot;'&quot; +</span>
+            &quot;}&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

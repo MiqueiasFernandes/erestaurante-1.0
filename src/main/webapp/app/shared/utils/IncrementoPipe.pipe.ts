@@ -12,4 +12,5 @@ export class IncrementoPipe implements PipeTransform {
             Produto.tipoEquals(Unidade.MILHAR, produto.unidade) ||
             Produto.tipoEquals(Unidade.SACA, produto.unidade) ) ? 0.01 : 1;
     }
+
 }

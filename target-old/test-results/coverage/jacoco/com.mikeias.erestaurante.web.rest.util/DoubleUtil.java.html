@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DoubleUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.web.rest.util</a> &gt; <span class="el_source">DoubleUtil.java</span></div><h1>DoubleUtil.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.web.rest.util;
+
+import com.mikeias.erestaurante.domain.*;
+
+<span class="nc" id="L5">public class DoubleUtil {</span>
+
+    public static Venda handleVenda(Venda venda) {
+<span class="fc" id="L8">        venda.setDesconto(zerarDouble(venda.getDesconto()));</span>
+<span class="fc" id="L9">        venda.setQuantidade(zerarDouble(venda.getQuantidade()));</span>
+<span class="fc" id="L10">        venda.setValorizacao(zerarDouble(venda.getValorizacao()));</span>
+<span class="fc" id="L11">        return venda;</span>
+    }
+
+    public static Comanda handleComanda(Comanda comanda) {
+<span class="fc" id="L15">       comanda.setTotal(zerarDouble(comanda.getTotal()));</span>
+<span class="fc" id="L16">       comanda.setGorjeta(zerarDouble(comanda.getGorjeta()));</span>
+<span class="fc" id="L17">       return comanda;</span>
+    }
+
+    public static Produto handleProduto(Produto produto) {
+<span class="fc" id="L21">        produto.setEstoque(zerarDouble(produto.getEstoque()));</span>
+<span class="fc" id="L22">        produto.setPreco(zerarDouble(produto.getPreco()));</span>
+<span class="fc" id="L23">        produto.setValor(zerarDouble(produto.getValor()));</span>
+<span class="fc" id="L24">        return produto;</span>
+    }
+
+    public static Cargo handleCargo(Cargo cargo) {
+<span class="fc" id="L28">        cargo.setSalario(zerarDouble(cargo.getSalario()));</span>
+<span class="fc" id="L29">        cargo.setComissao(zerarDouble(cargo.getComissao()));</span>
+<span class="fc" id="L30">        return cargo;</span>
+    }
+
+    public static Lancamento handleLancamento(Lancamento lancamento) {
+<span class="fc" id="L34">        lancamento.setValor(zerarDouble(lancamento.getValor()));</span>
+<span class="fc" id="L35">        return lancamento;</span>
+    }
+
+
+    public static Imposto handleImposto(Imposto imposto) {
+
+<span class="nc" id="L41">        imposto.setiCOFINS(zerarDouble(imposto.getiCOFINS()));</span>
+<span class="nc" id="L42">        imposto.setiCOFINSST(zerarDouble(imposto.getiCOFINSST()));</span>
+<span class="nc" id="L43">        imposto.setiICMS(zerarDouble(imposto.getiICMS()));</span>
+<span class="nc" id="L44">        imposto.setiICMSUFDest(zerarDouble(imposto.getiICMSUFDest()));</span>
+<span class="nc" id="L45">        imposto.setiII(zerarDouble(imposto.getiII()));</span>
+<span class="nc" id="L46">        imposto.setiIPI(zerarDouble(imposto.getiIPI()));</span>
+<span class="nc" id="L47">        imposto.setiISSQN(zerarDouble(imposto.getiISSQN()));</span>
+<span class="nc" id="L48">        imposto.setiPIS(zerarDouble(imposto.getiPIS()));</span>
+<span class="nc" id="L49">        imposto.setiPISST(zerarDouble(imposto.getiPISST()));</span>
+<span class="nc" id="L50">        imposto.setIvTotTrib(zerarDouble(imposto.getIvTotTrib()));</span>
+
+<span class="nc" id="L52">        return imposto;</span>
+    }
+
+
+    public static Double zerarDouble(Double doub) {
+<span class="pc bpc" id="L57" title="3 of 6 branches missed.">        if (doub == null || doub.isNaN() || doub.isInfinite())</span>
+<span class="nc" id="L58">            return 0.0;</span>
+<span class="fc" id="L59">        return doub;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

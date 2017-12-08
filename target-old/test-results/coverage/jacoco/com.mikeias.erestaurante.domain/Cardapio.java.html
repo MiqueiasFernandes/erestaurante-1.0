@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Cardapio.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.domain</a> &gt; <span class="el_source">Cardapio.java</span></div><h1>Cardapio.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.domain;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Objects;
+
+import com.mikeias.erestaurante.domain.enumeration.Dia;
+
+/**
+ * A Cardapio.
+ */
+@Entity
+@Table(name = &quot;cardapio&quot;)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+<span class="fc" id="L20">public class Cardapio implements Serializable {</span>
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;sequenceGenerator&quot;)
+    @SequenceGenerator(name = &quot;sequenceGenerator&quot;)
+    private Long id;
+
+    @Column(name = &quot;nome&quot;)
+    private String nome;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = &quot;dia&quot;)
+    private Dia dia;
+
+    @Column(name = &quot;periodo&quot;)
+    private String periodo;
+
+    @Column(name = &quot;disposicao&quot;)
+    private String disposicao;
+
+    @Lob
+    @Column(name = &quot;html&quot;)
+    private String html;
+
+    @Column(name = &quot;habilitar&quot;)
+    private Boolean habilitar;
+
+<span class="fc" id="L49">    @ManyToMany</span>
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = &quot;cardapio_produtos&quot;,
+               joinColumns = @JoinColumn(name=&quot;cardapios_id&quot;, referencedColumnName=&quot;id&quot;),
+               inverseJoinColumns = @JoinColumn(name=&quot;produtos_id&quot;, referencedColumnName=&quot;id&quot;))
+    private Set&lt;Produto&gt; produtos = new HashSet&lt;&gt;();
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public Long getId() {
+<span class="fc" id="L58">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="fc" id="L62">        this.id = id;</span>
+<span class="fc" id="L63">    }</span>
+
+    public String getNome() {
+<span class="fc" id="L66">        return nome;</span>
+    }
+
+    public Cardapio nome(String nome) {
+<span class="fc" id="L70">        this.nome = nome;</span>
+<span class="fc" id="L71">        return this;</span>
+    }
+
+    public void setNome(String nome) {
+<span class="fc" id="L75">        this.nome = nome;</span>
+<span class="fc" id="L76">    }</span>
+
+    public Dia getDia() {
+<span class="fc" id="L79">        return dia;</span>
+    }
+
+    public Cardapio dia(Dia dia) {
+<span class="fc" id="L83">        this.dia = dia;</span>
+<span class="fc" id="L84">        return this;</span>
+    }
+
+    public void setDia(Dia dia) {
+<span class="fc" id="L88">        this.dia = dia;</span>
+<span class="fc" id="L89">    }</span>
+
+    public String getPeriodo() {
+<span class="fc" id="L92">        return periodo;</span>
+    }
+
+    public Cardapio periodo(String periodo) {
+<span class="fc" id="L96">        this.periodo = periodo;</span>
+<span class="fc" id="L97">        return this;</span>
+    }
+
+    public void setPeriodo(String periodo) {
+<span class="fc" id="L101">        this.periodo = periodo;</span>
+<span class="fc" id="L102">    }</span>
+
+    public String getDisposicao() {
+<span class="fc" id="L105">        return disposicao;</span>
+    }
+
+    public Cardapio disposicao(String disposicao) {
+<span class="fc" id="L109">        this.disposicao = disposicao;</span>
+<span class="fc" id="L110">        return this;</span>
+    }
+
+    public void setDisposicao(String disposicao) {
+<span class="fc" id="L114">        this.disposicao = disposicao;</span>
+<span class="fc" id="L115">    }</span>
+
+    public String getHtml() {
+<span class="fc" id="L118">        return html;</span>
+    }
+
+    public Cardapio html(String html) {
+<span class="fc" id="L122">        this.html = html;</span>
+<span class="fc" id="L123">        return this;</span>
+    }
+
+    public void setHtml(String html) {
+<span class="fc" id="L127">        this.html = html;</span>
+<span class="fc" id="L128">    }</span>
+
+    public Boolean isHabilitar() {
+<span class="fc" id="L131">        return habilitar;</span>
+    }
+
+    public Cardapio habilitar(Boolean habilitar) {
+<span class="fc" id="L135">        this.habilitar = habilitar;</span>
+<span class="fc" id="L136">        return this;</span>
+    }
+
+    public void setHabilitar(Boolean habilitar) {
+<span class="fc" id="L140">        this.habilitar = habilitar;</span>
+<span class="fc" id="L141">    }</span>
+
+    public Set&lt;Produto&gt; getProdutos() {
+<span class="fc" id="L144">        return produtos;</span>
+    }
+
+    public Cardapio produtos(Set&lt;Produto&gt; produtos) {
+<span class="nc" id="L148">        this.produtos = produtos;</span>
+<span class="nc" id="L149">        return this;</span>
+    }
+
+    public Cardapio addProdutos(Produto produto) {
+<span class="nc" id="L153">        this.produtos.add(produto);</span>
+<span class="nc" id="L154">        return this;</span>
+    }
+
+    public Cardapio removeProdutos(Produto produto) {
+<span class="nc" id="L158">        this.produtos.remove(produto);</span>
+<span class="nc" id="L159">        return this;</span>
+    }
+
+    public void setProdutos(Set&lt;Produto&gt; produtos) {
+<span class="fc" id="L163">        this.produtos = produtos;</span>
+<span class="fc" id="L164">    }</span>
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    @Override
+    public boolean equals(Object o) {
+<span class="fc bfc" id="L169" title="All 2 branches covered.">        if (this == o) {</span>
+<span class="fc" id="L170">            return true;</span>
+        }
+<span class="fc bfc" id="L172" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L173">            return false;</span>
+        }
+<span class="fc" id="L175">        Cardapio cardapio = (Cardapio) o;</span>
+<span class="fc bfc" id="L176" title="All 4 branches covered.">        if (cardapio.getId() == null || getId() == null) {</span>
+<span class="fc" id="L177">            return false;</span>
+        }
+<span class="fc" id="L179">        return Objects.equals(getId(), cardapio.getId());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L184">        return Objects.hashCode(getId());</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L189">        return &quot;Cardapio{&quot; +</span>
+<span class="fc" id="L190">            &quot;id=&quot; + getId() +</span>
+<span class="fc" id="L191">            &quot;, nome='&quot; + getNome() + &quot;'&quot; +</span>
+<span class="fc" id="L192">            &quot;, dia='&quot; + getDia() + &quot;'&quot; +</span>
+<span class="fc" id="L193">            &quot;, periodo='&quot; + getPeriodo() + &quot;'&quot; +</span>
+<span class="fc" id="L194">            &quot;, disposicao='&quot; + getDisposicao() + &quot;'&quot; +</span>
+<span class="fc" id="L195">            &quot;, html='&quot; + getHtml() + &quot;'&quot; +</span>
+<span class="fc" id="L196">            &quot;, habilitar='&quot; + isHabilitar() + &quot;'&quot; +</span>
+            &quot;}&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

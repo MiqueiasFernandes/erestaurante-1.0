@@ -1,0 +1,92 @@
+<div class="modal-header">
+    <h4 class="modal-title">Finalizar Venda {{comanda?.codigo}}</h4>
+
+    <button
+        aria-label="Close"
+        data-dismiss="modal"
+        class="close"
+        type="button"
+        (click)="close()"><span aria-hidden="true">x</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <jhi-alert></jhi-alert>
+
+    <div class="row" style="align-items: center; margin-top: 10px">
+        <div class="col-3">TOTAL</div>
+        <div class="col-1">=</div>
+        <div class="col-8"> <h2 class="total">{{comanda.total + comanda.gorjeta| currency:'BRL':true:'.2-2'}}</h2></div>
+    </div>
+
+    <div class="row" style="align-items: center;; margin-top: 10px">
+        <div class="col-3">Desconto</div>
+        <div class="col-1">=</div>
+        <div class="col-1" style="text-align: right">R$</div>
+        <div class="col-7"><input type="number" class="form-control" [(ngModel)]="desconto" step="0.01" min="0"/></div>
+    </div>
+
+    <div class="row" style="align-items: center; margin-top: 10px">
+        <div class="col-3">Total c/ desconto</div>
+        <div class="col-1">=</div>
+        <div class="col-8"> <h1 class="total">{{comanda.total + comanda.gorjeta - desconto| currency:'BRL':true:'.2-2'}}</h1> </div>
+    </div>
+
+    <div class="row" style="align-items: center; margin-top: 10px;">
+        <div class="col-3">Valor pago</div>
+        <div class="col-1">=</div>
+        <div class="col-1" style="text-align: right">R$</div>
+        <div class="col-7"><input type="number" class="form-control" [(ngModel)]="valorPago"  step="0.01" min="0"/></div>
+    </div>
+
+    <div class="row" style="align-items: center; margin-top: 10px;">
+        <div class="col-3">Forma de pagamento</div>
+        <div class="col-1">=</div>
+        <div class="col-8">
+            <select class="form-control" name="natureza" [(ngModel)]="lancamento.natureza" id="field_natureza" (change)="setNat()">
+                <option selected="selected" value="A_VISTA_DINHEIRO">{{'eRestauranteApp.Natureza.A_VISTA_DINHEIRO' | translate}}</option>
+                <option value="A_PRAZO_DINHEIRO">{{'eRestauranteApp.Natureza.A_PRAZO_DINHEIRO' | translate}}</option>
+                <option value="A_VISTA_CARTAO">{{'eRestauranteApp.Natureza.A_VISTA_CARTAO' | translate}}</option>
+                <option value="A_PRAZO_CARTAO">{{'eRestauranteApp.Natureza.A_PRAZO_CARTAO' | translate}}</option>
+                <option value="A_VISTA_CHEQUE">{{'eRestauranteApp.Natureza.A_VISTA_CHEQUE' | translate}}</option>
+                <option value="A_PRAZO_CHEQUE">{{'eRestauranteApp.Natureza.A_PRAZO_CHEQUE' | translate}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row" style="align-items: center; margin-top: 10px;" *ngIf="isAPrazo()">
+        <div class="col-3">Parcelas</div>
+        <div class="col-1">=</div>
+        <div class="col-1" style="text-align: right">
+            {{lancamento.parcelas}}X de {{ (comanda.total + comanda.gorjeta - desconto ) / lancamento.parcelas | currency:'BRL':true:'.2-2'}}</div>
+        <div class="col-7"><input type="number" class="form-control" [(ngModel)]="lancamento.parcelas"  step="1" min="1"/></div>
+    </div>
+
+
+    <div class="row" style="align-items: center; margin-top: 10px;" *ngIf="isAPrazo()">
+        <div class="col-3">Detalhes</div>
+        <div class="col-1">=</div>
+        <div class="col-8">
+            <input type="text" class="form-control"
+                   [(ngModel)]="lancamento.observacao" placeholder="dia do pagamento... número do carnê..." maxlength="50" />
+            {{50-(lancamento.observacao?lancamento.observacao.length:0)}}
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row" style="align-items: center;">
+        <div class="col-3">TROCO</div>
+        <div class="col-1">=</div>
+        <div class="col-8"> <h1 class="total">
+            <b>
+                {{ valorPago - (comanda.total + comanda.gorjeta - desconto )| currency:'BRL':true:'.2-2'}}
+            </b>
+        </h1> </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-danger float-right" (click)="close()">Cancelar</button>
+    <button  class="btn btn-success float-right" (click)="salvar()">Finalizar</button>
+</div>

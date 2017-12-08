@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/entities/comanda/comanda-detail.component.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">app/entities/comanda/</a> comanda-detail.component.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">42.31% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>22/52</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/2</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">6.25% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/16</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">40.82% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>20/49</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
+import { JhiEventManager } from 'ng-jhipster';
+&nbsp;
+import {Comanda, Status} from './comanda.model';
+import { ComandaService } from './comanda.service';
+import {Venda, VendaStatus} from "../venda/venda.model";
+import {VendaService} from "../venda/venda.service";
+import {AutologinService} from "../../shared/login/autologin.service";
+import {NotifyService} from "../notify.service";
+&nbsp;
+@Component({
+    selector: 'jhi-comanda-detail',
+    templateUrl: require('./comanda-detail.component.html')
+})
+export class ComandaDetailComponent implements OnInit, OnDestroy {
+&nbsp;
+    comanda: Comanda;
+    vendas: Venda[];
+<span class="cstat-no" title="statement not covered" >    isAutoLogin: boolean = false;</span>
+    private subscription: Subscription;
+    private eventSubscriber: Subscription;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    constructor(</span>
+        private <span class="cstat-no" title="statement not covered" >eventManager: JhiEventManager,</span>
+        private <span class="cstat-no" title="statement not covered" >comandaService: ComandaService,</span>
+        private <span class="cstat-no" title="statement not covered" >route: ActivatedRoute,</span>
+        private <span class="cstat-no" title="statement not covered" >vendaService :VendaService,</span>
+        private <span class="cstat-no" title="statement not covered" >autoLogin: AutologinService,</span>
+        private <span class="cstat-no" title="statement not covered" >entityNotify: NotifyService,</span>
+    ) {
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    ngOnInit() {</span>
+<span class="cstat-no" title="statement not covered" >        this.subscription = this.route.params.subscribe(<span class="fstat-no" title="function not covered" >(params)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            this.load(params['id']);</span>
+        });
+<span class="cstat-no" title="statement not covered" >        this.registerChangeInComandas();</span>
+<span class="cstat-no" title="statement not covered" >        this.autoLogin.isAutoLogin().then(<span class="fstat-no" title="function not covered" >(is)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            this.isAutoLogin = is;</span>
+        })
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    load(id)</span> {
+<span class="cstat-no" title="statement not covered" >        this.comandaService.find(id).subscribe(<span class="fstat-no" title="function not covered" >(comanda)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            this.comanda = comanda;</span>
+<span class="cstat-no" title="statement not covered" >            this.vendaService.getVendasForComandaId(comanda.id, Venda.getAprovadosToString().join(',')).subscribe(<span class="fstat-no" title="function not covered" >vendas </span>=&gt; {<span class="cstat-no" title="statement not covered" >this.vendas = vendas}</span>);</span>
+        });
+    }
+<span class="fstat-no" title="function not covered" >    previousState() {</span>
+<span class="cstat-no" title="statement not covered" >        window.history.back();</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    ngOnDestroy() {</span>
+<span class="cstat-no" title="statement not covered" >        this.subscription.unsubscribe();</span>
+<span class="cstat-no" title="statement not covered" >        this.eventManager.destroy(this.eventSubscriber);</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    registerChangeInComandas() {</span>
+<span class="cstat-no" title="statement not covered" >        this.eventSubscriber = this.eventManager.subscribe(</span>
+            'comandaListModification',
+<span class="fstat-no" title="function not covered" >            (response)</span> =&gt; <span class="cstat-no" title="statement not covered" >this.load(this.comanda.id)</span>
+        );
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    noFechada() {</span>
+<span class="cstat-no" title="statement not covered" >        return !Comanda.isFechada(this.comanda);</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    solicitarFechar() {</span>
+<span class="cstat-no" title="statement not covered" >        this.entityNotify.sendMessage('comanda', 'fechar', this.comanda.id);</span>
+<span class="cstat-no" title="statement not covered" >        this.previousState();</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    fechar() {</span>
+<span class="cstat-no" title="statement not covered" >        if (this.isAutoLogin) {</span>
+<span class="cstat-no" title="statement not covered" >            this.solicitarFechar();</span>
+<span class="cstat-no" title="statement not covered" >            return;</span>
+        }
+<span class="cstat-no" title="statement not covered" >        this.comanda.status = Status.FECHADA;</span>
+<span class="cstat-no" title="statement not covered" >        this.comandaService.update(this.comanda).subscribe(<span class="fstat-no" title="function not covered" >(c)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            this.previousState();</span>
+        });
+    }
+}
+&nbsp;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Dec 08 2017 00:08:20 GMT-0200 (-02)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

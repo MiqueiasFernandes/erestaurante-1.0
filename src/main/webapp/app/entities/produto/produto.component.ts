@@ -6,7 +6,6 @@ import { Produto } from './produto.model';
 import { ProdutoService } from './produto.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import {PreferenciasService} from "../preferencias.service";
-import {DomSanitizerImpl} from "@angular/platform-browser/src/security/dom_sanitization_service";
 import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({

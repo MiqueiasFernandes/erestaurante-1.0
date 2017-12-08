@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LancamentoResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.web.rest</a> &gt; <span class="el_source">LancamentoResource.java</span></div><h1>LancamentoResource.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.web.rest;
+
+import com.mikeias.erestaurante.domain.Comanda;
+import com.mikeias.erestaurante.domain.Venda;
+import com.mikeias.erestaurante.domain.enumeration.Status;
+import com.mikeias.erestaurante.domain.enumeration.VendaStatus;
+import com.mikeias.erestaurante.repository.*;
+import com.mikeias.erestaurante.web.rest.util.DoubleUtil;
+
+import com.mikeias.erestaurante.service.PrivilegioService;
+import com.mikeias.erestaurante.domain.Cargo;
+
+import com.codahale.metrics.annotation.Timed;
+import com.mikeias.erestaurante.domain.Lancamento;
+
+import com.mikeias.erestaurante.web.rest.errors.BadRequestAlertException;
+import com.mikeias.erestaurante.web.rest.util.HeaderUtil;
+import com.mikeias.erestaurante.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
+import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * REST controller for managing Lancamento.
+ */
+@RestController
+@RequestMapping(&quot;/api&quot;)
+public class LancamentoResource {
+
+<span class="fc" id="L44">    private final Logger log = LoggerFactory.getLogger(LancamentoResource.class);</span>
+
+    private static final String ENTITY_NAME = &quot;lancamento&quot;;
+
+    private final LancamentoRepository lancamentoRepository;
+    private final ComandaRepository comandaRepository;
+    private final VendaRepository vendaRepository;
+    private final ProdutoRepository produtoRepository;
+
+
+    //////////////////////////////////REQUER PRIVILEGIOS
+    private final CargoRepository cargoRepository;
+
+    public LancamentoResource(
+        LancamentoRepository lancamentoRepository,
+        ComandaRepository comandaRepository,
+        CargoRepository cargoRepository,
+        VendaRepository vendaRepository,
+<span class="fc" id="L62">        ProdutoRepository produtoRepository) {</span>
+<span class="fc" id="L63">        this.lancamentoRepository = lancamentoRepository;</span>
+<span class="fc" id="L64">        this.comandaRepository = comandaRepository;</span>
+<span class="fc" id="L65">        this.cargoRepository = cargoRepository;</span>
+<span class="fc" id="L66">        this.vendaRepository = vendaRepository;</span>
+<span class="fc" id="L67">        this.produtoRepository =  produtoRepository;</span>
+<span class="fc" id="L68">    }</span>
+//////////////////////////////////REQUER PRIVILEGIOS]
+
+    /**
+     * POST  /lancamentos : Create a new lancamento.
+     *
+     * @param lancamento the lancamento to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new lancamento, or with status 400 (Bad Request) if the lancamento has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping(&quot;/lancamentos&quot;)
+    @Timed
+    public ResponseEntity&lt;Lancamento&gt; createLancamento(@Valid @RequestBody Lancamento lancamento) throws URISyntaxException {
+<span class="fc" id="L81">        log.debug(&quot;REST request to save Lancamento : {}&quot;, lancamento);</span>
+<span class="fc" id="L82">        lancamento = DoubleUtil.handleLancamento(lancamento);</span>
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        if (!PrivilegioService.podeCriar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L85">            log.error(&quot;TENTATIVA DE CRIAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME  + &quot; : {}&quot;, lancamento);</span>
+<span class="nc" id="L86">            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para criar esta entidade.&quot;)).body(null);</span>
+        }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (lancamento.getId() != null) {</span>
+<span class="fc" id="L90">            throw new BadRequestAlertException(&quot;A new lancamento cannot already have an ID&quot;, ENTITY_NAME, &quot;idexists&quot;);</span>
+        }
+<span class="fc" id="L92">        Lancamento result = lancamentoRepository.save(lancamento);</span>
+<span class="nc" id="L93">        ComandaResource.verificarComanda(result.getComanda(), comandaRepository, vendaRepository, lancamentoRepository, produtoRepository, log);</span>
+<span class="nc" id="L94">        return ResponseEntity.created(new URI(&quot;/api/lancamentos/&quot; + result.getId()))</span>
+<span class="nc" id="L95">            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))</span>
+<span class="nc" id="L96">            .body(result);</span>
+    }
+
+    /**
+     * PUT  /lancamentos : Updates an existing lancamento.
+     *
+     * @param lancamento the lancamento to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated lancamento,
+     * or with status 400 (Bad Request) if the lancamento is not valid,
+     * or with status 500 (Internal Server Error) if the lancamento couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping(&quot;/lancamentos&quot;)
+    @Timed
+    public ResponseEntity&lt;Lancamento&gt; updateLancamento(@Valid @RequestBody Lancamento lancamento) throws URISyntaxException {
+<span class="fc" id="L111">        log.debug(&quot;REST request to update Lancamento : {}&quot;, lancamento);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if (!PrivilegioService.podeEditar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L115">            log.error(&quot;TENTATIVA DE EDITAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME  + &quot; : {}&quot;, lancamento);</span>
+<span class="nc" id="L116">            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para editar esta entidade.&quot;)).body(null);</span>
+        }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (lancamento.getId() == null) {</span>
+<span class="nc" id="L120">            return createLancamento(lancamento);</span>
+        }
+<span class="nc" id="L122">        Lancamento result = lancamentoRepository.save(lancamento);</span>
+<span class="nc" id="L123">       ComandaResource.verificarComanda(result.getComanda(), comandaRepository, vendaRepository, lancamentoRepository, produtoRepository, log);</span>
+<span class="nc" id="L124">        return ResponseEntity.ok()</span>
+<span class="nc" id="L125">            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, lancamento.getId().toString()))</span>
+<span class="nc" id="L126">            .body(result);</span>
+    }
+
+
+    /**
+     * GET  /lancamentos : get all the lancamentos.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of lancamentos in body
+     */
+    @GetMapping(&quot;/lancamentos&quot;)
+    @Timed
+    public ResponseEntity&lt;List&lt;Lancamento&gt;&gt; getAllLancamentos(@ApiParam Pageable pageable) {
+<span class="fc" id="L139">        log.debug(&quot;REST request to get a page of Lancamentos&quot;);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">        if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L143">            log.error(&quot;TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME);</span>
+<span class="nc" id="L144">            return  null;</span>
+        }
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L148">        Page&lt;Lancamento&gt; page = lancamentoRepository.findAll(pageable);</span>
+<span class="fc" id="L149">        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, &quot;/api/lancamentos&quot;);</span>
+<span class="fc" id="L150">        return new ResponseEntity&lt;&gt;(page.getContent(), headers, HttpStatus.OK);</span>
+    }
+
+    /**
+     * GET  /lancamentos/comanda/:id : get all the lancamentos by comanda id.
+     *
+     * @param id the id of the comanda to retrieve lancamentos
+     * @return the ResponseEntity with status 200 (OK) and the list of lancamentos in body
+     */
+    @GetMapping(&quot;/lancamentos/comanda/{id}&quot;)
+    @Timed
+    public List&lt;Lancamento&gt; getAllLancamentosByComanda(@PathVariable Long id) {
+<span class="nc" id="L162">        log.debug(&quot;REST request to get all Lancamentos by comanda {} &quot;, id);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L166">            log.error(&quot;TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME);</span>
+<span class="nc" id="L167">            return  null;</span>
+        }
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="nc" id="L171">        return lancamentoRepository.findAllByComandaId(id);</span>
+    }
+
+
+    /**
+     * GET  /lancamentos/:id : get the &quot;id&quot; lancamento.
+     *
+     * @param id the id of the lancamento to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the lancamento, or with status 404 (Not Found)
+     */
+    @GetMapping(&quot;/lancamentos/{id}&quot;)
+    @Timed
+    public ResponseEntity&lt;Lancamento&gt; getLancamento(@PathVariable Long id) {
+<span class="fc" id="L184">        log.debug(&quot;REST request to get Lancamento : {}&quot;, id);</span>
+<span class="fc" id="L185">        Lancamento lancamento = lancamentoRepository.findOne(id);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L189">            lancamento = null;</span>
+<span class="nc" id="L190">            log.error(&quot;TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME + &quot; : {}&quot;, id);</span>
+        }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L193">        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(lancamento));</span>
+    }
+
+    /**
+     * DELETE  /lancamentos/:id : delete the &quot;id&quot; lancamento.
+     *
+     * @param id the id of the lancamento to delete
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @DeleteMapping(&quot;/lancamentos/{id}&quot;)
+    @Timed
+    public ResponseEntity&lt;Void&gt; deleteLancamento(@PathVariable Long id) {
+<span class="fc" id="L205">        log.debug(&quot;REST request to delete Lancamento : {}&quot;, id);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">        if (PrivilegioService.podeDeletar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="fc" id="L209">            lancamentoRepository.delete(id);</span>
+        } else {
+<span class="nc" id="L211">            log.error(&quot;TENTATIVA DE EXCUIR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME + &quot; : {}&quot;, id);</span>
+<span class="nc" id="L212">            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para deletar esta entidade.&quot;)).body(null);</span>
+        }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L215">        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

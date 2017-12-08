@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Mesa.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.domain</a> &gt; <span class="el_source">Mesa.java</span></div><h1>Mesa.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.domain;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * A Mesa.
+ */
+@Entity
+@Table(name = &quot;mesa&quot;)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+<span class="fc" id="L16">public class Mesa implements Serializable {</span>
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;sequenceGenerator&quot;)
+    @SequenceGenerator(name = &quot;sequenceGenerator&quot;)
+    private Long id;
+
+    @Column(name = &quot;codigo&quot;)
+    private String codigo;
+
+    @Column(name = &quot;jhi_local&quot;)
+    private Integer local;
+
+    @Column(name = &quot;descricao&quot;)
+    private String descricao;
+
+    @Lob
+    @Column(name = &quot;qrcode&quot;)
+    private byte[] qrcode;
+
+    @Column(name = &quot;qrcode_content_type&quot;)
+    private String qrcodeContentType;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public Long getId() {
+<span class="fc" id="L43">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="fc" id="L47">        this.id = id;</span>
+<span class="fc" id="L48">    }</span>
+
+    public String getCodigo() {
+<span class="fc" id="L51">        return codigo;</span>
+    }
+
+    public Mesa codigo(String codigo) {
+<span class="fc" id="L55">        this.codigo = codigo;</span>
+<span class="fc" id="L56">        return this;</span>
+    }
+
+    public void setCodigo(String codigo) {
+<span class="fc" id="L60">        this.codigo = codigo;</span>
+<span class="fc" id="L61">    }</span>
+
+    public Integer getLocal() {
+<span class="fc" id="L64">        return local;</span>
+    }
+
+    public Mesa local(Integer local) {
+<span class="fc" id="L68">        this.local = local;</span>
+<span class="fc" id="L69">        return this;</span>
+    }
+
+    public void setLocal(Integer local) {
+<span class="fc" id="L73">        this.local = local;</span>
+<span class="fc" id="L74">    }</span>
+
+    public String getDescricao() {
+<span class="fc" id="L77">        return descricao;</span>
+    }
+
+    public Mesa descricao(String descricao) {
+<span class="fc" id="L81">        this.descricao = descricao;</span>
+<span class="fc" id="L82">        return this;</span>
+    }
+
+    public void setDescricao(String descricao) {
+<span class="fc" id="L86">        this.descricao = descricao;</span>
+<span class="fc" id="L87">    }</span>
+
+    public byte[] getQrcode() {
+<span class="fc" id="L90">        return qrcode;</span>
+    }
+
+    public Mesa qrcode(byte[] qrcode) {
+<span class="fc" id="L94">        this.qrcode = qrcode;</span>
+<span class="fc" id="L95">        return this;</span>
+    }
+
+    public void setQrcode(byte[] qrcode) {
+<span class="fc" id="L99">        this.qrcode = qrcode;</span>
+<span class="fc" id="L100">    }</span>
+
+    public String getQrcodeContentType() {
+<span class="fc" id="L103">        return qrcodeContentType;</span>
+    }
+
+    public Mesa qrcodeContentType(String qrcodeContentType) {
+<span class="fc" id="L107">        this.qrcodeContentType = qrcodeContentType;</span>
+<span class="fc" id="L108">        return this;</span>
+    }
+
+    public void setQrcodeContentType(String qrcodeContentType) {
+<span class="fc" id="L112">        this.qrcodeContentType = qrcodeContentType;</span>
+<span class="fc" id="L113">    }</span>
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    @Override
+    public boolean equals(Object o) {
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (this == o) {</span>
+<span class="fc" id="L119">            return true;</span>
+        }
+<span class="fc bfc" id="L121" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L122">            return false;</span>
+        }
+<span class="fc" id="L124">        Mesa mesa = (Mesa) o;</span>
+<span class="fc bfc" id="L125" title="All 4 branches covered.">        if (mesa.getId() == null || getId() == null) {</span>
+<span class="fc" id="L126">            return false;</span>
+        }
+<span class="fc" id="L128">        return Objects.equals(getId(), mesa.getId());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L133">        return Objects.hashCode(getId());</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L138">        return &quot;Mesa{&quot; +</span>
+<span class="fc" id="L139">            &quot;id=&quot; + getId() +</span>
+<span class="fc" id="L140">            &quot;, codigo='&quot; + getCodigo() + &quot;'&quot; +</span>
+<span class="fc" id="L141">            &quot;, local='&quot; + getLocal() + &quot;'&quot; +</span>
+<span class="fc" id="L142">            &quot;, descricao='&quot; + getDescricao() + &quot;'&quot; +</span>
+<span class="fc" id="L143">            &quot;, qrcode='&quot; + getQrcode() + &quot;'&quot; +</span>
+            &quot;, qrcodeContentType='&quot; + qrcodeContentType + &quot;'&quot; +
+            &quot;}&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

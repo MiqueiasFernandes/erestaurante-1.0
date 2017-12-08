@@ -80,6 +80,18 @@ export class Cardapio implements BaseEntity {
         ];
     }
 
+    static getDiasStringSimples() :string[] {
+        return [
+            'DOM',
+            'SEG',
+            'TER',
+            'QUA',
+            'QUI',
+            'SEX',
+            'SAB'
+        ];
+    }
+
     static diaToString(dia: number) :string {
         return this.getDiasString()[dia];
     }

@@ -1,0 +1,41 @@
+
+<div *ngIf="impressora">
+    <h2><span jhiTranslate="eRestauranteApp.impressora.detail.title">Impressora</span> {{impressora.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="eRestauranteApp.impressora.nome">Nome</span></dt>
+        <dd>
+            <span>{{impressora.nome}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.impressora.codigo">Codigo</span></dt>
+        <dd>
+            <span>{{impressora.codigo}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.impressora.prioridade">Prioridade</span></dt>
+        <dd>
+            <span>{{impressora.prioridade}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.impressora.script">Script</span></dt>
+        <dd>
+            <span>{{impressora.script}}</span>
+        </dd>
+        <dt><span jhiTranslate="eRestauranteApp.impressora.local">Local</span></dt>
+        <dd>
+            <span>{{impressora.local}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'impressora/'+ impressora.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

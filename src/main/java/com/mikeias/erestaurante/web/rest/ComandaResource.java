@@ -3,17 +3,14 @@ package com.mikeias.erestaurante.web.rest;
 import com.mikeias.erestaurante.domain.*;
 import com.mikeias.erestaurante.domain.enumeration.Status;
 import com.mikeias.erestaurante.domain.enumeration.VendaStatus;
-import com.mikeias.erestaurante.repository.LancamentoRepository;
-import com.mikeias.erestaurante.repository.VendaRepository;
+import com.mikeias.erestaurante.repository.*;
 import com.mikeias.erestaurante.web.rest.util.DoubleUtil;
 
 
 import com.mikeias.erestaurante.service.PrivilegioService;
-import com.mikeias.erestaurante.repository.CargoRepository;
 
 import com.codahale.metrics.annotation.Timed;
 
-import com.mikeias.erestaurante.repository.ComandaRepository;
 import com.mikeias.erestaurante.web.rest.errors.BadRequestAlertException;
 import com.mikeias.erestaurante.web.rest.util.HeaderUtil;
 import com.mikeias.erestaurante.web.rest.util.PaginationUtil;
@@ -32,6 +29,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +45,9 @@ public class ComandaResource {
     private static final String ENTITY_NAME = "comanda";
 
     private final ComandaRepository comandaRepository;
+
+    private  static int contador = 1;
+
 
 
     //////////////////////////////////REQUER PRIVILEGIOS
@@ -95,7 +96,10 @@ public class ComandaResource {
             }
         }
 
+        comanda.setCodigo(comanda.getCodigo() + "-" + contador++);
+
         Comanda result = comandaRepository.save(comanda.getComandaCalculada(vendaRepository));
+
         return ResponseEntity.created(new URI("/api/comandas/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -319,7 +323,7 @@ public class ComandaResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    public static void  verificarComanda(Comanda comanda,ComandaRepository comandaRepository, VendaRepository vendaRepository, LancamentoRepository lancamentoRepository,Logger log) {
+    public static void  verificarComanda(Comanda comanda, ComandaRepository comandaRepository, VendaRepository vendaRepository, LancamentoRepository lancamentoRepository, ProdutoRepository produtoRepository, Logger log) {
         Double total =
             comanda.getComandaCalculada(vendaRepository).getTotal() +
                 comanda.getGorjeta();
@@ -334,9 +338,21 @@ public class ComandaResource {
             vs.removeIf(v -> (
                 (v.getStatus() == VendaStatus.ENTREGUE) || (v.getStatus() == VendaStatus.CANCELADO))
             );
+
             if (vs.size() < 1) {
                 comanda.setStatus(Status.PAGA);
                 comandaRepository.save(comanda);
+
+                vs = vendaRepository.findAllByComandaId(comanda.getId());
+                vs.removeIf(v -> (
+                    (v.getStatus() == VendaStatus.PEDIDO) || (v.getStatus() == VendaStatus.CANCELADO ))
+                );
+                for (Venda v : vs ) {
+                    v.getProduto().setEstoque(v.getProduto().getEstoque() - v.getQuantidade());
+                    produtoRepository.save(v.getProduto());
+                }
+
+
             } else {
                 log.warn("Comanda não pode ser fechada por possir vendas em aberto {}", comanda);
             }

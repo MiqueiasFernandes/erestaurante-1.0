@@ -2,12 +2,12 @@
     "eRestauranteApp": {
         "Natureza" : {
             "null": "",
-            "A_VISTA_DINHEIRO": "A_VISTA_DINHEIRO",
-            "A_PRAZO_DINHEIRO": "A_PRAZO_DINHEIRO",
-            "A_VISTA_CARTAO": "A_VISTA_CARTAO",
-            "A_PRAZO_CARTAO": "A_PRAZO_CARTAO",
-            "A_VISTA_CHEQUE": "A_VISTA_CHEQUE",
-            "A_PRAZO_CHEQUE": "A_PRAZO_CHEQUE"
+            "A_VISTA_DINHEIRO": "No DINHEIRO à vista",
+            "A_PRAZO_DINHEIRO": "À PRAZO/PARCELADO em DINHEIRO",
+            "A_VISTA_CARTAO": "No CARTÃO em 30 dias",
+            "A_PRAZO_CARTAO": "Parcelado no CARTÃO",
+            "A_VISTA_CHEQUE": "CHEQUE para 30 dias",
+            "A_PRAZO_CHEQUE": "CHEQUE para mais de 30"
         }
     }
 }

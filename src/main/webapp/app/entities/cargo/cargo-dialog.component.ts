@@ -35,7 +35,8 @@ export class CargoDialogComponent implements OnInit {
         "nota",       ///// GERENCIA    CAIXA
         "produto",    ///// GERENCIA   ATENDIMENTO CAIXA  PRODUÇAO
         "restaurante",///// GERENCIA   CAIXA
-        "venda"       ///// GERENCIA   ATENDIMENTO CAIXA  PRODUÇAO
+        "venda",       ///// GERENCIA   ATENDIMENTO CAIXA  PRODUÇAO
+        "impressora",       ///// GERENCIA CAIXA
     ];
 
     niveis: string[] = [
@@ -140,6 +141,7 @@ export class CargoDialogComponent implements OnInit {
                 d = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA);//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
                 break;
             case "colaborador":
+            case 'impressora':
                 v = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA);//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
                 a = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA);//// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;
                 e = Cargo.tipoEquals( this.cargo.tipo, CargoTipo.GERENCIA);/// || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ENTREGA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.ATENDIMENTO) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.CAIXA) || Cargo.tipoEquals( this.cargo.tipo, CargoTipo.PRODUCAO) ;

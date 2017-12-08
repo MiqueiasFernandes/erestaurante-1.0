@@ -1,0 +1,25 @@
+{
+    "eRestauranteApp": {
+        "impressora" : {
+            "home": {
+                "title": "Impressoras",
+                "createLabel": "Criar novo Impressora",
+                "createOrEditLabel": "Criar ou editar Impressora"
+            },
+            "created": "Um novo Impressora foi criado com o identificador {{ param }}",
+            "updated": "Um Impressora foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Impressora foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Impressora {{ id }}?"
+            },
+            "detail": {
+                "title": "Impressora"
+            },
+            "nome": "Nome",
+            "codigo": "Codigo",
+            "prioridade": "Prioridade",
+            "script": "Script",
+            "local": "Local"
+        }
+    }
+}

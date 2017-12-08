@@ -1,0 +1,38 @@
+
+<h1>Menu Gerencial</h1>
+<hr>
+
+<div class="row">
+    <div class="col separada">
+        Cadastros <hr class="separador">
+        <button class="btn btn-primary btn-lg" [routerLink]="['../cliente' ]"> <span class="fa fa-user"></span> Clientes </button> <br>
+        <button class="btn btn-primary btn-lg" [routerLink]="['../colaborador' ]"> <span class="fa fa-users"></span> Colaboradores </button> <br>
+        <button class="btn btn-primary btn-lg" [routerLink]="['../produto' ]"> <span class="fa fa-cubes"></span> Produtos </button> <br>
+        <button class="btn btn-primary btn-lg" [routerLink]="['../mesa' ]"> <span class="fa fa-table"></span> Mesa </button> <br>
+        <button class="btn btn-primary btn-lg" [routerLink]="['../cargo' ]"> <span class="fa fa-clone"></span> Cargo </button> <br>
+    </div>
+    <div class="col separada">
+        Vendas <hr class="separador">
+        <button class="btn btn-primary btn-lg" [routerLink]="['../venda' ]"> <span class="fa fa-diamond" ></span> Todas Vendas </button> <br>
+        <button class="btn btn-primary btn-lg" [routerLink]="['../comanda' ]"> <span class="fa fa-list-ol"></span> Comandas </button> <br>
+        <br> Relatórios <hr class="separador">
+        <button class="btn btn-primary btn-lg" [routerLink]="['../produto' ]"> <span class="fa fa-cubes"></span> Produtos </button> <br>
+        <button class="btn btn-primary btn-lg" [routerLink]="['../lancamento' ]"> <span class="fa fa-money"></span> Fluxo de caixa </button> <br>
+        <button class="btn btn-primary btn-lg" [routerLink]="['../venda' ]"> <span class="fa fa-diamond"></span> Vendas </button> <br>
+        <br> Gráficos <hr class="separador">
+        <button class="btn btn-primary btn-lg" [routerLink]="['../lancamento' ]"> <span class="fa fa-line-chart"></span> Fluxo de caixa Mensal </button> <br>
+        <button class="btn btn-primary btn-lg" [routerLink]="['../lancamento' ]"> <span class="fa fa-bar-chart"></span> Fluxo de caixa Anual </button> <br>
+    </div>
+    <div class="col separada">
+        Configurações <hr class="separador">
+        <button class="btn btn-primary btn-lg" [routerLink]="['../restaurante' ]"> <span class="fa fa-industry"></span> Restaurante </button> <br>
+        <button class="btn btn-primary btn-lg"> <span class="fa fa-shield"></span> NFC-e/SAT </button> <br>
+        <button class="btn btn-primary btn-lg"> <span class="fa fa-at"></span> Conta de email </button> <br>
+        <button class="btn btn-primary btn-lg"> <span class="fa fa-balance-scale"></span> Balança </button> <br>
+        <button class="btn btn-primary btn-lg" [routerLink]="['../impressora' ]"> <span class="fa fa-print"></span> Impressora </button> <br>
+        <!--<button class="btn btn-primary btn-lg"> <span class="fa fa-cog"></span> Sistema </button> <br>-->
+        <!--<button class="btn btn-primary btn-lg"> <span class="fa fa-user"></span> Comanda Eletrônica </button> <br>-->
+        <button class="btn btn-primary btn-lg" type="submit" (click)="logout()"> <span class="fa fa-power-off"></span> Logoff </button> <br>
+    </div>
+</div>
+

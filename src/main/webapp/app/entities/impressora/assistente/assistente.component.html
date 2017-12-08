@@ -1,0 +1,96 @@
+<div class="modal-header">
+    <h4 class="modal-title">Assistente de importação de Impressoras</h4>
+    <button
+        aria-label="Close"
+        data-dismiss="modal"
+        class="close"
+        type="button"
+        (click)="close()"><span aria-hidden="true">x</span>
+    </button>
+</div>
+
+<div class="modal-body">
+
+    <div class="row">
+        <div class="col">
+            <div ngbDropdown class="nav-item dropdown pointer">
+
+                <div class="input-group">
+                    <div class="input-group-addon"> <span class="fa fa-wifi"></span></div>
+                    <input
+                        type="text"
+                        #inp
+                        (keydown.enter)="pesquisar(inp.value)"
+                        class="form-control form-control-lg filtro dropdown"
+                        placeholder="digite o IP do computador"
+                        ngbDropdownToggle
+                        [(ngModel)]="impressora.nome"
+                        [readonly]="selected"
+                    >
+                    <button class="btn btn-lg btn-info" (click)="pesquisar(inp.value)"><span class="fa fa-search"></span></button>
+                </div>
+                <ul class="dropdown-menu" ngbDropdownMenu>
+                    <li *ngFor="let impressora of impressoras">
+                        <a class="dropdown-item" (click)="select(impressora)">
+                            <img *ngIf="impressora.termica" width="50" src="../../../../content/images/ecf.jpg">
+                            <img *ngIf="!impressora.termica" width="50"  src="../../../../content/images/impressora.jpg">
+
+                            {{impressora.nome}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="selected" class="row">
+        <div class="col">
+
+            <p></p>
+
+            <p>
+                Nome: {{impressora.nome}} ({{impressora.nome}}-{{impressora.termica ? 'ecf' : 'imp'}})
+            </p>
+            <p>
+                Tipo: {{impressora.termica ? 'Térmica' : 'Padrão'}}
+                <img *ngIf="impressora.termica" width="50" src="../../../../content/images/ecf.jpg">
+                <img *ngIf="!impressora.termica" width="50"  src="../../../../content/images/impressora.jpg">
+            </p>
+
+            <p>
+                Status: {{impressora.status ? 'ok' : 'error'}}
+            </p>
+
+            <p>
+                Utilizar como impressão em produção: Não <label class="switch">
+                <input type="checkbox" [(ngModel)]="data.producao" (change)="sw()">
+                <span class="slider round"></span> <span style="margin-left: 60px">Sim</span>
+            </label>
+                <input type="text" class="form-control" *ngIf="data.producao" [(ngModel)]="data.local"
+                       placeholder="digite o nome do local de produção"
+                >
+            </p>
+            <p>
+                Utilizar como impressão de relatorios: Não <label class="switch">
+                <input type="checkbox" [(ngModel)]="data.relatorio">
+                <span class="slider round"></span> <span style="margin-left: 60px">Sim</span>
+            </label>
+            </p>
+            <p>
+                Utilizar como impressão de nota fiscal: Não <label class="switch">
+                <input type="checkbox" [(ngModel)]="data.nota">
+                <span class="slider round"></span>  <span style="margin-left: 60px">Sim</span>
+            </label>
+            </p>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-danger float-right" (click)="close()">Cancelar</button>
+    <button  class="btn btn-success float-right" (click)="salvar()">Salvar</button>
+</div>

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Produto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.domain</a> &gt; <span class="el_source">Produto.java</span></div><h1>Produto.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.domain;
+
+import io.swagger.annotations.ApiModel;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
+
+import com.mikeias.erestaurante.domain.enumeration.Unidade;
+
+/**
+ * NOVO ESQUEMA ERESTAURANTE
+ */
+@ApiModel(description = &quot;NOVO ESQUEMA ERESTAURANTE&quot;)
+@Entity
+@Table(name = &quot;produto&quot;)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+<span class="fc" id="L20">public class Produto implements Serializable {</span>
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;sequenceGenerator&quot;)
+    @SequenceGenerator(name = &quot;sequenceGenerator&quot;)
+    private Long id;
+
+    @Column(name = &quot;codigo&quot;)
+    private String codigo;
+
+    @Column(name = &quot;nome&quot;)
+    private String nome;
+
+    @Column(name = &quot;fornecedor&quot;)
+    private String fornecedor;
+
+    @Column(name = &quot;estoque&quot;)
+    private Double estoque;
+
+    @Column(name = &quot;valor&quot;)
+    private Double valor;
+
+    @Column(name = &quot;preco&quot;)
+    private Double preco;
+
+    @Lob
+    @Column(name = &quot;foto&quot;)
+    private byte[] foto;
+
+    @Column(name = &quot;foto_content_type&quot;)
+    private String fotoContentType;
+
+    @Column(name = &quot;descricao&quot;)
+    private String descricao;
+
+    @Column(name = &quot;html&quot;)
+    private String html;
+
+    @Column(name = &quot;observacao&quot;)
+    private String observacao;
+
+    @Column(name = &quot;opcional&quot;)
+    private String opcional;
+
+    @Column(name = &quot;adicional&quot;)
+    private String adicional;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = &quot;unidade&quot;)
+    private Unidade unidade;
+
+    @ManyToOne
+    private Imposto imposto;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public Long getId() {
+<span class="fc" id="L78">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="fc" id="L82">        this.id = id;</span>
+<span class="fc" id="L83">    }</span>
+
+    public String getCodigo() {
+<span class="fc" id="L86">        return codigo;</span>
+    }
+
+    public Produto codigo(String codigo) {
+<span class="fc" id="L90">        this.codigo = codigo;</span>
+<span class="fc" id="L91">        return this;</span>
+    }
+
+    public void setCodigo(String codigo) {
+<span class="fc" id="L95">        this.codigo = codigo;</span>
+<span class="fc" id="L96">    }</span>
+
+    public String getNome() {
+<span class="fc" id="L99">        return nome;</span>
+    }
+
+    public Produto nome(String nome) {
+<span class="fc" id="L103">        this.nome = nome;</span>
+<span class="fc" id="L104">        return this;</span>
+    }
+
+    public void setNome(String nome) {
+<span class="fc" id="L108">        this.nome = nome;</span>
+<span class="fc" id="L109">    }</span>
+
+    public String getFornecedor() {
+<span class="fc" id="L112">        return fornecedor;</span>
+    }
+
+    public Produto fornecedor(String fornecedor) {
+<span class="fc" id="L116">        this.fornecedor = fornecedor;</span>
+<span class="fc" id="L117">        return this;</span>
+    }
+
+    public void setFornecedor(String fornecedor) {
+<span class="fc" id="L121">        this.fornecedor = fornecedor;</span>
+<span class="fc" id="L122">    }</span>
+
+    public Double getEstoque() {
+<span class="fc" id="L125">        return estoque;</span>
+    }
+
+    public Produto estoque(Double estoque) {
+<span class="fc" id="L129">        this.estoque = estoque;</span>
+<span class="fc" id="L130">        return this;</span>
+    }
+
+    public void setEstoque(Double estoque) {
+<span class="fc" id="L134">        this.estoque = estoque;</span>
+<span class="fc" id="L135">    }</span>
+
+    public Double getValor() {
+<span class="fc" id="L138">        return valor;</span>
+    }
+
+    public Produto valor(Double valor) {
+<span class="fc" id="L142">        this.valor = valor;</span>
+<span class="fc" id="L143">        return this;</span>
+    }
+
+    public void setValor(Double valor) {
+<span class="fc" id="L147">        this.valor = valor;</span>
+<span class="fc" id="L148">    }</span>
+
+    public Double getPreco() {
+<span class="fc" id="L151">        return preco;</span>
+    }
+
+    public Produto preco(Double preco) {
+<span class="fc" id="L155">        this.preco = preco;</span>
+<span class="fc" id="L156">        return this;</span>
+    }
+
+    public void setPreco(Double preco) {
+<span class="fc" id="L160">        this.preco = preco;</span>
+<span class="fc" id="L161">    }</span>
+
+    public byte[] getFoto() {
+<span class="fc" id="L164">        return foto;</span>
+    }
+
+    public Produto foto(byte[] foto) {
+<span class="fc" id="L168">        this.foto = foto;</span>
+<span class="fc" id="L169">        return this;</span>
+    }
+
+    public void setFoto(byte[] foto) {
+<span class="fc" id="L173">        this.foto = foto;</span>
+<span class="fc" id="L174">    }</span>
+
+    public String getFotoContentType() {
+<span class="fc" id="L177">        return fotoContentType;</span>
+    }
+
+    public Produto fotoContentType(String fotoContentType) {
+<span class="fc" id="L181">        this.fotoContentType = fotoContentType;</span>
+<span class="fc" id="L182">        return this;</span>
+    }
+
+    public void setFotoContentType(String fotoContentType) {
+<span class="fc" id="L186">        this.fotoContentType = fotoContentType;</span>
+<span class="fc" id="L187">    }</span>
+
+    public String getDescricao() {
+<span class="fc" id="L190">        return descricao;</span>
+    }
+
+    public Produto descricao(String descricao) {
+<span class="fc" id="L194">        this.descricao = descricao;</span>
+<span class="fc" id="L195">        return this;</span>
+    }
+
+    public void setDescricao(String descricao) {
+<span class="fc" id="L199">        this.descricao = descricao;</span>
+<span class="fc" id="L200">    }</span>
+
+    public String getHtml() {
+<span class="fc" id="L203">        return html;</span>
+    }
+
+    public Produto html(String html) {
+<span class="fc" id="L207">        this.html = html;</span>
+<span class="fc" id="L208">        return this;</span>
+    }
+
+    public void setHtml(String html) {
+<span class="fc" id="L212">        this.html = html;</span>
+<span class="fc" id="L213">    }</span>
+
+    public String getObservacao() {
+<span class="fc" id="L216">        return observacao;</span>
+    }
+
+    public Produto observacao(String observacao) {
+<span class="fc" id="L220">        this.observacao = observacao;</span>
+<span class="fc" id="L221">        return this;</span>
+    }
+
+    public void setObservacao(String observacao) {
+<span class="fc" id="L225">        this.observacao = observacao;</span>
+<span class="fc" id="L226">    }</span>
+
+    public String getOpcional() {
+<span class="fc" id="L229">        return opcional;</span>
+    }
+
+    public Produto opcional(String opcional) {
+<span class="fc" id="L233">        this.opcional = opcional;</span>
+<span class="fc" id="L234">        return this;</span>
+    }
+
+    public void setOpcional(String opcional) {
+<span class="fc" id="L238">        this.opcional = opcional;</span>
+<span class="fc" id="L239">    }</span>
+
+    public String getAdicional() {
+<span class="fc" id="L242">        return adicional;</span>
+    }
+
+    public Produto adicional(String adicional) {
+<span class="fc" id="L246">        this.adicional = adicional;</span>
+<span class="fc" id="L247">        return this;</span>
+    }
+
+    public void setAdicional(String adicional) {
+<span class="fc" id="L251">        this.adicional = adicional;</span>
+<span class="fc" id="L252">    }</span>
+
+    public Unidade getUnidade() {
+<span class="fc" id="L255">        return unidade;</span>
+    }
+
+    public Produto unidade(Unidade unidade) {
+<span class="fc" id="L259">        this.unidade = unidade;</span>
+<span class="fc" id="L260">        return this;</span>
+    }
+
+    public void setUnidade(Unidade unidade) {
+<span class="fc" id="L264">        this.unidade = unidade;</span>
+<span class="fc" id="L265">    }</span>
+
+    public Imposto getImposto() {
+<span class="fc" id="L268">        return imposto;</span>
+    }
+
+    public Produto imposto(Imposto imposto) {
+<span class="nc" id="L272">        this.imposto = imposto;</span>
+<span class="nc" id="L273">        return this;</span>
+    }
+
+    public void setImposto(Imposto imposto) {
+<span class="nc" id="L277">        this.imposto = imposto;</span>
+<span class="nc" id="L278">    }</span>
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    @Override
+    public boolean equals(Object o) {
+<span class="fc bfc" id="L283" title="All 2 branches covered.">        if (this == o) {</span>
+<span class="fc" id="L284">            return true;</span>
+        }
+<span class="fc bfc" id="L286" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L287">            return false;</span>
+        }
+<span class="fc" id="L289">        Produto produto = (Produto) o;</span>
+<span class="fc bfc" id="L290" title="All 4 branches covered.">        if (produto.getId() == null || getId() == null) {</span>
+<span class="fc" id="L291">            return false;</span>
+        }
+<span class="fc" id="L293">        return Objects.equals(getId(), produto.getId());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L298">        return Objects.hashCode(getId());</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L303">        return &quot;Produto{&quot; +</span>
+<span class="fc" id="L304">            &quot;id=&quot; + getId() +</span>
+<span class="fc" id="L305">            &quot;, codigo='&quot; + getCodigo() + &quot;'&quot; +</span>
+<span class="fc" id="L306">            &quot;, nome='&quot; + getNome() + &quot;'&quot; +</span>
+<span class="fc" id="L307">            &quot;, fornecedor='&quot; + getFornecedor() + &quot;'&quot; +</span>
+<span class="fc" id="L308">            &quot;, estoque='&quot; + getEstoque() + &quot;'&quot; +</span>
+<span class="fc" id="L309">            &quot;, valor='&quot; + getValor() + &quot;'&quot; +</span>
+<span class="fc" id="L310">            &quot;, preco='&quot; + getPreco() + &quot;'&quot; +</span>
+<span class="fc" id="L311">            &quot;, foto='&quot; + getFoto() + &quot;'&quot; +</span>
+            &quot;, fotoContentType='&quot; + fotoContentType + &quot;'&quot; +
+<span class="fc" id="L313">            &quot;, descricao='&quot; + getDescricao() + &quot;'&quot; +</span>
+<span class="fc" id="L314">            &quot;, html='&quot; + getHtml() + &quot;'&quot; +</span>
+<span class="fc" id="L315">            &quot;, observacao='&quot; + getObservacao() + &quot;'&quot; +</span>
+<span class="fc" id="L316">            &quot;, opcional='&quot; + getOpcional() + &quot;'&quot; +</span>
+<span class="fc" id="L317">            &quot;, adicional='&quot; + getAdicional() + &quot;'&quot; +</span>
+<span class="fc" id="L318">            &quot;, unidade='&quot; + getUnidade() + &quot;'&quot; +</span>
+            &quot;}&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

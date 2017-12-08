@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ComandaResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.web.rest</a> &gt; <span class="el_source">ComandaResource.java</span></div><h1>ComandaResource.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.web.rest;
+
+import com.mikeias.erestaurante.domain.*;
+import com.mikeias.erestaurante.domain.enumeration.Status;
+import com.mikeias.erestaurante.domain.enumeration.VendaStatus;
+import com.mikeias.erestaurante.repository.*;
+import com.mikeias.erestaurante.web.rest.util.DoubleUtil;
+
+
+import com.mikeias.erestaurante.service.PrivilegioService;
+
+import com.codahale.metrics.annotation.Timed;
+
+import com.mikeias.erestaurante.web.rest.errors.BadRequestAlertException;
+import com.mikeias.erestaurante.web.rest.util.HeaderUtil;
+import com.mikeias.erestaurante.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
+import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * REST controller for managing Comanda.
+ */
+@RestController
+@RequestMapping(&quot;/api&quot;)
+public class ComandaResource {
+
+<span class="fc" id="L43">    private final Logger log = LoggerFactory.getLogger(ComandaResource.class);</span>
+
+    private static final String ENTITY_NAME = &quot;comanda&quot;;
+
+    private final ComandaRepository comandaRepository;
+
+<span class="fc" id="L49">    private  static int contador = 1;</span>
+
+
+
+    //////////////////////////////////REQUER PRIVILEGIOS
+    private final CargoRepository cargoRepository;
+    private final VendaRepository vendaRepository;
+
+<span class="fc" id="L57">    public ComandaResource(ComandaRepository comandaRepository, CargoRepository cargoRepository, VendaRepository vendaRepository) {</span>
+<span class="fc" id="L58">        this.comandaRepository = comandaRepository;</span>
+<span class="fc" id="L59">        this.cargoRepository = cargoRepository;</span>
+<span class="fc" id="L60">        this.vendaRepository = vendaRepository;</span>
+<span class="fc" id="L61">    }</span>
+//////////////////////////////////REQUER PRIVILEGIOS
+
+    /**
+     * POST  /comandas : Create a new comanda.
+     *
+     * @param comanda the comanda to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new comanda, or with status 400 (Bad Request) if the comanda has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping(&quot;/comandas&quot;)
+    @Timed
+    public ResponseEntity&lt;Comanda&gt; createComanda(@Valid @RequestBody Comanda comanda) throws URISyntaxException {
+<span class="fc" id="L74">        log.debug(&quot;REST request to save Comanda : {}&quot;, comanda);</span>
+
+<span class="fc" id="L76">        comanda = DoubleUtil.handleComanda(comanda);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">                                  if (!PrivilegioService.podeCriar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L80">                                  log.error(&quot;TENTATIVA DE CRIAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME  + &quot; : {}&quot;, comanda);</span>
+<span class="nc" id="L81">                                  return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para criar esta entidade.&quot;)).body(null);</span>
+                                  }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (comanda.getId() != null) {</span>
+<span class="fc" id="L85">            throw new BadRequestAlertException(&quot;A new comanda cannot already have an ID&quot;, ENTITY_NAME, &quot;idexists&quot;);</span>
+        }
+
+
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        for (Mesa mesa :comanda.getMesas()) {</span>
+<span class="pc bpc" id="L90" title="2 of 4 branches missed.">            if (temComanda(&quot;FECHADA&quot;, mesa.getId()) || temComanda(&quot;ABERTA&quot;, mesa.getId())) {</span>
+<span class="nc" id="L91">                log.error(&quot;TENTATIVA DE CRIAR COM OUTRA COMANDA EXISTENTE! &quot; + ENTITY_NAME  + &quot; : {}&quot;, comanda);</span>
+<span class="nc" id="L92">                return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME,</span>
+                    &quot;comanda existente para esta mesa.&quot;,
+                    &quot;Há uma comanda FECHADA ou ABERTA para esta mesa, PAGUE-A antes de criar outra.&quot;))
+<span class="nc" id="L95">                    .body(null);</span>
+            }
+<span class="fc" id="L97">        }</span>
+
+<span class="fc" id="L99">        comanda.setCodigo(comanda.getCodigo() + &quot;-&quot; + contador++);</span>
+
+<span class="fc" id="L101">        Comanda result = comandaRepository.save(comanda.getComandaCalculada(vendaRepository));</span>
+
+<span class="fc" id="L103">        return ResponseEntity.created(new URI(&quot;/api/comandas/&quot; + result.getId()))</span>
+<span class="fc" id="L104">            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))</span>
+<span class="fc" id="L105">            .body(result);</span>
+    }
+
+    /**
+     * PUT  /comandas : Updates an existing comanda.
+     *
+     * @param comanda the comanda to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated comanda,
+     * or with status 400 (Bad Request) if the comanda is not valid,
+     * or with status 500 (Internal Server Error) if the comanda couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping(&quot;/comandas&quot;)
+    @Timed
+    public ResponseEntity&lt;Comanda&gt; updateComanda(@Valid @RequestBody Comanda comanda) throws URISyntaxException {
+<span class="fc" id="L120">        log.debug(&quot;REST request to update Comanda : {}&quot;, comanda);</span>
+
+<span class="fc" id="L122">        comanda = comanda.getComandaCalculada(vendaRepository);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">                                  if (!PrivilegioService.podeEditar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L126">                                  log.error(&quot;TENTATIVA DE EDITAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME  + &quot; : {}&quot;, comanda);</span>
+<span class="nc" id="L127">                                  return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para editar esta entidade.&quot;)).body(null);</span>
+                                  }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">        if (comanda.getId() == null) {</span>
+<span class="fc" id="L131">            return createComanda(comanda);</span>
+        }
+<span class="nc" id="L133">        Comanda result = comandaRepository.save(comanda);</span>
+<span class="nc" id="L134">        return ResponseEntity.ok()</span>
+<span class="nc" id="L135">            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, comanda.getId().toString()))</span>
+<span class="nc" id="L136">            .body(result);</span>
+    }
+
+    /**
+     * GET  /comandas : get all the comandas.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of comandas in body
+     */
+    @GetMapping(&quot;/comandas&quot;)
+    @Timed
+    public ResponseEntity&lt;List&lt;Comanda&gt;&gt; getAllComandas(@ApiParam Pageable pageable) {
+<span class="fc" id="L148">        log.debug(&quot;REST request to get a page of Comandas&quot;);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">                                  if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L152">                                  log.error(&quot;TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME);</span>
+<span class="nc" id="L153">                                  return  null;</span>
+                                  }
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L157">        Page&lt;Comanda&gt; page = comandaRepository.findAll(pageable);</span>
+<span class="fc" id="L158">        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, &quot;/api/comandas&quot;);</span>
+<span class="fc" id="L159">        page.getContent().forEach(comanda -&gt; comanda.calculaComanda(this.vendaRepository));</span>
+<span class="fc" id="L160">        return new ResponseEntity&lt;&gt;(page.getContent(), headers, HttpStatus.OK);</span>
+    }
+
+    /**
+     * GET  /comandas/status/:status : get all the comandas abertas.
+     *
+     * @param status the id of the comanda to retrieve
+     * @return the ResponseEntity with status 200 (OK) and the list of comandas in body
+     */
+    @GetMapping(&quot;/comandas/status/{status}&quot;)
+    @Timed
+    public List&lt;Comanda&gt; getAllComandasByStatus(@PathVariable String status) {
+<span class="fc" id="L172">        log.debug(&quot;REST request to get all Comandas by status {}&quot;, status);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">        if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L176">            log.error(&quot;TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME);</span>
+<span class="nc" id="L177">            return  null;</span>
+        }
+
+<span class="fc" id="L180">        Status stat = Status.ABERTA;</span>
+
+<span class="pc bpc" id="L182" title="12 of 18 branches missed.">        switch (status) {</span>
+<span class="fc" id="L183">            case &quot;ABERTA&quot; : stat = Status.ABERTA; break;</span>
+<span class="nc" id="L184">            case &quot;VAZIA&quot; : stat = Status.VAZIA;break;</span>
+<span class="fc" id="L185">            case &quot;FECHADA&quot; : stat = Status.FECHADA;break;</span>
+<span class="nc" id="L186">            case &quot;PAGA&quot; : stat = Status.PAGA;break;</span>
+        }
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L190">        List&lt;Comanda&gt; cs = comandaRepository.findAllWithEagerRelationshipByStatus(stat);</span>
+<span class="pc" id="L191">        cs.forEach(c -&gt; c.calculaComanda(vendaRepository));</span>
+<span class="fc" id="L192">        return cs;</span>
+    }
+
+    boolean temComanda(String status, Long idMesa) {
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">        for(Comanda c : getAllComandasByStatus(status)) {</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">            for (Mesa mesa :c.getMesas()) {</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">                if (mesa.getId().equals(idMesa )) {</span>
+<span class="nc" id="L199">                    return true;</span>
+                }
+<span class="nc" id="L201">            }</span>
+<span class="nc" id="L202">        }</span>
+<span class="fc" id="L203">        return false;</span>
+    }
+
+
+    /**
+     * GET  /comandas/:id : get the &quot;id&quot; comanda.
+     *
+     * @param id the id of the comanda to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the comanda, or with status 404 (Not Found)
+     */
+    @GetMapping(&quot;/comandas/{id}&quot;)
+    @Timed
+    public ResponseEntity&lt;Comanda&gt; getComanda(@PathVariable Long id) {
+<span class="nc" id="L216">        log.debug(&quot;REST request to get Comanda : {}&quot;, id);</span>
+
+<span class="nc bnc" id="L218" title="All 2 branches missed.">        if (id &lt; 0) {</span>
+<span class="nc" id="L219">            log.debug(&quot;REST request to get Comanda Avulça&quot;);</span>
+
+<span class="nc bnc" id="L221" title="All 2 branches missed.">            if (temComanda(&quot;FECHADA&quot;, (id * -1))) {</span>
+<span class="nc" id="L222">                return ResponseUtil.wrapOrNotFound(Optional.ofNullable(null));</span>
+            }
+
+<span class="nc bnc" id="L225" title="All 2 branches missed.">            for(Comanda c : getAllComandasByStatus(&quot;ABERTA&quot;)) {</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">                for (Mesa mesa :c.getMesas()) {</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">                    if (mesa.getId().equals(id * -1)) {</span>
+<span class="nc" id="L228">                        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(c.getComandaCalculada(vendaRepository)));</span>
+                    }
+<span class="nc" id="L230">                }</span>
+<span class="nc" id="L231">            }</span>
+
+<span class="nc bnc" id="L233" title="All 2 branches missed.">            for(Comanda comanda : comandaRepository.findAllWithEagerRelationshipsAvulco()) {</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">                for (Mesa mesa :comanda.getMesas()) {</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">                    if (mesa.getId().equals(id * -1)) {</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">                        if (comanda.getStatus() == Status.VAZIA) {</span>
+<span class="nc" id="L237">                            return ResponseUtil.wrapOrNotFound(Optional.ofNullable(comanda));</span>
+                        } else {
+<span class="nc" id="L239">                            return ResponseUtil.wrapOrNotFound(Optional.ofNullable(null));</span>
+                        }
+                    }
+<span class="nc" id="L242">                }</span>
+<span class="nc" id="L243">            }</span>
+        }
+
+<span class="nc" id="L246">        Comanda comanda = comandaRepository.findOneWithEagerRelationships(id);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="nc bnc" id="L249" title="All 2 branches missed.">                                  if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L250">                                  comanda = null;</span>
+<span class="nc" id="L251">                                  log.error(&quot;TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME + &quot; : {}&quot;, id);</span>
+                                  }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="nc" id="L254">        Comanda c2 = comanda.getComandaCalculada(vendaRepository);</span>
+
+<span class="nc bnc" id="L256" title="All 4 branches missed.">        if ((comanda != null) &amp;&amp; (c2.getTotal() != comanda.getTotal())) {</span>
+            try {
+<span class="nc" id="L258">                comanda = updateComanda(c2).getBody();</span>
+<span class="nc" id="L259">            } catch (Exception ex) {</span>
+<span class="nc" id="L260">                log.error(&quot;Falhou ao obter comanda {}&quot;, id);</span>
+<span class="nc" id="L261">            }</span>
+        }
+
+<span class="nc" id="L264">        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(comanda));</span>
+    }
+
+    /**
+     * GET  /comandas/mesa/:id : get the &quot;id&quot; comanda aberta ou vazia by mesa.
+     *
+     * @param id the id of the mesa to retrieve comanda
+     * @return the ResponseEntity with status 200 (OK) and with body the comanda, or with status 404 (Not Found)
+     */
+    @GetMapping(&quot;/comandas/mesa/{id}&quot;)
+    @Timed
+    public ResponseEntity&lt;Comanda&gt; getComandaByMesa(@PathVariable Long id) {
+<span class="nc" id="L276">        log.debug(&quot;REST request to get Comanda by Mesa: {}&quot;, id);</span>
+<span class="nc" id="L277">        List&lt;Comanda&gt;  comandas = comandaRepository.findAllWithEagerRelationships();</span>
+
+<span class="nc" id="L279">        Comanda d = null;</span>
+
+        try {
+<span class="nc bnc" id="L282" title="All 2 branches missed.">            for (Comanda c : comandas) {</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">                for (Mesa m : c.getMesas()) {</span>
+<span class="nc bnc" id="L284" title="All 4 branches missed.">                    if (m.getId().equals(id) &amp;&amp; (c.getStatus() == Status.ABERTA)) {</span>
+<span class="nc" id="L285">                        d = c.getComandaCalculada(vendaRepository);</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">                        if (d.getTotal() != c.getTotal()) {</span>
+<span class="nc" id="L287">                            d = updateComanda(d).getBody();</span>
+                        }
+                        break;
+                    }
+<span class="nc" id="L291">                }</span>
+
+<span class="nc bnc" id="L293" title="All 2 branches missed.">                if (d != null) {</span>
+<span class="nc" id="L294">                    break;</span>
+                }
+<span class="nc" id="L296">            }</span>
+<span class="nc" id="L297">        } catch (Exception ex) {</span>
+<span class="nc" id="L298">            log.error(&quot;Falhou ao obter comanda by mesa{}&quot;, id);</span>
+<span class="nc" id="L299">        }</span>
+
+<span class="nc" id="L301">        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(d));</span>
+    }
+
+    /**
+     * DELETE  /comandas/:id : delete the &quot;id&quot; comanda.
+     *
+     * @param id the id of the comanda to delete
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @DeleteMapping(&quot;/comandas/{id}&quot;)
+    @Timed
+    public ResponseEntity&lt;Void&gt; deleteComanda(@PathVariable Long id) {
+<span class="fc" id="L313">        log.debug(&quot;REST request to delete Comanda : {}&quot;, id);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L316" title="1 of 2 branches missed.">                                  if (PrivilegioService.podeDeletar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="fc" id="L317">                                  comandaRepository.delete(id);</span>
+                                  } else {
+<span class="nc" id="L319">                                  log.error(&quot;TENTATIVA DE EXCUIR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME + &quot; : {}&quot;, id);</span>
+<span class="nc" id="L320">                                  return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para deletar esta entidade.&quot;)).body(null);</span>
+                                  }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L323">        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();</span>
+    }
+
+    public static void  verificarComanda(Comanda comanda, ComandaRepository comandaRepository, VendaRepository vendaRepository, LancamentoRepository lancamentoRepository, ProdutoRepository produtoRepository, Logger log) {
+<span class="fc" id="L327">        Double total =</span>
+<span class="fc" id="L328">            comanda.getComandaCalculada(vendaRepository).getTotal() +</span>
+<span class="fc" id="L329">                comanda.getGorjeta();</span>
+
+<span class="pc bpc" id="L331" title="1 of 2 branches missed.">        for (Lancamento lancamento1 : lancamentoRepository.findAllByComandaId(comanda.getId())) {</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">            if (lancamento1.isIsentrada()) {</span>
+<span class="nc" id="L333">                total -= (lancamento1.getValor() + lancamento1.getDesconto());</span>
+            }
+<span class="nc" id="L335">        }</span>
+<span class="pc bpc" id="L336" title="1 of 2 branches missed.">        if (total &lt;= 0) {</span>
+<span class="nc" id="L337">            List&lt;Venda&gt;  vs = vendaRepository.findAllByComandaId(comanda.getId());</span>
+<span class="nc" id="L338">            vs.removeIf(v -&gt; (</span>
+<span class="nc bnc" id="L339" title="All 4 branches missed.">                (v.getStatus() == VendaStatus.ENTREGUE) || (v.getStatus() == VendaStatus.CANCELADO))</span>
+            );
+
+<span class="nc bnc" id="L342" title="All 2 branches missed.">            if (vs.size() &lt; 1) {</span>
+<span class="nc" id="L343">                comanda.setStatus(Status.PAGA);</span>
+<span class="nc" id="L344">                comandaRepository.save(comanda);</span>
+
+<span class="nc" id="L346">                vs = vendaRepository.findAllByComandaId(comanda.getId());</span>
+<span class="nc" id="L347">                vs.removeIf(v -&gt; (</span>
+<span class="nc bnc" id="L348" title="All 4 branches missed.">                    (v.getStatus() == VendaStatus.PEDIDO) || (v.getStatus() == VendaStatus.CANCELADO ))</span>
+                );
+<span class="nc bnc" id="L350" title="All 2 branches missed.">                for (Venda v : vs ) {</span>
+<span class="nc" id="L351">                    v.getProduto().setEstoque(v.getProduto().getEstoque() - v.getQuantidade());</span>
+<span class="nc" id="L352">                    produtoRepository.save(v.getProduto());</span>
+<span class="nc" id="L353">                }</span>
+
+
+            } else {
+<span class="nc" id="L357">                log.warn(&quot;Comanda não pode ser fechada por possir vendas em aberto {}&quot;, comanda);</span>
+            }
+        }
+<span class="fc" id="L360">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

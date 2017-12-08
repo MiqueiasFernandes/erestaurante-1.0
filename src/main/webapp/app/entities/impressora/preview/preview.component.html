@@ -1,0 +1,49 @@
+<div class="modal-header">
+    <h4 class="modal-title">Visualizar Impressão
+        {{impressoras.length === 1 ? (' em ' + impressora.nome) : ''}}</h4>
+    <button
+        aria-label="Close"
+        data-dismiss="modal"
+        class="close"
+        type="button"
+        (click)="close()"><span aria-hidden="true">x</span>
+    </button>
+</div>
+
+<div class="modal-body">
+
+
+    <p *ngIf="impressoras.length === 1">ID desta impressão: {{impressora.script.id}}</p>
+
+    <hr *ngIf="impressoras.length === 1">
+
+    <div class="row centrado">
+        <div class="col" *ngFor="let impressora of impressoras">
+            <p>Impressora: {{impressora.nome}}<br>
+            Local: {{impressora.script.target}}<br>
+            Modo: {{impressora.script.texto ? 'texto' : impressora.codigo.endsWith('ecf') ? 'serial' : 'imagem'}}</p>
+
+
+            <i *ngIf="imprimindo[impressora.id]" class="fa fa-refresh fa-spin fa-3x fa-fw abs"></i>
+            <span *ngIf="imprimindo[impressora.id]" class="sr-only abs">Imprimindo...</span>
+
+            <div *ngIf="impressora.script.texto"
+               class="termica preview" [innerHTML]="sanitized(impressora.script)"></div>
+
+
+            <button *ngIf="impressoras.length > 1" class="btn btn-danger float-left btn-sm" (click)="remove(impressora)"><i class="fa fa-remove"></i> Remover</button>
+            <button *ngIf="impressora.script.observavel" class="btn btn-info float-left btn-sm" (click)="addObservacao(impressora)"><i class="fa fa-plus"></i> Observação</button>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+<div class="modal-footer">
+    <button *ngIf="impressoras.length === 1" class="btn btn-danger" (click)="remove(impressora)"><i class="fa fa-remove"></i> Remover e Cancelar</button>
+
+    <button *ngIf="impressoras.length > 1" class="btn btn-danger float-right" (click)="cancelar()">Cancelar</button>
+    <button  class="btn btn-success float-right" (click)="imprimir()"><i class="fa fa-print"></i>Imprimir</button>
+</div>

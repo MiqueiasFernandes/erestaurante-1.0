@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Restaurante.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.domain</a> &gt; <span class="el_source">Restaurante.java</span></div><h1>Restaurante.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.domain;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Objects;
+
+/**
+ * A Restaurante.
+ */
+@Entity
+@Table(name = &quot;restaurante&quot;)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+<span class="fc" id="L20">public class Restaurante implements Serializable {</span>
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;sequenceGenerator&quot;)
+    @SequenceGenerator(name = &quot;sequenceGenerator&quot;)
+    private Long id;
+
+    @Column(name = &quot;razao_social&quot;)
+    private String razaoSocial;
+
+    @Column(name = &quot;nome_fantasia&quot;)
+    private String nomeFantasia;
+
+    @Column(name = &quot;telefone&quot;)
+    private String telefone;
+
+    @Column(name = &quot;celular&quot;)
+    private String celular;
+
+    @Column(name = &quot;email&quot;)
+    private String email;
+
+    @Column(name = &quot;site&quot;)
+    private String site;
+
+    @Column(name = &quot;cnpj&quot;)
+    private String cnpj;
+
+    @Column(name = &quot;codigo&quot;)
+    private String codigo;
+
+    @Column(name = &quot;codigo_seg_contribuinte&quot;)
+    private String codigoSegContribuinte;
+
+    @Column(name = &quot;licenca&quot;)
+    private String licenca;
+
+    @Column(name = &quot;funcadao&quot;)
+    private ZonedDateTime funcadao;
+
+    @Lob
+    @Column(name = &quot;logo&quot;)
+    private byte[] logo;
+
+    @Column(name = &quot;logo_content_type&quot;)
+    private String logoContentType;
+
+    @Lob
+    @Column(name = &quot;pagina&quot;)
+    private String pagina;
+
+    @Column(name = &quot;localhost&quot;)
+    private String localhost;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Endereco endereco;
+
+<span class="fc" id="L80">    @ManyToMany</span>
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @NotNull
+    @JoinTable(name = &quot;restaurante_proprietario&quot;,
+               joinColumns = @JoinColumn(name=&quot;restaurantes_id&quot;, referencedColumnName=&quot;id&quot;),
+               inverseJoinColumns = @JoinColumn(name=&quot;proprietarios_id&quot;, referencedColumnName=&quot;id&quot;))
+    private Set&lt;Colaborador&gt; proprietarios = new HashSet&lt;&gt;();
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public Long getId() {
+<span class="fc" id="L90">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="fc" id="L94">        this.id = id;</span>
+<span class="fc" id="L95">    }</span>
+
+    public String getRazaoSocial() {
+<span class="fc" id="L98">        return razaoSocial;</span>
+    }
+
+    public Restaurante razaoSocial(String razaoSocial) {
+<span class="fc" id="L102">        this.razaoSocial = razaoSocial;</span>
+<span class="fc" id="L103">        return this;</span>
+    }
+
+    public void setRazaoSocial(String razaoSocial) {
+<span class="fc" id="L107">        this.razaoSocial = razaoSocial;</span>
+<span class="fc" id="L108">    }</span>
+
+    public String getNomeFantasia() {
+<span class="fc" id="L111">        return nomeFantasia;</span>
+    }
+
+    public Restaurante nomeFantasia(String nomeFantasia) {
+<span class="fc" id="L115">        this.nomeFantasia = nomeFantasia;</span>
+<span class="fc" id="L116">        return this;</span>
+    }
+
+    public void setNomeFantasia(String nomeFantasia) {
+<span class="fc" id="L120">        this.nomeFantasia = nomeFantasia;</span>
+<span class="fc" id="L121">    }</span>
+
+    public String getTelefone() {
+<span class="fc" id="L124">        return telefone;</span>
+    }
+
+    public Restaurante telefone(String telefone) {
+<span class="fc" id="L128">        this.telefone = telefone;</span>
+<span class="fc" id="L129">        return this;</span>
+    }
+
+    public void setTelefone(String telefone) {
+<span class="fc" id="L133">        this.telefone = telefone;</span>
+<span class="fc" id="L134">    }</span>
+
+    public String getCelular() {
+<span class="fc" id="L137">        return celular;</span>
+    }
+
+    public Restaurante celular(String celular) {
+<span class="fc" id="L141">        this.celular = celular;</span>
+<span class="fc" id="L142">        return this;</span>
+    }
+
+    public void setCelular(String celular) {
+<span class="fc" id="L146">        this.celular = celular;</span>
+<span class="fc" id="L147">    }</span>
+
+    public String getEmail() {
+<span class="fc" id="L150">        return email;</span>
+    }
+
+    public Restaurante email(String email) {
+<span class="fc" id="L154">        this.email = email;</span>
+<span class="fc" id="L155">        return this;</span>
+    }
+
+    public void setEmail(String email) {
+<span class="fc" id="L159">        this.email = email;</span>
+<span class="fc" id="L160">    }</span>
+
+    public String getSite() {
+<span class="fc" id="L163">        return site;</span>
+    }
+
+    public Restaurante site(String site) {
+<span class="fc" id="L167">        this.site = site;</span>
+<span class="fc" id="L168">        return this;</span>
+    }
+
+    public void setSite(String site) {
+<span class="fc" id="L172">        this.site = site;</span>
+<span class="fc" id="L173">    }</span>
+
+    public String getCnpj() {
+<span class="fc" id="L176">        return cnpj;</span>
+    }
+
+    public Restaurante cnpj(String cnpj) {
+<span class="fc" id="L180">        this.cnpj = cnpj;</span>
+<span class="fc" id="L181">        return this;</span>
+    }
+
+    public void setCnpj(String cnpj) {
+<span class="fc" id="L185">        this.cnpj = cnpj;</span>
+<span class="fc" id="L186">    }</span>
+
+    public String getCodigo() {
+<span class="fc" id="L189">        return codigo;</span>
+    }
+
+    public Restaurante codigo(String codigo) {
+<span class="fc" id="L193">        this.codigo = codigo;</span>
+<span class="fc" id="L194">        return this;</span>
+    }
+
+    public void setCodigo(String codigo) {
+<span class="fc" id="L198">        this.codigo = codigo;</span>
+<span class="fc" id="L199">    }</span>
+
+    public String getCodigoSegContribuinte() {
+<span class="fc" id="L202">        return codigoSegContribuinte;</span>
+    }
+
+    public Restaurante codigoSegContribuinte(String codigoSegContribuinte) {
+<span class="fc" id="L206">        this.codigoSegContribuinte = codigoSegContribuinte;</span>
+<span class="fc" id="L207">        return this;</span>
+    }
+
+    public void setCodigoSegContribuinte(String codigoSegContribuinte) {
+<span class="fc" id="L211">        this.codigoSegContribuinte = codigoSegContribuinte;</span>
+<span class="fc" id="L212">    }</span>
+
+    public String getLicenca() {
+<span class="fc" id="L215">        return licenca;</span>
+    }
+
+    public Restaurante licenca(String licenca) {
+<span class="fc" id="L219">        this.licenca = licenca;</span>
+<span class="fc" id="L220">        return this;</span>
+    }
+
+    public void setLicenca(String licenca) {
+<span class="fc" id="L224">        this.licenca = licenca;</span>
+<span class="fc" id="L225">    }</span>
+
+    public ZonedDateTime getFuncadao() {
+<span class="fc" id="L228">        return funcadao;</span>
+    }
+
+    public Restaurante funcadao(ZonedDateTime funcadao) {
+<span class="fc" id="L232">        this.funcadao = funcadao;</span>
+<span class="fc" id="L233">        return this;</span>
+    }
+
+    public void setFuncadao(ZonedDateTime funcadao) {
+<span class="fc" id="L237">        this.funcadao = funcadao;</span>
+<span class="fc" id="L238">    }</span>
+
+    public byte[] getLogo() {
+<span class="fc" id="L241">        return logo;</span>
+    }
+
+    public Restaurante logo(byte[] logo) {
+<span class="fc" id="L245">        this.logo = logo;</span>
+<span class="fc" id="L246">        return this;</span>
+    }
+
+    public void setLogo(byte[] logo) {
+<span class="fc" id="L250">        this.logo = logo;</span>
+<span class="fc" id="L251">    }</span>
+
+    public String getLogoContentType() {
+<span class="fc" id="L254">        return logoContentType;</span>
+    }
+
+    public Restaurante logoContentType(String logoContentType) {
+<span class="fc" id="L258">        this.logoContentType = logoContentType;</span>
+<span class="fc" id="L259">        return this;</span>
+    }
+
+    public void setLogoContentType(String logoContentType) {
+<span class="fc" id="L263">        this.logoContentType = logoContentType;</span>
+<span class="fc" id="L264">    }</span>
+
+    public String getPagina() {
+<span class="fc" id="L267">        return pagina;</span>
+    }
+
+    public Restaurante pagina(String pagina) {
+<span class="fc" id="L271">        this.pagina = pagina;</span>
+<span class="fc" id="L272">        return this;</span>
+    }
+
+    public void setPagina(String pagina) {
+<span class="fc" id="L276">        this.pagina = pagina;</span>
+<span class="fc" id="L277">    }</span>
+
+    public String getLocalhost() {
+<span class="fc" id="L280">        return localhost;</span>
+    }
+
+    public Restaurante localhost(String localhost) {
+<span class="fc" id="L284">        this.localhost = localhost;</span>
+<span class="fc" id="L285">        return this;</span>
+    }
+
+    public void setLocalhost(String localhost) {
+<span class="fc" id="L289">        this.localhost = localhost;</span>
+<span class="fc" id="L290">    }</span>
+
+    public Endereco getEndereco() {
+<span class="fc" id="L293">        return endereco;</span>
+    }
+
+    public Restaurante endereco(Endereco endereco) {
+<span class="nc" id="L297">        this.endereco = endereco;</span>
+<span class="nc" id="L298">        return this;</span>
+    }
+
+    public void setEndereco(Endereco endereco) {
+<span class="nc" id="L302">        this.endereco = endereco;</span>
+<span class="nc" id="L303">    }</span>
+
+    public Set&lt;Colaborador&gt; getProprietarios() {
+<span class="fc" id="L306">        return proprietarios;</span>
+    }
+
+    public Restaurante proprietarios(Set&lt;Colaborador&gt; colaboradors) {
+<span class="nc" id="L310">        this.proprietarios = colaboradors;</span>
+<span class="nc" id="L311">        return this;</span>
+    }
+
+    public Restaurante addProprietario(Colaborador colaborador) {
+<span class="nc" id="L315">        this.proprietarios.add(colaborador);</span>
+<span class="nc" id="L316">        return this;</span>
+    }
+
+    public Restaurante removeProprietario(Colaborador colaborador) {
+<span class="nc" id="L320">        this.proprietarios.remove(colaborador);</span>
+<span class="nc" id="L321">        return this;</span>
+    }
+
+    public void setProprietarios(Set&lt;Colaborador&gt; colaboradors) {
+<span class="fc" id="L325">        this.proprietarios = colaboradors;</span>
+<span class="fc" id="L326">    }</span>
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    @Override
+    public boolean equals(Object o) {
+<span class="fc bfc" id="L331" title="All 2 branches covered.">        if (this == o) {</span>
+<span class="fc" id="L332">            return true;</span>
+        }
+<span class="fc bfc" id="L334" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L335">            return false;</span>
+        }
+<span class="fc" id="L337">        Restaurante restaurante = (Restaurante) o;</span>
+<span class="fc bfc" id="L338" title="All 4 branches covered.">        if (restaurante.getId() == null || getId() == null) {</span>
+<span class="fc" id="L339">            return false;</span>
+        }
+<span class="fc" id="L341">        return Objects.equals(getId(), restaurante.getId());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L346">        return Objects.hashCode(getId());</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L351">        return &quot;Restaurante{&quot; +</span>
+<span class="fc" id="L352">            &quot;id=&quot; + getId() +</span>
+<span class="fc" id="L353">            &quot;, razaoSocial='&quot; + getRazaoSocial() + &quot;'&quot; +</span>
+<span class="fc" id="L354">            &quot;, nomeFantasia='&quot; + getNomeFantasia() + &quot;'&quot; +</span>
+<span class="fc" id="L355">            &quot;, telefone='&quot; + getTelefone() + &quot;'&quot; +</span>
+<span class="fc" id="L356">            &quot;, celular='&quot; + getCelular() + &quot;'&quot; +</span>
+<span class="fc" id="L357">            &quot;, email='&quot; + getEmail() + &quot;'&quot; +</span>
+<span class="fc" id="L358">            &quot;, site='&quot; + getSite() + &quot;'&quot; +</span>
+<span class="fc" id="L359">            &quot;, cnpj='&quot; + getCnpj() + &quot;'&quot; +</span>
+<span class="fc" id="L360">            &quot;, codigo='&quot; + getCodigo() + &quot;'&quot; +</span>
+<span class="fc" id="L361">            &quot;, codigoSegContribuinte='&quot; + getCodigoSegContribuinte() + &quot;'&quot; +</span>
+<span class="fc" id="L362">            &quot;, licenca='&quot; + getLicenca() + &quot;'&quot; +</span>
+<span class="fc" id="L363">            &quot;, funcadao='&quot; + getFuncadao() + &quot;'&quot; +</span>
+<span class="fc" id="L364">            &quot;, logo='&quot; + getLogo() + &quot;'&quot; +</span>
+            &quot;, logoContentType='&quot; + logoContentType + &quot;'&quot; +
+<span class="fc" id="L366">            &quot;, pagina='&quot; + getPagina() + &quot;'&quot; +</span>
+<span class="fc" id="L367">            &quot;, localhost='&quot; + getLocalhost() + &quot;'&quot; +</span>
+            &quot;}&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

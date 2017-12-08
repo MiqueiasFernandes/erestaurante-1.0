@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Colaborador.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.domain</a> &gt; <span class="el_source">Colaborador.java</span></div><h1>Colaborador.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.domain;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Objects;
+
+/**
+ * A Colaborador.
+ */
+@Entity
+@Table(name = &quot;colaborador&quot;)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+<span class="fc" id="L21">public class Colaborador implements Serializable {</span>
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;sequenceGenerator&quot;)
+    @SequenceGenerator(name = &quot;sequenceGenerator&quot;)
+    private Long id;
+
+    @NotNull
+    @Column(name = &quot;nome&quot;, nullable = false)
+    private String nome;
+
+    @Column(name = &quot;nascimento&quot;)
+    private ZonedDateTime nascimento;
+
+    @Column(name = &quot;sexomasculino&quot;)
+    private Boolean sexomasculino;
+
+    @Column(name = &quot;documento&quot;)
+    private String documento;
+
+    @Column(name = &quot;telefone&quot;)
+    private String telefone;
+
+    @Column(name = &quot;email&quot;)
+    private String email;
+
+    @Column(name = &quot;horario&quot;)
+    private String horario;
+
+    @Lob
+    @Column(name = &quot;preferencia&quot;)
+    private String preferencia;
+
+    @OneToOne(optional = false)
+    @NotNull
+    @JoinColumn(unique = true)
+    private User usuario;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Endereco endereco;
+
+<span class="fc" id="L65">    @OneToMany(mappedBy = &quot;colaborador&quot;)</span>
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set&lt;Lancamento&gt; lancamentos = new HashSet&lt;&gt;();
+
+<span class="fc" id="L70">    @ManyToMany</span>
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @NotNull
+    @JoinTable(name = &quot;colaborador_cargos&quot;,
+               joinColumns = @JoinColumn(name=&quot;colaboradors_id&quot;, referencedColumnName=&quot;id&quot;),
+               inverseJoinColumns = @JoinColumn(name=&quot;cargos_id&quot;, referencedColumnName=&quot;id&quot;))
+    private Set&lt;Cargo&gt; cargos = new HashSet&lt;&gt;();
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public Long getId() {
+<span class="fc" id="L80">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="fc" id="L84">        this.id = id;</span>
+<span class="fc" id="L85">    }</span>
+
+    public String getNome() {
+<span class="fc" id="L88">        return nome;</span>
+    }
+
+    public Colaborador nome(String nome) {
+<span class="fc" id="L92">        this.nome = nome;</span>
+<span class="fc" id="L93">        return this;</span>
+    }
+
+    public void setNome(String nome) {
+<span class="fc" id="L97">        this.nome = nome;</span>
+<span class="fc" id="L98">    }</span>
+
+    public ZonedDateTime getNascimento() {
+<span class="fc" id="L101">        return nascimento;</span>
+    }
+
+    public Colaborador nascimento(ZonedDateTime nascimento) {
+<span class="fc" id="L105">        this.nascimento = nascimento;</span>
+<span class="fc" id="L106">        return this;</span>
+    }
+
+    public void setNascimento(ZonedDateTime nascimento) {
+<span class="fc" id="L110">        this.nascimento = nascimento;</span>
+<span class="fc" id="L111">    }</span>
+
+    public Boolean isSexomasculino() {
+<span class="fc" id="L114">        return sexomasculino;</span>
+    }
+
+    public Colaborador sexomasculino(Boolean sexomasculino) {
+<span class="fc" id="L118">        this.sexomasculino = sexomasculino;</span>
+<span class="fc" id="L119">        return this;</span>
+    }
+
+    public void setSexomasculino(Boolean sexomasculino) {
+<span class="fc" id="L123">        this.sexomasculino = sexomasculino;</span>
+<span class="fc" id="L124">    }</span>
+
+    public String getDocumento() {
+<span class="fc" id="L127">        return documento;</span>
+    }
+
+    public Colaborador documento(String documento) {
+<span class="fc" id="L131">        this.documento = documento;</span>
+<span class="fc" id="L132">        return this;</span>
+    }
+
+    public void setDocumento(String documento) {
+<span class="fc" id="L136">        this.documento = documento;</span>
+<span class="fc" id="L137">    }</span>
+
+    public String getTelefone() {
+<span class="fc" id="L140">        return telefone;</span>
+    }
+
+    public Colaborador telefone(String telefone) {
+<span class="fc" id="L144">        this.telefone = telefone;</span>
+<span class="fc" id="L145">        return this;</span>
+    }
+
+    public void setTelefone(String telefone) {
+<span class="fc" id="L149">        this.telefone = telefone;</span>
+<span class="fc" id="L150">    }</span>
+
+    public String getEmail() {
+<span class="fc" id="L153">        return email;</span>
+    }
+
+    public Colaborador email(String email) {
+<span class="fc" id="L157">        this.email = email;</span>
+<span class="fc" id="L158">        return this;</span>
+    }
+
+    public void setEmail(String email) {
+<span class="fc" id="L162">        this.email = email;</span>
+<span class="fc" id="L163">    }</span>
+
+    public String getHorario() {
+<span class="fc" id="L166">        return horario;</span>
+    }
+
+    public Colaborador horario(String horario) {
+<span class="fc" id="L170">        this.horario = horario;</span>
+<span class="fc" id="L171">        return this;</span>
+    }
+
+    public void setHorario(String horario) {
+<span class="fc" id="L175">        this.horario = horario;</span>
+<span class="fc" id="L176">    }</span>
+
+    public String getPreferencia() {
+<span class="fc" id="L179">        return preferencia;</span>
+    }
+
+    public Colaborador preferencia(String preferencia) {
+<span class="fc" id="L183">        this.preferencia = preferencia;</span>
+<span class="fc" id="L184">        return this;</span>
+    }
+
+    public void setPreferencia(String preferencia) {
+<span class="fc" id="L188">        this.preferencia = preferencia;</span>
+<span class="fc" id="L189">    }</span>
+
+    public User getUsuario() {
+<span class="fc" id="L192">        return usuario;</span>
+    }
+
+    public Colaborador usuario(User user) {
+<span class="nc" id="L196">        this.usuario = user;</span>
+<span class="nc" id="L197">        return this;</span>
+    }
+
+    public void setUsuario(User user) {
+<span class="fc" id="L201">        this.usuario = user;</span>
+<span class="fc" id="L202">    }</span>
+
+    public Endereco getEndereco() {
+<span class="fc" id="L205">        return endereco;</span>
+    }
+
+    public Colaborador endereco(Endereco endereco) {
+<span class="nc" id="L209">        this.endereco = endereco;</span>
+<span class="nc" id="L210">        return this;</span>
+    }
+
+    public void setEndereco(Endereco endereco) {
+<span class="nc" id="L214">        this.endereco = endereco;</span>
+<span class="nc" id="L215">    }</span>
+
+    public Set&lt;Lancamento&gt; getLancamentos() {
+<span class="nc" id="L218">        return lancamentos;</span>
+    }
+
+    public Colaborador lancamentos(Set&lt;Lancamento&gt; lancamentos) {
+<span class="nc" id="L222">        this.lancamentos = lancamentos;</span>
+<span class="nc" id="L223">        return this;</span>
+    }
+
+    public Colaborador addLancamento(Lancamento lancamento) {
+<span class="nc" id="L227">        this.lancamentos.add(lancamento);</span>
+<span class="nc" id="L228">        lancamento.setColaborador(this);</span>
+<span class="nc" id="L229">        return this;</span>
+    }
+
+    public Colaborador removeLancamento(Lancamento lancamento) {
+<span class="nc" id="L233">        this.lancamentos.remove(lancamento);</span>
+<span class="nc" id="L234">        lancamento.setColaborador(null);</span>
+<span class="nc" id="L235">        return this;</span>
+    }
+
+    public void setLancamentos(Set&lt;Lancamento&gt; lancamentos) {
+<span class="nc" id="L239">        this.lancamentos = lancamentos;</span>
+<span class="nc" id="L240">    }</span>
+
+    public Set&lt;Cargo&gt; getCargos() {
+<span class="fc" id="L243">        return cargos;</span>
+    }
+
+    public Colaborador cargos(Set&lt;Cargo&gt; cargos) {
+<span class="nc" id="L247">        this.cargos = cargos;</span>
+<span class="nc" id="L248">        return this;</span>
+    }
+
+    public Colaborador addCargos(Cargo cargo) {
+<span class="nc" id="L252">        this.cargos.add(cargo);</span>
+<span class="nc" id="L253">        return this;</span>
+    }
+
+    public Colaborador removeCargos(Cargo cargo) {
+<span class="nc" id="L257">        this.cargos.remove(cargo);</span>
+<span class="nc" id="L258">        return this;</span>
+    }
+
+    public void setCargos(Set&lt;Cargo&gt; cargos) {
+<span class="fc" id="L262">        this.cargos = cargos;</span>
+<span class="fc" id="L263">    }</span>
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    @Override
+    public boolean equals(Object o) {
+<span class="fc bfc" id="L268" title="All 2 branches covered.">        if (this == o) {</span>
+<span class="fc" id="L269">            return true;</span>
+        }
+<span class="fc bfc" id="L271" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L272">            return false;</span>
+        }
+<span class="fc" id="L274">        Colaborador colaborador = (Colaborador) o;</span>
+<span class="fc bfc" id="L275" title="All 4 branches covered.">        if (colaborador.getId() == null || getId() == null) {</span>
+<span class="fc" id="L276">            return false;</span>
+        }
+<span class="fc" id="L278">        return Objects.equals(getId(), colaborador.getId());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L283">        return Objects.hashCode(getId());</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L288">        return &quot;Colaborador{&quot; +</span>
+<span class="fc" id="L289">            &quot;id=&quot; + getId() +</span>
+<span class="fc" id="L290">            &quot;, nome='&quot; + getNome() + &quot;'&quot; +</span>
+<span class="fc" id="L291">            &quot;, nascimento='&quot; + getNascimento() + &quot;'&quot; +</span>
+<span class="fc" id="L292">            &quot;, sexomasculino='&quot; + isSexomasculino() + &quot;'&quot; +</span>
+<span class="fc" id="L293">            &quot;, documento='&quot; + getDocumento() + &quot;'&quot; +</span>
+<span class="fc" id="L294">            &quot;, telefone='&quot; + getTelefone() + &quot;'&quot; +</span>
+<span class="fc" id="L295">            &quot;, email='&quot; + getEmail() + &quot;'&quot; +</span>
+<span class="fc" id="L296">            &quot;, horario='&quot; + getHorario() + &quot;'&quot; +</span>
+<span class="fc" id="L297">            &quot;, preferencia='&quot; + getPreferencia() + &quot;'&quot; +</span>
+            &quot;}&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

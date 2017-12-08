@@ -10,6 +10,7 @@ import {
     JhiAlertErrorComponent
 } from './';
 import {IncrementoPipe} from "./utils/IncrementoPipe.pipe";
+import {UnidadePipe} from "./utils/unidadePipe.pipe";
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import {IncrementoPipe} from "./utils/IncrementoPipe.pipe";
         FindLanguageFromKeyPipe,
         JhiAlertComponent,
         JhiAlertErrorComponent,
-        IncrementoPipe
+        IncrementoPipe,
+        UnidadePipe
     ],
     providers: [
         JhiLanguageHelper,
@@ -35,7 +37,8 @@ import {IncrementoPipe} from "./utils/IncrementoPipe.pipe";
         FindLanguageFromKeyPipe,
         JhiAlertComponent,
         JhiAlertErrorComponent,
-        IncrementoPipe
+        IncrementoPipe,
+        UnidadePipe
     ]
 })
 export class ERestauranteSharedCommonModule {}

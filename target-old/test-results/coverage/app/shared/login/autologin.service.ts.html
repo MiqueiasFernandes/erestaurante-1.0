@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/shared/login/autologin.service.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">app/shared/login/</a> autologin.service.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">42.5% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>17/40</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">10% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">41.67% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>15/36</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Injectable } from '@angular/core';
+&nbsp;
+import { JhiEventManager } from 'ng-jhipster';
+import {LoginService} from "./login.service";
+import {Principal} from "../auth/principal.service";
+import {Observable} from "rxjs/Observable";
+import {isNullOrUndefined} from "util";
+import {Router} from "@angular/router";
+&nbsp;
+&nbsp;
+@Injectable()
+export class AutologinService {
+&nbsp;
+<span class="fstat-no" title="function not covered" >    constructor(</span>
+        private <span class="cstat-no" title="statement not covered" >eventManager: JhiEventManager,</span>
+        private <span class="cstat-no" title="statement not covered" >loginService :LoginService,</span>
+        private <span class="cstat-no" title="statement not covered" >router: Router,</span>
+        private <span class="cstat-no" title="statement not covered" >princiapl :Principal)</span> {
+<span class="cstat-no" title="statement not covered" >        this.eventManager.subscribe('logout', <span class="fstat-no" title="function not covered" >(message)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            this.broadcast(false);</span>
+        });
+    }
+&nbsp;
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >    public autoLogin(router? :boolean)</span> {</span>
+<span class="cstat-no" title="statement not covered" >        this.loginService.login({</span>
+            username: 'user',
+            password: 'user',
+            rememberMe: true
+        }).then(<span class="fstat-no" title="function not covered" >() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            this.broadcast(true);</span>
+<span class="cstat-no" title="statement not covered" >            console.log('auto login efetuado...');</span>
+<span class="cstat-no" title="statement not covered" >            if (router) {</span>
+<span class="cstat-no" title="statement not covered" >                this.router.navigate(['']);</span>
+            }
+        });
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    public verifyAccount(account :any)</span> :boolean{
+<span class="cstat-no" title="statement not covered" >        const auto = this.accountIsAutologin(account);</span>
+<span class="cstat-no" title="statement not covered" >        if (auto) {</span>
+<span class="cstat-no" title="statement not covered" >            this.broadcast(true);</span>
+        }
+<span class="cstat-no" title="statement not covered" >        return auto;</span>
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >    public isAutoLogin() :Promise&lt;boolean&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        if (!isNullOrUndefined(this.princiapl.isAutoLogin())) {</span>
+<span class="cstat-no" title="statement not covered" >            return Promise.resolve(this.princiapl.isAutoLogin());</span>
+        }
+<span class="cstat-no" title="statement not covered" >        return Observable.from(this.princiapl.identity(true)).map(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >            return this.princiapl.isAutoLogin();</span>
+        }).toPromise();
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    public accountIsAutologin(account: any)</span>: boolean{
+<span class="cstat-no" title="statement not covered" >        return !isNullOrUndefined(account) &amp;&amp;</span>
+            account.login &amp;&amp;
+            (account.login.length === 4) &amp;&amp;
+            account.login.startsWith('user');
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    private broadcast(modo)</span> {
+<span class="cstat-no" title="statement not covered" >        this.eventManager.broadcast({</span>
+            name: 'autologin',
+            content: modo ? 'true' : 'false'
+        });
+    }
+&nbsp;
+}
+&nbsp;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Dec 08 2017 00:30:32 GMT-0200 (-02)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

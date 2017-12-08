@@ -98,10 +98,14 @@ export class Produto implements BaseEntity {
         if ('LITRO'.startsWith(t))
             return 11;
 
-        if (!isNullOrUndefined(t.Unidade)) {
-            return this.getTipo(t.Unidade);
+        if (!isNullOrUndefined(t.unidade)) {
+            return this.getTipo(t.unidade);
         }
         return -1;
+    }
+
+    public static isDecimal(produto):boolean{
+        return Produto.getTipo(produto) > 5;
     }
 
 }

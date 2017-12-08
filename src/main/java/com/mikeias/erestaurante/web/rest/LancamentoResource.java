@@ -4,18 +4,15 @@ import com.mikeias.erestaurante.domain.Comanda;
 import com.mikeias.erestaurante.domain.Venda;
 import com.mikeias.erestaurante.domain.enumeration.Status;
 import com.mikeias.erestaurante.domain.enumeration.VendaStatus;
-import com.mikeias.erestaurante.repository.ComandaRepository;
-import com.mikeias.erestaurante.repository.VendaRepository;
+import com.mikeias.erestaurante.repository.*;
 import com.mikeias.erestaurante.web.rest.util.DoubleUtil;
 
 import com.mikeias.erestaurante.service.PrivilegioService;
 import com.mikeias.erestaurante.domain.Cargo;
-import com.mikeias.erestaurante.repository.CargoRepository;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mikeias.erestaurante.domain.Lancamento;
 
-import com.mikeias.erestaurante.repository.LancamentoRepository;
 import com.mikeias.erestaurante.web.rest.errors.BadRequestAlertException;
 import com.mikeias.erestaurante.web.rest.util.HeaderUtil;
 import com.mikeias.erestaurante.web.rest.util.PaginationUtil;
@@ -51,6 +48,7 @@ public class LancamentoResource {
     private final LancamentoRepository lancamentoRepository;
     private final ComandaRepository comandaRepository;
     private final VendaRepository vendaRepository;
+    private final ProdutoRepository produtoRepository;
 
 
     //////////////////////////////////REQUER PRIVILEGIOS
@@ -60,13 +58,15 @@ public class LancamentoResource {
         LancamentoRepository lancamentoRepository,
         ComandaRepository comandaRepository,
         CargoRepository cargoRepository,
-        VendaRepository vendaRepository) {
+        VendaRepository vendaRepository,
+        ProdutoRepository produtoRepository) {
         this.lancamentoRepository = lancamentoRepository;
         this.comandaRepository = comandaRepository;
         this.cargoRepository = cargoRepository;
         this.vendaRepository = vendaRepository;
+        this.produtoRepository =  produtoRepository;
     }
-//////////////////////////////////REQUER PRIVILEGIOS
+//////////////////////////////////REQUER PRIVILEGIOS]
 
     /**
      * POST  /lancamentos : Create a new lancamento.
@@ -90,7 +90,7 @@ public class LancamentoResource {
             throw new BadRequestAlertException("A new lancamento cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Lancamento result = lancamentoRepository.save(lancamento);
-        ComandaResource.verificarComanda(result.getComanda(), comandaRepository, vendaRepository, lancamentoRepository, log);
+        ComandaResource.verificarComanda(result.getComanda(), comandaRepository, vendaRepository, lancamentoRepository, produtoRepository, log);
         return ResponseEntity.created(new URI("/api/lancamentos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -120,7 +120,7 @@ public class LancamentoResource {
             return createLancamento(lancamento);
         }
         Lancamento result = lancamentoRepository.save(lancamento);
-       ComandaResource.verificarComanda(result.getComanda(), comandaRepository, vendaRepository, lancamentoRepository, log);
+       ComandaResource.verificarComanda(result.getComanda(), comandaRepository, vendaRepository, lancamentoRepository, produtoRepository, log);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, lancamento.getId().toString()))
             .body(result);

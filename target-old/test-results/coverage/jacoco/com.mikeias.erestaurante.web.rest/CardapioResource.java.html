@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CardapioResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.web.rest</a> &gt; <span class="el_source">CardapioResource.java</span></div><h1>CardapioResource.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.web.rest;
+
+import com.mikeias.erestaurante.service.PrivilegioService;
+import com.mikeias.erestaurante.domain.Cargo;
+import com.mikeias.erestaurante.repository.CargoRepository;
+
+import com.codahale.metrics.annotation.Timed;
+import com.mikeias.erestaurante.domain.Cardapio;
+
+import com.mikeias.erestaurante.repository.CardapioRepository;
+import com.mikeias.erestaurante.web.rest.errors.BadRequestAlertException;
+import com.mikeias.erestaurante.web.rest.util.HeaderUtil;
+import com.mikeias.erestaurante.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
+import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * REST controller for managing Cardapio.
+ */
+@RestController
+@RequestMapping(&quot;/api&quot;)
+public class CardapioResource {
+
+<span class="fc" id="L38">    private final Logger log = LoggerFactory.getLogger(CardapioResource.class);</span>
+
+    private static final String ENTITY_NAME = &quot;cardapio&quot;;
+
+    private final CardapioRepository cardapioRepository;
+
+
+//////////////////////////////////REQUER PRIVILEGIOS
+                                  private final CargoRepository cargoRepository;
+
+<span class="fc" id="L48">                                  public CardapioResource(CardapioRepository cardapioRepository, CargoRepository cargoRepository) {</span>
+<span class="fc" id="L49">                                  this.cardapioRepository = cardapioRepository;</span>
+<span class="fc" id="L50">                                  this.cargoRepository = cargoRepository;</span>
+<span class="fc" id="L51">                                  }</span>
+//////////////////////////////////REQUER PRIVILEGIOS
+
+    /**
+     * POST  /cardapios : Create a new cardapio.
+     *
+     * @param cardapio the cardapio to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new cardapio, or with status 400 (Bad Request) if the cardapio has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping(&quot;/cardapios&quot;)
+    @Timed
+    public ResponseEntity&lt;Cardapio&gt; createCardapio(@RequestBody Cardapio cardapio) throws URISyntaxException {
+<span class="fc" id="L64">        log.debug(&quot;REST request to save Cardapio : {}&quot;, cardapio);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">                                  if (!PrivilegioService.podeCriar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L68">                                  log.error(&quot;TENTATIVA DE CRIAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME  + &quot; : {}&quot;, cardapio);</span>
+<span class="nc" id="L69">                                  return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para criar esta entidade.&quot;)).body(null);</span>
+                                  }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (cardapio.getId() != null) {</span>
+<span class="fc" id="L73">            throw new BadRequestAlertException(&quot;A new cardapio cannot already have an ID&quot;, ENTITY_NAME, &quot;idexists&quot;);</span>
+        }
+<span class="fc" id="L75">        Cardapio result = cardapioRepository.save(cardapio);</span>
+<span class="fc" id="L76">        return ResponseEntity.created(new URI(&quot;/api/cardapios/&quot; + result.getId()))</span>
+<span class="fc" id="L77">            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))</span>
+<span class="fc" id="L78">            .body(result);</span>
+    }
+
+    /**
+     * PUT  /cardapios : Updates an existing cardapio.
+     *
+     * @param cardapio the cardapio to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated cardapio,
+     * or with status 400 (Bad Request) if the cardapio is not valid,
+     * or with status 500 (Internal Server Error) if the cardapio couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping(&quot;/cardapios&quot;)
+    @Timed
+    public ResponseEntity&lt;Cardapio&gt; updateCardapio(@RequestBody Cardapio cardapio) throws URISyntaxException {
+<span class="fc" id="L93">        log.debug(&quot;REST request to update Cardapio : {}&quot;, cardapio);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">                                  if (!PrivilegioService.podeEditar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L97">                                  log.error(&quot;TENTATIVA DE EDITAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME  + &quot; : {}&quot;, cardapio);</span>
+<span class="nc" id="L98">                                  return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para editar esta entidade.&quot;)).body(null);</span>
+                                  }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (cardapio.getId() == null) {</span>
+<span class="fc" id="L102">            return createCardapio(cardapio);</span>
+        }
+<span class="fc" id="L104">        Cardapio result = cardapioRepository.save(cardapio);</span>
+<span class="fc" id="L105">        return ResponseEntity.ok()</span>
+<span class="fc" id="L106">            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, cardapio.getId().toString()))</span>
+<span class="fc" id="L107">            .body(result);</span>
+    }
+
+    /**
+     * GET  /cardapios : get all the cardapios.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of cardapios in body
+     */
+    @GetMapping(&quot;/cardapios&quot;)
+    @Timed
+    public ResponseEntity&lt;List&lt;Cardapio&gt;&gt; getAllCardapios(@ApiParam Pageable pageable) {
+<span class="fc" id="L119">        log.debug(&quot;REST request to get a page of Cardapios&quot;);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">                                  if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L123">                                  log.error(&quot;TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME);</span>
+<span class="nc" id="L124">                                  return  null;</span>
+                                  }
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L128">        Page&lt;Cardapio&gt; page = cardapioRepository.findAll(pageable);</span>
+<span class="fc" id="L129">        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, &quot;/api/cardapios&quot;);</span>
+<span class="fc" id="L130">        return new ResponseEntity&lt;&gt;(page.getContent(), headers, HttpStatus.OK);</span>
+    }
+
+    /**
+     * GET  /cardapios/:id : get the &quot;id&quot; cardapio.
+     *
+     * @param id the id of the cardapio to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the cardapio, or with status 404 (Not Found)
+     */
+    @GetMapping(&quot;/cardapios/{id}&quot;)
+    @Timed
+    public ResponseEntity&lt;Cardapio&gt; getCardapio(@PathVariable Long id) {
+<span class="fc" id="L142">        log.debug(&quot;REST request to get Cardapio : {}&quot;, id);</span>
+<span class="fc" id="L143">        Cardapio cardapio = cardapioRepository.findOneWithEagerRelationships(id);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">                                  if (!PrivilegioService.podeVer(cargoRepository, ENTITY_NAME)) {</span>
+<span class="nc" id="L147">                                  cardapio = null;</span>
+<span class="nc" id="L148">                                  log.error(&quot;TENTATIVA DE VISUALIZAR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME + &quot; : {}&quot;, id);</span>
+                                  }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L151">        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(cardapio));</span>
+    }
+
+    /**
+     * DELETE  /cardapios/:id : delete the &quot;id&quot; cardapio.
+     *
+     * @param id the id of the cardapio to delete
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @DeleteMapping(&quot;/cardapios/{id}&quot;)
+    @Timed
+    public ResponseEntity&lt;Void&gt; deleteCardapio(@PathVariable Long id) {
+<span class="fc" id="L163">        log.debug(&quot;REST request to delete Cardapio : {}&quot;, id);</span>
+
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">                                  if (PrivilegioService.podeDeletar(cargoRepository, ENTITY_NAME)) {</span>
+<span class="fc" id="L167">                                  cardapioRepository.delete(id);</span>
+                                  } else {
+<span class="nc" id="L169">                                  log.error(&quot;TENTATIVA DE EXCUIR SEM PERMISSÃO BLOQUEADA! &quot; + ENTITY_NAME + &quot; : {}&quot;, id);</span>
+<span class="nc" id="L170">                                  return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, &quot;privilegios insuficientes.&quot;, &quot;Este usuario não possui privilegios sufuentes para deletar esta entidade.&quot;)).body(null);</span>
+                                  }
+//////////////////////////////////REQUER PRIVILEGIOS
+<span class="fc" id="L173">        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

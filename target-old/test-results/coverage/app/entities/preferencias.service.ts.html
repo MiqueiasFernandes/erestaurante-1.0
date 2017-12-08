@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/entities/preferencias.service.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">app/entities/</a> preferencias.service.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">18.75% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>21/112</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/44</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">3.33% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/30</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">18.27% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>19/104</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Injectable } from '@angular/core';
+import {ColaboradorService} from "./colaborador/colaborador.service";
+import {Colaborador} from "./colaborador/colaborador.model";
+import { JhiEventManager } from 'ng-jhipster';
+import {Observable} from "rxjs/Observable";
+import {isNullOrUndefined} from "util";
+&nbsp;
+@Injectable()
+export class PreferenciasService {
+&nbsp;
+&nbsp;
+    colaborador :Colaborador;
+<span class="cstat-no" title="statement not covered" >    preferencias :any[] = [];</span>
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    constructor(private <span class="cstat-no" title="statement not covered" >colaboradorService: ColaboradorService,</span></span>
+                private <span class="cstat-no" title="statement not covered" >eventManager: JhiEventManager)</span> {
+<span class="cstat-no" title="statement not covered" >        this.importarPreferencias(true);</span>
+<span class="cstat-no" title="statement not covered" >        this.registerEvents();</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    registerEvents() {</span>
+<span class="cstat-no" title="statement not covered" >        this.eventManager.subscribe('colaborador', <span class="fstat-no" title="function not covered" >(message)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            this.importarPreferencias(true);</span>
+        });
+<span class="cstat-no" title="statement not covered" >        this.eventManager.subscribe('logout', <span class="fstat-no" title="function not covered" >(message)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            this.preferencias = [];</span>
+        });
+<span class="cstat-no" title="statement not covered" >        this.eventManager.subscribe('authenticationSuccess', <span class="fstat-no" title="function not covered" >(message)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            this.importarPreferencias(true);</span>
+        });
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >    public importarPreferencias(force :boolean)</span> :Observable&lt;any[]&gt;{</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (!force &amp;&amp; (this.preferencias.length &gt; 0)) {</span>
+<span class="cstat-no" title="statement not covered" >            return Observable.from(this.preferencias);</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return  this.colaboradorService.getCurrentColaborador()</span>
+            .map(<span class="fstat-no" title="function not covered" >(colaborador :Colaborador)</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >                this.colaborador = colaborador;</span>
+<span class="cstat-no" title="statement not covered" >                return this.preferencias = this.parsePreferencias(colaborador.preferencia);</span>
+            });
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    private parsePreferencias(preferencia: string)</span>: any[] {
+<span class="cstat-no" title="statement not covered" >        const ps :any[] = [];</span>
+<span class="cstat-no" title="statement not covered" >        if (preferencia != null &amp;&amp; preferencia.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >            preferencia.split(',').forEach(<span class="fstat-no" title="function not covered" >(pref: string)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >                if (pref != null &amp;&amp; pref.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >                    const prefs = pref.split(':');</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    if (pref.startsWith('hp:')){</span>
+<span class="cstat-no" title="statement not covered" >                        try {</span>
+<span class="cstat-no" title="statement not covered" >                            ps['hp'] = pref.split(':')[1].split(';');</span>
+                        } catch (ex) {
+<span class="cstat-no" title="statement not covered" >                            console.log('falhou ao importar HP ' + ex);</span>
+                        }
+                    } else  <span class="cstat-no" title="statement not covered" >if (pref.startsWith('colunas:')) {</span>
+<span class="cstat-no" title="statement not covered" >                        const colunas: boolean[][] = [];</span>
+<span class="cstat-no" title="statement not covered" >                        try {</span>
+<span class="cstat-no" title="statement not covered" >                            prefs[1].split(';')</span>
+                                .forEach(<span class="fstat-no" title="function not covered" >(ent: string)</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >                                    if (ent != null &amp;&amp; ent.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >                                        const data: string[] = ent.split('-');</span>
+<span class="cstat-no" title="statement not covered" >                                        const nome = data[0];</span>
+<span class="cstat-no" title="statement not covered" >                                        const bools: boolean[] = [];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                                        colunas[nome] = bools;</span>
+<span class="cstat-no" title="statement not covered" >                                        data[1].split(".")</span>
+                                            .forEach(<span class="fstat-no" title="function not covered" >(col: string)</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >                                                const col2 = col.substring(0, col.length - 1);</span>
+<span class="cstat-no" title="statement not covered" >                                                colunas[nome][col2] = col.endsWith('T');</span>
+                                            });
+                                    }
+                                });
+<span class="cstat-no" title="statement not covered" >                            ps['colunas'] = colunas;</span>
+&nbsp;
+                        } catch (e) {
+<span class="cstat-no" title="statement not covered" >                            console.log('Falha ao importar preferencias: ' + e);</span>
+<span class="cstat-no" title="statement not covered" >                            console.log(e);</span>
+                        }
+&nbsp;
+                    } else {
+<span class="cstat-no" title="statement not covered" >                        ps[prefs[0]] = prefs[1];</span>
+                    }
+                }
+            });
+        }
+<span class="cstat-no" title="statement not covered" >        return ps;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    public isColunaAtivada(entidade: string, coluna :string, index: number)</span> :Observable&lt;{entidade:string,index:number,coluna:string,visivel:boolean}&gt; {
+<span class="cstat-no" title="statement not covered" >        return  this.importarPreferencias(false)</span>
+            .map(<span class="fstat-no" title="function not covered" >pref </span>=&gt; {
+<span class="cstat-no" title="statement not covered" >                return {</span>
+                    entidade: entidade,
+                    index: index,
+                    coluna: coluna,
+                    visivel: (
+                        isNullOrUndefined(pref['colunas']) ||
+                        isNullOrUndefined(pref['colunas'][entidade]) ||
+                        isNullOrUndefined(pref['colunas'][entidade][index]) ||
+                        pref['colunas'][entidade][index]) ? true : false
+                };
+            });
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    public isProdutoVisivel(id :number)</span> :Observable&lt;{visivel: boolean, id: number}&gt; {
+<span class="cstat-no" title="statement not covered" >        return  this.importarPreferencias(false)</span>
+            .map(<span class="fstat-no" title="function not covered" >(pref)</span> =&gt; {
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                console.log(pref);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                return {</span>
+                    visivel:
+                        (   isNullOrUndefined(pref['hp']) ||
+                            (pref['hp'].indexOf(id + 'F') &lt; 0) ||
+                            (pref['hp'].indexOf(id + 'T') &gt;= 0)),
+                    id: id
+                }
+            });
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >    public storeColunaPref(entidade: string, index: number, ativo: boolean)</span> {</span>
+<span class="cstat-no" title="statement not covered" >        this.importarPreferencias(false).subscribe(</span>
+<span class="fstat-no" title="function not covered" >            (pref)</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >                if (isNullOrUndefined(pref['colunas'])) {</span>
+<span class="cstat-no" title="statement not covered" >                    pref["colunas"] = [];</span>
+                }
+<span class="cstat-no" title="statement not covered" >                if(isNullOrUndefined(pref['colunas'][entidade])) {</span>
+<span class="cstat-no" title="statement not covered" >                    pref['colunas'][entidade] = [];</span>
+                }
+<span class="cstat-no" title="statement not covered" >                pref['colunas'][entidade][index] = ativo;</span>
+<span class="cstat-no" title="statement not covered" >                this.storePref(pref);</span>
+            }
+        );
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >    public storeProdPref(id :number, visivel :boolean)</span> {</span>
+<span class="cstat-no" title="statement not covered" >        this.importarPreferencias(false).subscribe(</span>
+<span class="fstat-no" title="function not covered" >            (pref)</span> =&gt; {
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                if (isNullOrUndefined(pref['hp'])) {</span>
+<span class="cstat-no" title="statement not covered" >                    pref['hp'] = [];</span>
+                }
+                else {
+<span class="cstat-no" title="statement not covered" >                    pref['hp'] = pref['hp'].join(';').split((id + (visivel ? 'F' : 'T'))).join('').split(';');</span>
+                }
+                // if (pref['hp'].indexOf(id + (visivel ? 'F' : 'T') ) &gt;=0 ){
+                //     pref['hp'] = pref['hp'].join(';').replaceAll(id + (visivel ? 'F' : 'T'), '').split(';');
+                // }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                pref['hp'].push((id + (visivel ? 'T' : 'F')));</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                this.storePref(pref);</span>
+            }
+        );
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    public getPref(cod :string)</span> :Observable&lt;string&gt;{
+<span class="cstat-no" title="statement not covered" >        return  this.importarPreferencias(false)</span>
+            .map(<span class="fstat-no" title="function not covered" >pref </span>=&gt; <span class="cstat-no" title="statement not covered" >pref[cod] </span>);
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >    public setPreferencia(cod :string, value :string)</span> {</span>
+<span class="cstat-no" title="statement not covered" >        this.importarPreferencias(false).subscribe(</span>
+<span class="fstat-no" title="function not covered" >            (pref)</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >                pref[cod] = value;</span>
+<span class="cstat-no" title="statement not covered" >                this.storePref(pref);</span>
+            });
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >    private storePref(preferencias :any)</span> {</span>
+<span class="cstat-no" title="statement not covered" >        this.preferencias = preferencias;</span>
+<span class="cstat-no" title="statement not covered" >        this.colaborador.preferencia = this.objToPersist(preferencias);</span>
+<span class="cstat-no" title="statement not covered" >        this.colaboradorService.update(this.colaborador, true)</span>
+            .subscribe( <span class="fstat-no" title="function not covered" >(col)</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >                this.colaborador = col;</span>
+            });
+    }
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    private objToPersist(pref: any[])</span> :string{
+<span class="cstat-no" title="statement not covered" >        let str = [];</span>
+<span class="cstat-no" title="statement not covered" >        Object.keys(pref).forEach( <span class="fstat-no" title="function not covered" >(k)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            switch (k) {</span>
+                case 'colunas':
+<span class="cstat-no" title="statement not covered" >                    const ents :boolean[][]=pref[k];</span>
+<span class="cstat-no" title="statement not covered" >                    const t :string[] = [];</span>
+<span class="cstat-no" title="statement not covered" >                    Object.keys(ents).forEach(<span class="fstat-no" title="function not covered" >(e)</span> =&gt; {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                        const en :boolean[] = ents[e];</span>
+<span class="cstat-no" title="statement not covered" >                        const tmp :string[] = [];</span>
+<span class="cstat-no" title="statement not covered" >                        en.forEach(<span class="fstat-no" title="function not covered" >(v,i)</span> =&gt;{</span>
+<span class="cstat-no" title="statement not covered" >                            tmp.push(i + '' + ( v ? 'T' : 'F'));</span>
+                        });
+<span class="cstat-no" title="statement not covered" >                        t.push(e + '-' + tmp.join('.'));</span>
+                    });
+<span class="cstat-no" title="statement not covered" >                    str.push(k + ':' + t.join(';'));</span>
+<span class="cstat-no" title="statement not covered" >                    break;</span>
+                case 'hp':
+<span class="cstat-no" title="statement not covered" >                    str.push(k + ':' +pref[k].join(';'));</span>
+<span class="cstat-no" title="statement not covered" >                    break;</span>
+                default:
+<span class="cstat-no" title="statement not covered" >                    str.push(k + ':' + pref[k]);</span>
+            }
+&nbsp;
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return str.join(',');</span>
+    }
+&nbsp;
+&nbsp;
+}
+&nbsp;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Dec 08 2017 00:30:32 GMT-0200 (-02)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

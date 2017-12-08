@@ -1,0 +1,364 @@
+
+<h1 *ngIf="mesa">
+    MESA {{mesa.local}} - {{mesa.codigo}}
+    <span class="float-right badge" [ngClass]="{
+                        'badge-secondary':  status === 1,
+                        'badge-success': status === 2
+                    }">{{getStatus()}}</span>
+</h1>
+
+<jhi-alert></jhi-alert>
+
+<hr>
+
+<div *ngIf="mesa" class="row">
+
+    <div class="col-8 separada">
+        <div class="row centrado">
+
+            <div class="col-3">
+                <div class="card nopad">
+                    <div class="card-body nopad">
+                        <div class="row centrado">
+                            <div class="col-6">
+                                <span class="mesaimg" [style.background-color]="getStatusColor()"></span>
+                            </div>
+                            <div class="col-6">
+                                <b>MESA {{mesa.local}}</b><br>
+                                {{mesa.codigo}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                Garçon: <br>
+                <div ngbDropdown class="dropdown pointer">
+                    <button class="btn btn-outline-secondary dropdown" ngbDropdownToggle>{{getGarcon()}}</button>
+                    <ul class="dropdown-menu" ngbDropdownMenu>
+                        <li *ngFor="let garcon of garcons">
+                            <a class="dropdown-item" (click)="setGarcon(garcon)">
+                                {{garcon.id}} - {{garcon.nome}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-3">
+                Cliente:<br>
+                <div ngbDropdown class="dropdown pointer">
+                    <button class="btn  btn-outline-secondary dropdown" ngbDropdownToggle>{{getCliente()}}</button>
+                    <ul class="dropdown-menu" ngbDropdownMenu>
+                        <li *ngFor="let cliente of clientes">
+                            <a class="dropdown-item" (click)="setCliente(cliente)">
+                                {{cliente.id}} - {{cliente.nome}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-3">
+                Nº Pessoas:<br>
+                <h2 class="centrado">
+                    <b>{{getPessoas()}}</b>
+                    <button class="btn btn-primary btn-sm" (click)="rmPessoas()"><span class="fa fa-minus"></span></button>
+                    <button class="btn btn-primary btn-sm" (click)="addPessoas()"><span class="fa fa-plus"></span></button>
+                </h2>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="row centrado">
+
+            <div class="col-6">
+
+                <h5>Filtrar produtos</h5>
+
+
+                <div ngbDropdown class="nav-item dropdown pointer">
+
+                    <div class="input-group">
+                        <div class="input-group-addon"> <span class="fa fa-filter"></span></div>
+                        <input type="text" (keydown.enter)="pesquisar(false);" class="form-control form-control-lg filtro dropdown" placeholder="palavra chave..." ngbDropdownToggle [(ngModel)]="key">
+                        <button class="btn btn-lg btn-info" (click)="pesquisar(false)"><span class="fa fa-search"></span></button>
+                    </div>
+                    <ul class="dropdown-menu" ngbDropdownMenu>
+                        <li>
+                            <a class="dropdown-item" (click)="select('todos')">
+                                Todos
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" (click)="select('bebidas')">
+                                Bebidas
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" (click)="select('restaurante')">
+                                Restaurante
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" (click)="select('sobremesas')">
+                                Sobremesas
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+
+
+
+            </div>
+            <div class="col-6">
+
+
+                <div class="row">
+                    <div class="col">
+                        <ul class="swul">
+                            <li class="hideheader">
+                                nome
+                                <label class="switch">
+                                    <input type="checkbox" #chk1 [checked]="pesquisa.indexOf('nome') >= 0" (click)="toogle('nome', chk1.checked)">
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                            <li class="hideheader">
+                                preço
+                                <label class="switch">
+                                    <input type="checkbox" #chk2 [checked]="pesquisa.indexOf('preco') >= 0" (click)="toogle('preco', chk2.checked)">
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <ul class="swul">
+                            <li class="hideheader">
+                                categoria
+                                <label class="switch">
+                                    <input type="checkbox" #chk3 [checked]="pesquisa.indexOf('categoria') >= 0" (click)="toogle('categoria', chk3.checked)">
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                            <li class="hideheader">
+                                estoque
+                                <label class="switch">
+                                    <input type="checkbox" #chk4 [checked]="pesquisa.indexOf('estoque') >= 0" (click)="toogle('estoque', chk4.checked)">
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <ul class="swul">
+                            <li class="hideheader">
+                                código
+                                <label class="switch">
+                                    <input type="checkbox" #chk5 [checked]="pesquisa.indexOf('codigo') >= 0" (click)="toogle('codigo', chk5.checked)">
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                            <li class="hideheader">
+                                unidade
+                                <label class="switch">
+                                    <input type="checkbox" #chk6 [checked]="pesquisa.indexOf('unidade') >= 0" (click)="toogle('unidade', chk6.checked)">
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <h5>Escolha o produto</h5>
+
+        <div class="row centrado" *ngIf="produtos">
+
+            <!--(click)="marcar[produto.id] = !marcar[produto.id]"-->
+            <!--[ngClass]="{'marcado': marcar[produto.id]}"-->
+            <button
+                class="btn btn-sm produto bord"
+                *ngFor="let produto of produtos"
+                (click)="comprar(produto)">
+                <!--<div class="card-header">-->
+                <!--<span class="float-left">{{produto.preco | currency:'BRL':true:'.2-2'}}</span>-->
+                <!--<span class="float-right badge badge-secondary">{{produto.codigo}}</span>-->
+
+                <!--</div>-->
+                <div class="card-body centrado centro row sp" >
+                    <div class="col-5">
+                        <span class="badge badge-secondary float-left">{{produto.codigo}}</span>
+
+                        <img *ngIf="produto.foto" [src]="'data:' + produto.fotoContentType + ';base64,' + produto.foto" alt="produto image" class="imagem"/>
+
+                    </div>
+                    <div class="col-7">
+
+                        <!--<div [innerHTML]="sanitize(produto.html)"></div>-->
+
+                        Nome: {{produto.nome}}<br>
+                        Preço: {{produto.preco | currency:'BRL':true:'.2-2'}}<br>
+                        estoque: {{produto.estoque}}
+
+
+                    </div>
+
+                </div>
+                <!--<div class="card-footer">-->
+                <!--{{produto.nome}}-->
+
+                <!--<span class="float-right badge badge-{{produto.estoque > 1 ? 'secondary' : 'danger'}}">{{produto.estoque}}</span>-->
+                <!--&lt;!&ndash;<button class="btn btn-info btn-sm float-right" (click)="stop($event, produto)"><span class="fa fa-search"></span>Buscar</button>&ndash;&gt;-->
+                <!--</div>-->
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+    <hr>
+
+    <div class="col-4" [ngSwitch]="comanda !== undefined">
+
+        <ngb-alert  *ngSwitchCase="false">Não há comanda! <button class="btn btn-warning float-right" (click)="criar()">criar comanda</button> </ngb-alert>
+
+        <!--<ngb-alert  *ngIf="getStatusColor() === 'green'">A comanda está fechada! <button class="btn btn-success float-right" (click)="reabrir()">reabrir comanda</button> </ngb-alert>-->
+
+
+        <h5 *ngSwitchCase="true">Comanda {{comanda.id}} <b>{{comanda.codigo}}</b></h5>
+
+        <div class="row centrado" *ngSwitchCase="true">
+
+            <div class="col-6" *ngIf="vendA">
+                <b>({{linha + 1}}) - {{vendA.produto.nome}}</b>
+                <br>
+                Código: {{vendA.produto.codigo}}
+                <br>
+
+                <button type="submit"
+                        [routerLink]="['/produto', vendA.produto.id ]"
+                        class="btn btn-info btn-sm">
+                    <span class="fa fa-eye"></span>
+                </button>
+
+
+                <button class="btn btn-danger btn-sm" (click)="remover(vendA)">
+                    <span class="fa fa-trash"></span>
+                </button>
+
+            </div>
+            <div class="col-1 centrado" *ngIf="vendA">
+                <h1 class="mult">X</h1>
+            </div>
+            <div class="col-5" *ngIf="vendA">
+
+                Qtde<br>
+                <h5 class="centrado">
+                    <input type="number" class="form-control" [(ngModel)]="vendA.quantidade" step="{{vendA.produto | incremento}}" min="{{vendA.produto | incremento}}">
+                    <button class="btn btn-primary btn-sm" (click)="vendA.quantidade = vendA.quantidade + 1;"><span class="fa fa-plus"></span></button>
+                    <button class="btn btn-primary btn-sm" (click)="vendA.quantidade = (vendA.quantidade > 1) ? (vendA.quantidade - 1) : 1;"><span class="fa fa-minus"></span></button>
+                    <button class="btn btn-primary btn-sm" (click)="salvarVenda()"><span class="fa fa-save"></span></button>
+                </h5>
+            </div>
+
+        </div>
+
+        <div class="row"  *ngSwitchCase="true">
+
+            <div class="table-responsive" *ngIf="vendas">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th class="direita">Produto</th>
+                        <th class="direita">Qtde</th>
+                        <th class="direita">Unitário</th>
+                        <th class="direita">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let venda of vendas ;trackBy: trackId; let i = index"
+                        (click)="vendA = venda; linha = i;"
+                        [ngClass]="{'marcado' : linha === i}"
+                    >
+                        <td>{{i + 1}}</td>
+                        <td>{{venda.produto.nome}}</td>
+                        <td>{{venda.quantidade}}</td>
+                        <td>{{venda.produto.preco | currency:'BRL':true:'.2-2'}}</td>
+                        <td>{{(venda.produto.preco * venda.quantidade) + (venda.valorizacao - venda.desconto) | currency:'BRL':true:'.2-2'}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+
+        <div class="row" *ngSwitchCase="true" style="padding: 5px;">
+
+            <h2><b>Valor Total</b></h2>
+
+            <div class="col-12 total">{{comanda.total | currency:'BRL':true:'.2-2'}}</div>
+            <p *ngIf="colaborador">
+                usuario: {{colaborador?.nome}}
+            </p>
+            <p *ngIf="colaborador">
+                serviço: {{comanda.gorjeta | currency:'BRL':true:'.2-2'}} -> {{(comanda.total + comanda.gorjeta) | currency:'BRL':true:'.2-2'}}
+            </p>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+</div>
+
+
+<hr>
+
+<div class="row">
+
+    <button
+        class="btn btn-primary botoes float-right" (click)="notificar()" [disabled]="!mesa || !comanda">
+        <span class="fa fa-bell"></span> Notificar Locais de Produção
+    </button>
+
+    <button class="btn btn-primary botoes float-right" [disabled]="!comanda" (click)="preconta()">
+        <span class="fa fa-print"></span> Imprimir Pre-Conta
+    </button>
+
+    <button type="submit"
+            [routerLink]="['/', { outlets: { popup: 'comanda/'+ comanda?.id + '/delete'} }]"
+            replaceUrl="true"
+            class="btn btn-danger botoes float-right"
+            [disabled]="!comanda">
+        <span class="fa fa-remove"></span>
+        Cancelar
+    </button>
+
+    <button type="submit"
+            [routerLink]="['/', { outlets: { popup: 'lancamento/'+ comanda?.id + '/fechar'} }]"
+            replaceUrl="true"
+            class="btn btn-success botoes float-right"
+            [disabled]="!mesa || !comanda">
+        <span class="fa fa-check"></span>
+        Fechar Conta
+    </button>
+
+</div>
+

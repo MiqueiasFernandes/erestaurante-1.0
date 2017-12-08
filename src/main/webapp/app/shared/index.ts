@@ -31,3 +31,4 @@ export * from './utils/tableheader.directive';
 export * from './utils/variaveis.service';
 
 export * from './utils/IncrementoPipe.pipe';
+export * from './utils/unidadePipe.pipe';

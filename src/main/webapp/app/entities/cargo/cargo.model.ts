@@ -1,5 +1,6 @@
 import { BaseEntity } from './../../shared';
 import {isNullOrUndefined, isNumber} from "util";
+import {Colaborador} from "../colaborador/colaborador.model";
 
 export const enum CargoTipo {
     'GERENCIA',
@@ -71,6 +72,11 @@ export class Cargo implements BaseEntity {
             'ATENDIMENTO',
             'ENTREGA'
         ][(Cargo.getTipo(cargo))];
+    }
+
+    public static contains(colaborador :Colaborador, cargo) :boolean {
+        return colaborador.cargos.some(c => this.tipoEquals(c, cargo));
+
     }
 
 }

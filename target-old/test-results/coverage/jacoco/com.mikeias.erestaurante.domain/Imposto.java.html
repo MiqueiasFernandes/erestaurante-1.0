@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Imposto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">E Restaurante</a> &gt; <a href="index.source.html" class="el_package">com.mikeias.erestaurante.domain</a> &gt; <span class="el_source">Imposto.java</span></div><h1>Imposto.java</h1><pre class="source lang-java linenums">package com.mikeias.erestaurante.domain;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * A Imposto.
+ */
+@Entity
+@Table(name = &quot;imposto&quot;)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+<span class="fc" id="L16">public class Imposto implements Serializable {</span>
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;sequenceGenerator&quot;)
+    @SequenceGenerator(name = &quot;sequenceGenerator&quot;)
+    private Long id;
+
+    @Column(name = &quot;descricao&quot;)
+    private String descricao;
+
+    @Column(name = &quot;iv_tot_trib&quot;)
+    private Double ivTotTrib;
+
+    @Column(name = &quot;i_icms&quot;)
+    private Double iICMS;
+
+    @Column(name = &quot;i_ipi&quot;)
+    private Double iIPI;
+
+    @Column(name = &quot;i_ii&quot;)
+    private Double iII;
+
+    @Column(name = &quot;i_issqn&quot;)
+    private Double iISSQN;
+
+    @Column(name = &quot;i_pis&quot;)
+    private Double iPIS;
+
+    @Column(name = &quot;i_pisst&quot;)
+    private Double iPISST;
+
+    @Column(name = &quot;i_cofins&quot;)
+    private Double iCOFINS;
+
+    @Column(name = &quot;i_cofinsst&quot;)
+    private Double iCOFINSST;
+
+    @Column(name = &quot;i_icmsuf_dest&quot;)
+    private Double iICMSUFDest;
+
+    @Column(name = &quot;ioutros&quot;)
+    private String ioutros;
+
+    @Column(name = &quot;configurar&quot;)
+    private String configurar;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public Long getId() {
+<span class="fc" id="L66">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="fc" id="L70">        this.id = id;</span>
+<span class="fc" id="L71">    }</span>
+
+    public String getDescricao() {
+<span class="fc" id="L74">        return descricao;</span>
+    }
+
+    public Imposto descricao(String descricao) {
+<span class="fc" id="L78">        this.descricao = descricao;</span>
+<span class="fc" id="L79">        return this;</span>
+    }
+
+    public void setDescricao(String descricao) {
+<span class="fc" id="L83">        this.descricao = descricao;</span>
+<span class="fc" id="L84">    }</span>
+
+    public Double getIvTotTrib() {
+<span class="fc" id="L87">        return ivTotTrib;</span>
+    }
+
+    public Imposto ivTotTrib(Double ivTotTrib) {
+<span class="fc" id="L91">        this.ivTotTrib = ivTotTrib;</span>
+<span class="fc" id="L92">        return this;</span>
+    }
+
+    public void setIvTotTrib(Double ivTotTrib) {
+<span class="fc" id="L96">        this.ivTotTrib = ivTotTrib;</span>
+<span class="fc" id="L97">    }</span>
+
+    public Double getiICMS() {
+<span class="fc" id="L100">        return iICMS;</span>
+    }
+
+    public Imposto iICMS(Double iICMS) {
+<span class="fc" id="L104">        this.iICMS = iICMS;</span>
+<span class="fc" id="L105">        return this;</span>
+    }
+
+    public void setiICMS(Double iICMS) {
+<span class="fc" id="L109">        this.iICMS = iICMS;</span>
+<span class="fc" id="L110">    }</span>
+
+    public Double getiIPI() {
+<span class="fc" id="L113">        return iIPI;</span>
+    }
+
+    public Imposto iIPI(Double iIPI) {
+<span class="fc" id="L117">        this.iIPI = iIPI;</span>
+<span class="fc" id="L118">        return this;</span>
+    }
+
+    public void setiIPI(Double iIPI) {
+<span class="fc" id="L122">        this.iIPI = iIPI;</span>
+<span class="fc" id="L123">    }</span>
+
+    public Double getiII() {
+<span class="fc" id="L126">        return iII;</span>
+    }
+
+    public Imposto iII(Double iII) {
+<span class="fc" id="L130">        this.iII = iII;</span>
+<span class="fc" id="L131">        return this;</span>
+    }
+
+    public void setiII(Double iII) {
+<span class="fc" id="L135">        this.iII = iII;</span>
+<span class="fc" id="L136">    }</span>
+
+    public Double getiISSQN() {
+<span class="fc" id="L139">        return iISSQN;</span>
+    }
+
+    public Imposto iISSQN(Double iISSQN) {
+<span class="fc" id="L143">        this.iISSQN = iISSQN;</span>
+<span class="fc" id="L144">        return this;</span>
+    }
+
+    public void setiISSQN(Double iISSQN) {
+<span class="fc" id="L148">        this.iISSQN = iISSQN;</span>
+<span class="fc" id="L149">    }</span>
+
+    public Double getiPIS() {
+<span class="fc" id="L152">        return iPIS;</span>
+    }
+
+    public Imposto iPIS(Double iPIS) {
+<span class="fc" id="L156">        this.iPIS = iPIS;</span>
+<span class="fc" id="L157">        return this;</span>
+    }
+
+    public void setiPIS(Double iPIS) {
+<span class="fc" id="L161">        this.iPIS = iPIS;</span>
+<span class="fc" id="L162">    }</span>
+
+    public Double getiPISST() {
+<span class="fc" id="L165">        return iPISST;</span>
+    }
+
+    public Imposto iPISST(Double iPISST) {
+<span class="fc" id="L169">        this.iPISST = iPISST;</span>
+<span class="fc" id="L170">        return this;</span>
+    }
+
+    public void setiPISST(Double iPISST) {
+<span class="fc" id="L174">        this.iPISST = iPISST;</span>
+<span class="fc" id="L175">    }</span>
+
+    public Double getiCOFINS() {
+<span class="fc" id="L178">        return iCOFINS;</span>
+    }
+
+    public Imposto iCOFINS(Double iCOFINS) {
+<span class="fc" id="L182">        this.iCOFINS = iCOFINS;</span>
+<span class="fc" id="L183">        return this;</span>
+    }
+
+    public void setiCOFINS(Double iCOFINS) {
+<span class="fc" id="L187">        this.iCOFINS = iCOFINS;</span>
+<span class="fc" id="L188">    }</span>
+
+    public Double getiCOFINSST() {
+<span class="fc" id="L191">        return iCOFINSST;</span>
+    }
+
+    public Imposto iCOFINSST(Double iCOFINSST) {
+<span class="fc" id="L195">        this.iCOFINSST = iCOFINSST;</span>
+<span class="fc" id="L196">        return this;</span>
+    }
+
+    public void setiCOFINSST(Double iCOFINSST) {
+<span class="fc" id="L200">        this.iCOFINSST = iCOFINSST;</span>
+<span class="fc" id="L201">    }</span>
+
+    public Double getiICMSUFDest() {
+<span class="fc" id="L204">        return iICMSUFDest;</span>
+    }
+
+    public Imposto iICMSUFDest(Double iICMSUFDest) {
+<span class="fc" id="L208">        this.iICMSUFDest = iICMSUFDest;</span>
+<span class="fc" id="L209">        return this;</span>
+    }
+
+    public void setiICMSUFDest(Double iICMSUFDest) {
+<span class="fc" id="L213">        this.iICMSUFDest = iICMSUFDest;</span>
+<span class="fc" id="L214">    }</span>
+
+    public String getIoutros() {
+<span class="fc" id="L217">        return ioutros;</span>
+    }
+
+    public Imposto ioutros(String ioutros) {
+<span class="fc" id="L221">        this.ioutros = ioutros;</span>
+<span class="fc" id="L222">        return this;</span>
+    }
+
+    public void setIoutros(String ioutros) {
+<span class="fc" id="L226">        this.ioutros = ioutros;</span>
+<span class="fc" id="L227">    }</span>
+
+    public String getConfigurar() {
+<span class="fc" id="L230">        return configurar;</span>
+    }
+
+    public Imposto configurar(String configurar) {
+<span class="fc" id="L234">        this.configurar = configurar;</span>
+<span class="fc" id="L235">        return this;</span>
+    }
+
+    public void setConfigurar(String configurar) {
+<span class="fc" id="L239">        this.configurar = configurar;</span>
+<span class="fc" id="L240">    }</span>
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    @Override
+    public boolean equals(Object o) {
+<span class="fc bfc" id="L245" title="All 2 branches covered.">        if (this == o) {</span>
+<span class="fc" id="L246">            return true;</span>
+        }
+<span class="fc bfc" id="L248" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L249">            return false;</span>
+        }
+<span class="fc" id="L251">        Imposto imposto = (Imposto) o;</span>
+<span class="fc bfc" id="L252" title="All 4 branches covered.">        if (imposto.getId() == null || getId() == null) {</span>
+<span class="fc" id="L253">            return false;</span>
+        }
+<span class="fc" id="L255">        return Objects.equals(getId(), imposto.getId());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L260">        return Objects.hashCode(getId());</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L265">        return &quot;Imposto{&quot; +</span>
+<span class="fc" id="L266">            &quot;id=&quot; + getId() +</span>
+<span class="fc" id="L267">            &quot;, descricao='&quot; + getDescricao() + &quot;'&quot; +</span>
+<span class="fc" id="L268">            &quot;, ivTotTrib='&quot; + getIvTotTrib() + &quot;'&quot; +</span>
+<span class="fc" id="L269">            &quot;, iICMS='&quot; + getiICMS() + &quot;'&quot; +</span>
+<span class="fc" id="L270">            &quot;, iIPI='&quot; + getiIPI() + &quot;'&quot; +</span>
+<span class="fc" id="L271">            &quot;, iII='&quot; + getiII() + &quot;'&quot; +</span>
+<span class="fc" id="L272">            &quot;, iISSQN='&quot; + getiISSQN() + &quot;'&quot; +</span>
+<span class="fc" id="L273">            &quot;, iPIS='&quot; + getiPIS() + &quot;'&quot; +</span>
+<span class="fc" id="L274">            &quot;, iPISST='&quot; + getiPISST() + &quot;'&quot; +</span>
+<span class="fc" id="L275">            &quot;, iCOFINS='&quot; + getiCOFINS() + &quot;'&quot; +</span>
+<span class="fc" id="L276">            &quot;, iCOFINSST='&quot; + getiCOFINSST() + &quot;'&quot; +</span>
+<span class="fc" id="L277">            &quot;, iICMSUFDest='&quot; + getiICMSUFDest() + &quot;'&quot; +</span>
+<span class="fc" id="L278">            &quot;, ioutros='&quot; + getIoutros() + &quot;'&quot; +</span>
+<span class="fc" id="L279">            &quot;, configurar='&quot; + getConfigurar() + &quot;'&quot; +</span>
+            &quot;}&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

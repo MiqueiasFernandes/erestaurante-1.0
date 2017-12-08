@@ -1,0 +1,139 @@
+<div>
+    <h2>
+        <span jhiTranslate="eRestauranteApp.impressora.home.title">Impressoras</span>
+
+        <button class="btn btn-secondary float-right mt" (click)="setModoTabela()">
+            <span class="fa  fa-th-list"></span>
+            {{modoTabela ? 'Modo Gráfico' : 'Modo Tabela'}}
+        </button>
+
+        <button class="btn btn-primary float-right jh-create-entity create-impressora" [routerLink]="['/', { outlets: { popup: ['impressora-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="eRestauranteApp.impressora.home.createLabel">
+            Create new Impressora
+            </span>
+        </button>
+
+        <button class="btn btn-primary float-right" style="margin-right: 10px" [routerLink]="['/', { outlets: { popup: ['impressora-assistente'] } }]">
+            <span class="fa fa-magic"></span>
+            Assistente
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+
+    <div class="row centro" *ngIf="impressoras && !modoTabela">
+
+
+        <div class="card" *ngFor="let impressora of impressoras ;trackBy: trackId">
+
+            <div class="card-header">
+                {{impressora.nome}} <span class="badge badge-success float-right">{{impressora.codigo}}</span>
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-6">
+                        <img *ngIf="impressora.codigo && impressora.codigo.endsWith('ecf')" class="impressora" src="../../../content/images/ecf.jpg">
+                        <img *ngIf="impressora.codigo && impressora.codigo.endsWith('imp')"  class="impressora" src="../../../content/images/impressora.jpg">
+                    </div>
+                    <div class="col-6">
+                        Prioridade: <input class="form-control" type="number" [(ngModel)]="impressora.prioridade" min="-1" max="{{impressoras.length}}">
+
+                        <div ngbDropdown class="nav-item dropdown pointer local">
+
+                         Local:  <button class="btn btn-sm btn-info dropdown" ngbDropdownToggle><span class="fa fa-location-arrow"></span> {{impressora.local ? impressora.local : 'Local'}}</button>
+
+                            <ul class="dropdown-menu" ngbDropdownMenu>
+                                <li *ngFor="let local of locais">
+                                    <a *ngIf="impressora.local.indexOf(local) < 0" class="dropdown-item" (click)="setLocal(impressora, local)">
+                                        {{local}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <textarea class="form-control" name="script" placeholder="digite o script aqui..."
+                                  [(ngModel)]="impressora.script"  ></textarea>
+
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer text-right">
+
+                <span class="badge badge-secondary badge-pill float-left">{{impressora.id}}</span>
+
+                <button type="submit"
+                        [routerLink]="['/', { outlets: { popup: 'impressora/'+ impressora.id + '/delete'} }]"
+                        replaceUrl="true"
+                        class="btn btn-danger btn-sm">
+                    <span class="fa fa-remove"></span>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                </button>
+
+                <button class="btn btn-primary btn-sm" (click)="salvar(impressora)"><span class="fa fa-save"></span>Salvar</button>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <br>
+
+    <div class="table-responsive" *ngIf="impressoras && modoTabela">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="eRestauranteApp.impressora.nome">Nome</span></th>
+            <th><span jhiTranslate="eRestauranteApp.impressora.codigo">Codigo</span></th>
+            <th><span jhiTranslate="eRestauranteApp.impressora.prioridade">Prioridade</span></th>
+            <th><span jhiTranslate="eRestauranteApp.impressora.script">Script</span></th>
+            <th><span jhiTranslate="eRestauranteApp.impressora.local">Local</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let impressora of impressoras ;trackBy: trackId">
+                <td><a [routerLink]="['../impressora', impressora.id ]">{{impressora.id}}</a></td>
+                <td>{{impressora.nome}}</td>
+                <td>{{impressora.codigo}}</td>
+                <td>{{impressora.prioridade}}</td>
+                <td>{{impressora.script}}</td>
+                <td>{{impressora.local}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../impressora', impressora.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'impressora/'+ impressora.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'impressora/'+ impressora.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

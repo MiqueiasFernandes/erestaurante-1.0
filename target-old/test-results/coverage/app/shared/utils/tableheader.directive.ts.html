@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/shared/utils/tableheader.directive.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">app/shared/utils/</a> tableheader.directive.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">20.9% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>14/67</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/28</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">10% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">18.46% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>12/65</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {
+    Directive,
+    ElementRef,
+    ComponentFactoryResolver,
+    ViewContainerRef,
+    AfterViewInit,
+    Input, ViewChild, OnDestroy
+} from '@angular/core';
+&nbsp;
+import {TableheaderComponent} from "../../layouts/tableheader/tableheader.component";
+import {isNullOrUndefined} from "util";
+&nbsp;
+&nbsp;
+import { Subscription } from 'rxjs/Rx';
+import { JhiEventManager } from 'ng-jhipster';
+&nbsp;
+&nbsp;
+&nbsp;
+@Directive({
+    selector: '[jhiTableheader]'
+})
+export class TableheaderDirective implements AfterViewInit, OnDestroy{
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    factory = this.componentFactoryResolver.resolveComponentFactory(TableheaderComponent);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    colunas :string[] = [];</span>
+<span class="cstat-no" title="statement not covered" >    checksHeader :boolean[] = [];</span>
+<span class="cstat-no" title="statement not covered" >    switches :string[] = [];</span>
+<span class="cstat-no" title="statement not covered" >    colunasRef :ElementRef[][] = [];</span>
+    tableHeaderInstance :TableheaderComponent;
+<span class="cstat-no" title="statement not covered" >    opt = null;</span>
+    eventSubscriber: Subscription;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    registerChanges() {</span>
+<span class="cstat-no" title="statement not covered" >        this.eventSubscriber = this.eventManager.</span>
+        subscribe(this.opt.entidade + 'ListModification',
+<span class="fstat-no" title="function not covered" >            (response)</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >                setTimeout(<span class="fstat-no" title="function not covered" >()=&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >                    this.jhiTableheader = this.opt;</span>
+<span class="cstat-no" title="statement not covered" >                    this.ngAfterViewInit();</span>
+                }, 5000);
+            });
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    ngOnDestroy() {</span>
+<span class="cstat-no" title="statement not covered" >        if (this.eventSubscriber) {</span>
+<span class="cstat-no" title="statement not covered" >            this.eventManager.destroy(this.eventSubscriber);</span>
+        }
+    }
+&nbsp;
+    @Input()
+<span class="fstat-no" title="function not covered" >    set jhiTableheader(opt :{view :ViewContainerRef, entidade: string})</span> {
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (isNullOrUndefined(opt.view)){</span>
+<span class="cstat-no" title="statement not covered" >            return;</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (isNullOrUndefined(this.opt)){</span>
+<span class="cstat-no" title="statement not covered" >          this.opt = opt;</span>
+<span class="cstat-no" title="statement not covered" >          this.registerChanges();</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        opt.view.clear();</span>
+<span class="cstat-no" title="statement not covered" >        const ref = opt.view.createComponent(this.factory);</span>
+<span class="cstat-no" title="statement not covered" >        this.tableHeaderInstance = ref.instance as TableheaderComponent;</span>
+<span class="cstat-no" title="statement not covered" >        ref.changeDetectorRef.detectChanges();</span>
+    }
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    ngAfterViewInit(): void {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >       const colunas = [];</span>
+<span class="cstat-no" title="statement not covered" >       const checksHeader  = [];</span>
+<span class="cstat-no" title="statement not covered" >       const switches= [];</span>
+<span class="cstat-no" title="statement not covered" >       const colunasRef = [];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        const thread :Element[]  = this._elementRef.nativeElement</span>
+            .getElementsByTagName("THEAD");
+<span class="cstat-no" title="statement not covered" >        if (thread &amp;&amp; thread.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >            const tr :NodeListOf&lt;Element&gt;  = thread[0].getElementsByTagName("TR");</span>
+<span class="cstat-no" title="statement not covered" >            if (tr &amp;&amp; tr.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >                const th :NodeListOf&lt;Element&gt;  = tr[0].getElementsByTagName('TH');</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                if (th &amp;&amp; th.length &gt; 0) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    for (let i=0; i &lt; th.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                        const el = th[i].getElementsByTagName("SPAN");</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                        if (el[1]) {</span>
+<span class="cstat-no" title="statement not covered" >                            const elref = new ElementRef(el[1]);</span>
+<span class="cstat-no" title="statement not covered" >                            const coluna :string =  elref.nativeElement.innerText;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                            colunas.push(coluna);</span>
+<span class="cstat-no" title="statement not covered" >                            checksHeader[coluna] = true;</span>
+<span class="cstat-no" title="statement not covered" >                            colunasRef[coluna] = [new ElementRef(th[i])];</span>
+<span class="cstat-no" title="statement not covered" >                            switches.push(</span>
+                                coluna +
+                                ': &lt;label class="switch"&gt;\n' +
+                                '      &lt;input type="checkbox" id="jhiTableheader-' + switches.length + '"&gt;\n' +
+                                '           &lt;span class="slider round"&gt;&lt;/span&gt;\n' +
+                                '  &lt;/label&gt;');
+                        }
+                    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    this.importCampos(colunas, colunasRef);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    if (! isNullOrUndefined(this.tableHeaderInstance)) {</span>
+<span class="cstat-no" title="statement not covered" >                        this.tableHeaderInstance.createSwitches(this.opt.entidade, colunas, colunasRef);</span>
+                    }
+&nbsp;
+                }
+            }
+        }
+    }
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    private importCampos(colunas, colunasRef)</span> {
+<span class="cstat-no" title="statement not covered" >        const trs :NodeListOf&lt;Element&gt;  =</span>
+            this._elementRef
+                .nativeElement.getElementsByTagName("TR");
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        for(let i =0; i&lt;trs.length; i++) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            if(trs[i]) {</span>
+<span class="cstat-no" title="statement not covered" >                const tds :NodeListOf&lt;Element&gt;  = trs[i].getElementsByTagName('TD');</span>
+<span class="cstat-no" title="statement not covered" >                if (tds &amp;&amp; tds.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >                    colunas.forEach(<span class="fstat-no" title="function not covered" >(v, i)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >                        colunasRef[v].push(new ElementRef(tds[i]));</span>
+                    });
+                }
+            }
+        }
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    constructor(</span>
+        private <span class="cstat-no" title="statement not covered" >_elementRef: ElementRef,</span>
+        private <span class="cstat-no" title="statement not covered" >eventManager: JhiEventManager,</span>
+        private <span class="cstat-no" title="statement not covered" >componentFactoryResolver: ComponentFactoryResolver</span>
+    ) {}
+&nbsp;
+&nbsp;
+}
+&nbsp;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Dec 08 2017 00:30:32 GMT-0200 (-02)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>
